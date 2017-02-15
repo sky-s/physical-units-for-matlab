@@ -1,0 +1,485 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Dimensioned Variable (DimVar) Class for MATLAB - notes and demos</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-01-24"><meta name="DC.source" content="uHelp.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Dimensioned Variable (DimVar) Class for MATLAB - notes and demos</h1><!--introduction--><p>Author: Sky Sartorius.</p><p>A DimVar (dimensioned variable) contains both a value (any numeric type) and units (any combination of mass, length, time, etc.). Math operations performed on dimensioned variables will automatically perform dimensional analysis to ensure that units are consistent.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Basic Use</a></li><li><a href="#9">Consistency Enforcement</a></li><li><a href="#12">Strings Representing Dimensioned Variables</a></li><li><a href="#14">Speed</a></li><li><a href="#16">Basic Examples</a></li><li><a href="#19">Displaying and Plotting</a></li><li><a href="#22">Working with myUnits.m and units.m</a></li><li><a href="#23">Changing the Base Unit System</a></li><li><a href="#27">Preferred Display Units</a></li></ul></div><h2>Basic Use<a name="1"></a></h2><p>Step one: Ensure that both the m-files (u.m, unitsOf.m, units.m, etc.) and the directory ..\@DimVar are placed on the current path (or in the current working directory).</p><p>To create a variable with physical units information, MULTIPLY by the appropriate DimVar in u. For example, to define a length of 5 inches:</p><pre class="codeinput">length = 5 * u.in
+</pre><pre class="codeoutput">
+length =
+
+   0.127000000000000
+
+		 m
+</pre><p>The variable will be displayed in base units as defined in the myUnits function. To display in another unit, <b>divide</b> by that unit (this is also a quick way to do unit conversion).</p><pre class="codeinput">length / u.ft
+</pre><pre class="codeoutput">
+ans =
+
+   0.416666666666667
+
+</pre><p>To convert between units, multiply by the starting unit and divide by the ending unit.</p><pre class="codeinput">conversionFactor = u.mi^2/u.ft^2;
+fprintf(<span class="string">'There are %d sq. feet in a sq. mile.'</span>, conversionFactor)
+</pre><pre class="codeoutput">There are 27878400 sq. feet in a sq. mile.</pre><p>More complicated units can be made by combining other units.</p><pre class="codeinput">mach1 = 340.294*u.m/u.s
+</pre><pre class="codeoutput">
+mach1 =
+
+     3.402940000000000e+02
+
+		m
+		-
+		s
+
+</pre><p>If you wnat to use the speed of sound at sea level in your application often, you can also edit u.m and add a line to make mach1 available whenever working with units.</p><p>Note that there is no such thing as a dimensioned variable with no units. If you perform operations that make the units cancel, a normal variable will be returned.</p><pre class="codeinput">class(u.s)
+</pre><pre class="codeoutput">
+ans =
+
+DimVar
+
+</pre><pre class="codeinput">class(u.W/u.hp)
+</pre><pre class="codeoutput">
+ans =
+
+double
+
+</pre><h2>Consistency Enforcement<a name="9"></a></h2><p>Math with dimensioned variables is just like numeric variables except that dimensional/unit consistency is enforced. For example, adding two variables having different dimesions will result in an error.</p><pre class="language-matlab">3*u.s + 2*u.kg
+</pre><p>Returns an error ("Unit inconsistency in addition").</p><p>Many MATLAB functions will not accept dimensioned variables. This is because most non-mathematical functions are only defined for dimensionless arguments.</p><pre class="codeinput">t = (0:.1:1) * u.s;
+w = (2*pi)*10 * u.Hz;
+<span class="comment">% y = (3 * u.in)*sin(t); % sin undefined for dimensioned argument t.</span>
+y = (3 * u.in) * sin(w.*t); <span class="comment">% sin function now defined (w*t cancels units).</span>
+</pre><p>It can be convenient to define some dimensionless units, for example radians and degrees.</p><pre class="codeinput">fprintf(<span class="string">'The class of u.deg is "%s."\n'</span>,class(u.deg))
+fprintf(<span class="string">'There are %g degrees in one radian.\n'</span>,u.rad/u.deg)
+</pre><pre class="codeoutput">The class of u.deg is "double."
+There are 57.2958 degrees in one radian.
+</pre><h2>Strings Representing Dimensioned Variables<a name="12"></a></h2><p>The static method DimVar.strconv finds the conversion factor that converts from a unit indicated by a string to another unit indicated by a string.</p><pre class="codeinput">DimVar.strconv(<span class="string">'MPa/min'</span>,<span class="string">'(lbf/cm^2)/hr'</span>)
+</pre><pre class="codeoutput">
+ans =
+
+     1.348853658598263e+03
+
+</pre><p>Strings representing physical units can also be converted to DimVar with str2u.</p><pre class="codeinput">weightGainRate = 6 * str2u(<span class="string">'lb/year'</span>);
+</pre><h2>Speed<a name="14"></a></h2><p>While writing code using the DimVar class makes code faster to develop, easier to read, and easier to debug, it will slow the code down due to all the calls to the DimVar methods. One good solution to working with the class is to develop the code using the class, but <i>after</i> it's all tested and debugged, add a list at the top of your script as generated by the static method DimVar.unitslist. For this demo file that would be</p><pre class="codeinput">DimVar.unitslist([mfilename(<span class="string">'fullpath'</span>) <span class="string">'.m'</span>], <span class="string">'-copy'</span>)
+</pre><pre class="codeoutput">
+u.A         = 1                     ; % [A^1]
+u.BTU       = 1055.0559             ; % [m^2][kg^1][s^-2]
+u.Hz        = 1                     ; % [s^-1]
+u.K         = 1                     ; % [K^1]
+u.N         = 1                     ; % [m^1][kg^1][s^-2]
+u.Ohm       = 1                     ; % [m^2][kg^1][s^-3][A^-2]
+u.V         = 1                     ; % [m^2][kg^1][s^-3][A^-1]
+u.W         = 1                     ; % [m^2][kg^1][s^-3]
+u.atm       = 101325                ; % [m^-1][kg^1][s^-2]
+u.cc        = 1e-06                 ; % [m^3]
+u.cm        = 0.01                  ; % [m^1]
+u.deg       = 0.017453292519943     ; % 
+u.ft        = 0.3048                ; % [m^1]
+u.g0        = 9.80665               ; % [m^1][s^-2]
+u.gal       = 0.003785411784        ; % [m^3]
+u.gram      = 0.001                 ; % [kg^1]
+u.hp        = 745.69987158227       ; % [m^2][kg^1][s^-3]
+u.hr        = 3600                  ; % [s^1]
+u.in        = 0.0254                ; % [m^1]
+u.kW        = 1000                  ; % [m^2][kg^1][s^-3]
+u.knot      = 0.51444444444444      ; % [m^1][s^-1]
+u.lbf       = 4.4482216152605       ; % [m^1][kg^1][s^-2]
+u.m         = 1                     ; % [m^1]
+u.mW        = 0.001                 ; % [m^2][kg^1][s^-3]
+u.mi        = 1609.344              ; % [m^1]
+u.rad       = 1                     ; % 
+u.s         = 1                     ; % [s^1]
+u.slug      = 14.593902937206       ; % [kg^1]
+u.uF        = 1e-06                 ; % [m^-2][kg^-1][s^4][A^2]
+
+***List text copied to system clipboard.***
+
+</pre><p>Alternatively, this can be accomplished by using non-DimVars in the myUnits function (see <a href="a">href="matlab:help myUnits"&gt;help for myUnits&lt;/a</a>).</p><h2>Basic Examples<a name="16"></a></h2><p>Example 1: Use units to calculate the force at the bottom of a long vertical pipe that is capped at the bottom and filled with oil.</p><pre class="codeinput">pipeInnerDiameter = 4*u.in;
+pipeHeight = 30*u.ft;
+densityOfOil = 0.926*u.gram/u.cc;
+pipeCrossSectionArea = pi*(pipeInnerDiameter/2)^2;
+
+<span class="comment">% Find pressure of oil in the pipe using gravitational acceleration, u.g0.</span>
+pressurePipeBottom = densityOfOil * u.g0 * pipeHeight;
+forceOnPipeBottom = pressurePipeBottom * pipeCrossSectionArea;
+</pre><p>Note that each variable holds its value as expressed in SI units.  To express these values in different units, divide by the desired unit.</p><pre class="codeinput">fprintf(<span class="string">'Bottom pressure is %g atmospheres. '</span>, pressurePipeBottom/u.atm)
+fprintf(<span class="string">'Force on the bottom cap is %g pounds.'</span>, forceOnPipeBottom/u.lbf)
+</pre><pre class="codeoutput">Bottom pressure is 0.819504 atmospheres. Force on the bottom cap is 151.342 pounds.</pre><p>Example 2: Find the Reynolds number (dimensionless) of an aircraft flying at 100 knots at sea level with chord of 223 cm using a mixture of units.</p><pre class="codeinput">units;
+rho = .002377*u.slug/u.ft^3; <span class="comment">% Air density.</span>
+V = 100*u.knot;
+chord = 223*u.cm;
+mu = 28.8*u.gram/u.mi/u.s;
+Re = rho*V*chord/mu
+</pre><pre class="codeoutput">
+Re =
+
+     7.853359695994872e+06
+
+</pre><h2>Displaying and Plotting<a name="19"></a></h2><p>Methods such as disp, num2str, and plot are defined for DimVars.</p><pre class="codeinput">acceleration = 1/6*u.g0;
+fallDistance = linspace(0,5)*u.ft;
+
+disp(<span class="string">'Total time:'</span>)
+disp(sqrt(2*fallDistance(end)/acceleration))
+</pre><pre class="codeoutput">Total time:
+1.3656 s
+</pre><pre class="codeinput">v = sqrt(2*acceleration*fallDistance);
+[~,xStr,yStr] = plot(fallDistance,v);
+title(sprintf(<span class="string">'Dropping an object on the moon\n(acceleration = %s)'</span>,<span class="keyword">...</span>
+    num2str(acceleration)));
+</pre><img vspace="5" hspace="5" src="uHelp_01.png" style="width:560px;height:420px;" alt=""> <p>Use the label text to add information.</p><pre class="codeinput">xlabel(sprintf(<span class="string">'Fall distance (%s)'</span>,xStr));
+ylabel(sprintf(<span class="string">'Velocity (%s)'</span>,yStr));
+</pre><img vspace="5" hspace="5" src="uHelp_02.png" style="width:560px;height:420px;" alt=""> <h2>Working with myUnits.m and units.m<a name="22"></a></h2><h2>Changing the Base Unit System<a name="23"></a></h2><p>It is possible to work in a non-SI units system. Several common alternatives are provided and can be selected by providing the units.m function in myUnits.m with a string indicating the desired system.</p><pre class="codeinput">u = units(<span class="string">'verbose'</span>);
+</pre><pre class="codeinput">u.Ohm
+</pre><pre class="codeoutput">
+ans =
+
+     1
+
+		[meter^2][kilogram]
+		--------------------
+		[second^3][ampere^2]
+
+</pre><pre class="codeinput">u = units(<span class="string">'IPS'</span>); <span class="comment">% Inch-pound(mass)-second</span>
+</pre><pre class="codeinput">u.mW
+</pre><pre class="codeoutput">
+ans =
+
+   3.417136834273669
+
+		[in^2][lbm]
+		-----------
+		    s^3
+
+</pre><h2>Preferred Display Units<a name="27"></a></h2><p>units(..., dispStr1, dispStr2, dispStr3, ...), where each dispUnit is a string corresponding to a field name in the units struct, will display that unit or those compatible with it using the given preferred dispUnit instead of the default base unit or combination of base units.</p><pre class="codeinput">units <span class="string">SI</span> <span class="string">hp</span> <span class="string">BTU</span>
+</pre><pre class="codeinput">u.kW
+</pre><pre class="codeoutput">
+ans =
+
+   1.341022089595028
+
+		 hp
+</pre><pre class="codeinput">u.kW*u.hr
+</pre><pre class="codeoutput">
+ans =
+
+     3.412141479896942e+03
+
+		 BTU
+</pre><p>units(..., dispStr1, dispUnit1, dispStr2, dispUnit2, ...), where each dispUnit is defined by an existing DimVar in the workspace (<b>with the same base unit system</b>), allows for use of preferred display strings that are not field names of the default units struct (especially useful when desired display is not valid for a struct field name).</p><pre class="codeinput">units(<span class="string">'SI'</span>,<span class="keyword">...</span>
+    <span class="string">'W-hr'</span>,     u.W*u.hr,<span class="keyword">...</span>
+    <span class="string">'&deg;K'</span>,       u.K,<span class="keyword">...</span>
+    char(937),  u.Ohm,<span class="keyword">...</span>
+    <span class="string">'&micro;F'</span>,       u.uF,<span class="keyword">...</span>
+    <span class="string">'ft&sup3;'</span>,      u.ft^3)
+</pre><pre class="codeinput">u.BTU
+</pre><pre class="codeoutput">
+ans =
+
+   0.293071083333333
+
+		 W-hr
+</pre><pre class="codeinput">u.V/u.A
+</pre><pre class="codeoutput">
+ans =
+
+     1
+
+		 &#937;
+</pre><pre class="codeinput">u.gal
+</pre><pre class="codeoutput">
+ans =
+
+   0.133680555555556
+
+		 ft&sup3;
+</pre><p>units(..., dispUnits) is the same as above, except the dispStr, dispUnit pairs are contained in the n x 2 cell array dispUnits. However, if dispUnits is a string, this signals the use of a special predefined set of preferred display units. To use the standard set of common derived SI units for force, pressure, energy, power, etc.:</p><pre class="codeinput">units <span class="string">SI</span> <span class="string">-SI</span>
+</pre><pre class="codeinput">u.N
+</pre><pre class="codeoutput">
+ans =
+
+     1
+
+		 N
+</pre><pre class="codeinput">u.atm
+</pre><pre class="codeoutput">
+ans =
+
+      101325
+
+		 Pa
+</pre><pre class="codeinput">u.V*u.A
+</pre><pre class="codeoutput">
+ans =
+
+     1
+
+		 W
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Dimensioned Variable (DimVar) Class for MATLAB - notes and demos
+% Author: Sky Sartorius.
+%
+% A DimVar (dimensioned variable) contains both a value (any numeric type) and
+% units (any combination of mass, length, time, etc.). Math operations performed
+% on dimensioned variables will automatically perform dimensional analysis to
+% ensure that units are consistent.
+
+%% Basic Use
+% Step one: Ensure that both the m-files (u.m, unitsOf.m, units.m, etc.) and the
+% directory ..\@DimVar are placed on the current path (or in the current working
+% directory).
+
+%%
+% To create a variable with physical units information, MULTIPLY by the
+% appropriate DimVar in u. For example, to define a length of 5 inches:
+length = 5 * u.in
+
+%% 
+% The variable will be displayed in base units as defined in the myUnits
+% function. To display in another unit, *divide* by that unit (this is also a
+% quick way to do unit conversion).
+length / u.ft
+
+%%
+% To convert between units, multiply by the starting unit and divide by the
+% ending unit.
+conversionFactor = u.mi^2/u.ft^2;
+fprintf('There are %d sq. feet in a sq. mile.', conversionFactor)
+
+%%
+% More complicated units can be made by combining other units.
+mach1 = 340.294*u.m/u.s
+
+%%
+% If you wnat to use the speed of sound at sea level in your application often,
+% you can also edit u.m and add a line to make mach1 available whenever working
+% with units. 
+
+%%
+% Note that there is no such thing as a dimensioned variable with no units. If
+% you perform operations that make the units cancel, a normal variable will be
+% returned.
+class(u.s)
+
+%%
+class(u.W/u.hp)
+
+%% Consistency Enforcement
+% Math with dimensioned variables is just like numeric variables except that
+% dimensional/unit consistency is enforced. For example, adding two variables
+% having different dimesions will result in an error.
+% 
+%   3*u.s + 2*u.kg
+% 
+%% 
+% Returns an error ("Unit inconsistency in addition").
+%
+% Many MATLAB functions will not accept dimensioned variables. This is because
+% most non-mathematical functions are only defined for dimensionless arguments.
+t = (0:.1:1) * u.s;
+w = (2*pi)*10 * u.Hz;
+% y = (3 * u.in)*sin(t); % sin undefined for dimensioned argument t.
+y = (3 * u.in) * sin(w.*t); % sin function now defined (w*t cancels units).
+
+%%
+% It can be convenient to define some dimensionless units, for example radians
+% and degrees.
+fprintf('The class of u.deg is "%s."\n',class(u.deg))
+fprintf('There are %g degrees in one radian.\n',u.rad/u.deg)
+
+
+%% Strings Representing Dimensioned Variables
+% The static method DimVar.strconv finds the conversion factor that converts
+% from a unit indicated by a string to another unit indicated by a string.
+
+DimVar.strconv('MPa/min','(lbf/cm^2)/hr')
+
+%%
+% Strings representing physical units can also be converted to DimVar with
+% str2u.
+weightGainRate = 6 * str2u('lb/year');
+
+
+%% Speed
+% While writing code using the DimVar class makes code faster to develop, easier
+% to read, and easier to debug, it will slow the code down due to all the calls
+% to the DimVar methods. One good solution to working with the class is to
+% develop the code using the class, but _after_ it's all tested and debugged,
+% add a list at the top of your script as generated by the static method
+% DimVar.unitslist. For this demo file that would be
+DimVar.unitslist([mfilename('fullpath') '.m'], '-copy')
+
+%%
+% Alternatively, this can be accomplished by using non-DimVars in the myUnits
+% function (see <a href="matlab:help myUnits">help for myUnits</a>).
+
+%% Basic Examples
+% Example 1: Use units to calculate the force at the bottom of a long vertical
+% pipe that is capped at the bottom and filled with oil.
+pipeInnerDiameter = 4*u.in; 
+pipeHeight = 30*u.ft;      
+densityOfOil = 0.926*u.gram/u.cc; 
+pipeCrossSectionArea = pi*(pipeInnerDiameter/2)^2;
+
+% Find pressure of oil in the pipe using gravitational acceleration, u.g0.
+pressurePipeBottom = densityOfOil * u.g0 * pipeHeight; 
+forceOnPipeBottom = pressurePipeBottom * pipeCrossSectionArea; 
+
+%%
+% Note that each variable holds its value as expressed in SI units.  To express
+% these values in different units, divide by the desired unit.
+fprintf('Bottom pressure is %g atmospheres. ', pressurePipeBottom/u.atm)
+fprintf('Force on the bottom cap is %g pounds.', forceOnPipeBottom/u.lbf)
+
+%%
+% Example 2: Find the Reynolds number (dimensionless) of an aircraft flying at
+% 100 knots at sea level with chord of 223 cm using a mixture of units.
+units;
+rho = .002377*u.slug/u.ft^3; % Air density.
+V = 100*u.knot;
+chord = 223*u.cm;
+mu = 28.8*u.gram/u.mi/u.s;
+Re = rho*V*chord/mu
+
+%% Displaying and Plotting
+% Methods such as disp, num2str, and plot are defined for DimVars.
+acceleration = 1/6*u.g0;
+fallDistance = linspace(0,5)*u.ft;
+
+disp('Total time:')
+disp(sqrt(2*fallDistance(end)/acceleration))
+
+%%
+v = sqrt(2*acceleration*fallDistance);
+[~,xStr,yStr] = plot(fallDistance,v);
+title(sprintf('Dropping an object on the moon\n(acceleration = %s)',...
+    num2str(acceleration)));
+
+%%
+% Use the label text to add information.
+xlabel(sprintf('Fall distance (%s)',xStr));
+ylabel(sprintf('Velocity (%s)',yStr));
+
+%% Working with myUnits.m and units.m
+
+%% Changing the Base Unit System
+% It is possible to work in a non-SI units system. Several common alternatives
+% are provided and can be selected by providing the units.m function in
+% myUnits.m with a string indicating the desired system.
+u = units('verbose');
+%%
+u.Ohm
+
+%%
+
+u = units('IPS'); % Inch-pound(mass)-second
+%%
+u.mW
+
+%% Preferred Display Units
+% units(..., dispStr1, dispStr2, dispStr3, ...), where each dispUnit is a string
+% corresponding to a field name in the units struct, will display that unit or
+% those compatible with it using the given preferred dispUnit instead of the
+% default base unit or combination of base units.
+
+units SI hp BTU
+%%
+u.kW
+%%
+u.kW*u.hr
+
+%%
+% units(..., dispStr1, dispUnit1, dispStr2, dispUnit2, ...), where each dispUnit
+% is defined by an existing DimVar in the workspace (*with the same base unit
+% system*), allows for use of preferred display strings that are not field names
+% of the default units struct (especially useful when desired display is not
+% valid for a struct field name).
+
+units('SI',...
+    'W-hr',     u.W*u.hr,...
+    '°K',       u.K,...
+    char(937),  u.Ohm,...
+    'µF',       u.uF,...
+    'ft³',      u.ft^3)
+%%
+u.BTU
+%%
+u.V/u.A
+%%
+u.gal
+
+%%
+% units(..., dispUnits) is the same as above, except the dispStr, dispUnit pairs
+% are contained in the n x 2 cell array dispUnits. However, if dispUnits is a
+% string, this signals the use of a special predefined set of preferred display
+% units. To use the standard set of common derived SI units for force, pressure,
+% energy, power, etc.:
+
+units SI -SI
+%%
+u.N
+%%
+u.atm
+%%
+u.V*u.A
+##### SOURCE END #####
+--></body></html>
