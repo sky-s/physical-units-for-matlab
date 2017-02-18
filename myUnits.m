@@ -73,6 +73,13 @@ u = units(baseUnits,dispUnits);
 
 %% Do not use phsical units at all and just define all base units as 1. 
 % % (Use when calls to DimVar methods are significanly slowing execution.)
+
 % [u.m, u.kg, u.s, u.A, u.K, u.mol, u.cd, u.USD] = deal(1);
+
+% While writing code using physical units makes code faster to develop, easier
+% to read, and easier to debug, it may slow the code down due to all the calls
+% to the DimVar methods. One good solution to working with the class is to
+% develop the code using the class, but _after_ it's all tested and debugged,
+% use this line in myUnits.m to do all math with normal variables.
 end
 

@@ -38,7 +38,7 @@ classdef u < handle
     %
     %   Example 2: Unit conversion.
     %       100 * u.acre/u.ha;  % Convert 100 acres to hectares.
-    %       u.st/u.kg           % Retern conversion factor for stone to kilos.
+    %       u.st/u.kg;          % Retern conversion factor for stone to kilos.
     %
     %   See also myUnits, clear, str2u, u2num,
     %     dispdisp - http://www.mathworks.com/matlabcentral/fileexchange/48637.
