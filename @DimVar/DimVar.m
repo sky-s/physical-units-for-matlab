@@ -1,5 +1,5 @@
 classdef DimVar
-    % See also U, UNITS, U2NUM, UNITSOF, DimVar.unitslist, DimVar.strconv.
+    % See also u, myUnits, units.
     properties (Access = protected)
         names
         exponents
@@ -10,7 +10,7 @@ classdef DimVar
     
     methods
         function v = DimVar(dimensionNames,dimensionToCreate,dispUnits)
-            % See also UNITS.
+            % See also u.
             v.names = dimensionNames;
             v.exponents = zeros(size(v.names));
             dimensionIndex = strcmp(v.names,dimensionToCreate);

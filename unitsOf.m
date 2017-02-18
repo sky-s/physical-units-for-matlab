@@ -1,4 +1,8 @@
 function [varargout] = unitsOf(in)
+% Called when unitsOf is used on a variable without physical units.
+% 
+%   See also DimVar.unitsOf.
+
 if ~isnumeric(in)
     error('Non-numeric input.')
 end
@@ -11,4 +15,3 @@ switch nargout
     case 2
         varargout = {1,''};
 end
-% This function is called when unitsOf is used on a non-DimVar.

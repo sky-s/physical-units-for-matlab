@@ -1,24 +1,33 @@
 function u = myUnits()
-% myUnits  Sets the base set of fundamental units. Copy this to your working
-% directory to customize for a particular project.
-% 
-%   By default, the returned struct must have the fields m, kg, s, A, and K.
+% myUnits  Sets the base set of fundamental units and display preferences for
+% variables with physical units. Copy this file to your project directory and
+% modify to customize display of physical units for a particular project.
+%   
+%   <a href="matlab:edit myUnits">Open myUnits.m in editor</a>.
 % 
 %   See also u, units.
 
-%% Basic SI:
-% u = units ('SI','-SI');
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The returned struct must have the fields m, kg, s, A, K, mol, cd, and USD.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Verbose
-% u = units('verbose fps');
+%% Basic SI, no derived units.
+% u = units;
 
-%% Fancy SI:
+%% Basic FPS, no derived units.
+% u = units('FPS');
+
+%% SI with common derived units.
+% u = units('SI','-SI');
+
+%% SI with common derived units and using special symbols.
+% Requires 2 calls to units.m. Important: use same base units for both calls!
 
 baseUnits = 'SI';
+u = units(baseUnits); % Use for following definition of display units.
 
-u = units(baseUnits);
-
-dispUnits = {'N'	u.N
+dispUnits = {
+    'N'     u.N
     'Pa'    u.Pa
     'J'     u.J
     'W'     u.W
@@ -30,19 +39,20 @@ dispUnits = {'N'	u.N
     'Wb'    u.Wb
     'T'     u.T
     'H'     u.H
-    '$'     u.USD}; %¤ alternate
+    '$'     u.USD % Alternative for more generic currency: ¤
+    }; 
 
 u = units(baseUnits,dispUnits);
 
 
-%% Non-SI; more elaborate display:
-% baseUnits = 'fps';
-% % dispUnits = '-SI';
+%% Highly customized display with lots of custom display derived units:
 % 
+% baseUnits = 'FPS'; 
 % 
 % u = units(baseUnits);
-% dispUnits = {'RPM/V'	u.rpm/u.V
-%     'N-m/A'     u.N*u.m/u.A
+% dispUnits = {
+%     'RPM/V'	u.rpm/u.V
+%     'N-m/A' u.N*u.m/u.A
 %     'W-hr'	u.W*u.hr
 %     'RPM'   u.rpm
 %     'W'     u.W
@@ -54,17 +64,15 @@ u = units(baseUnits,dispUnits);
 %     char(937)	u.Ohm
 %     '°K'	u.K
 %     'µF'	u.uF
-%     'lbf' u.lbf
-%     'g' u.gram
-%     'hr' u.hr
-%     'psf' u.psf};
+%     'lbf'   u.lbf
+%     'hr'    u.hr
+%     'psf'   u.psf
+%     };
 % 
 % u = units(baseUnits,dispUnits);
 
-%% No units for the sake of speed:
-% baseUnits = {'m' 'kg' 's' 'A' 'K' 'mol' 'cd' 'USD'};
-% u = cell2struct(num2cell(ones(size(baseUnits))),baseUnits,2);
+%% Do not use phsical units at all and just define all base units as 1. 
+% % (Use when calls to DimVar methods are significanly slowing execution.)
+% [u.m, u.kg, u.s, u.A, u.K, u.mol, u.cd, u.USD] = deal(1);
 end
 
-%   Copyright 2015 Sky Sartorius
-%   www.mathworks.com/matlabcentral/fileexchange/authors/101715
