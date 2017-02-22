@@ -48,14 +48,16 @@ if nargin < 1
 end
 
 % Everything is based off of SI:
-siUnitSystem =  {'m'    1
-                 'kg'   1
-                 's'    1
-                 'A'    1 
-                 'K'    1
-                 'mol'  1
-                 'cd'   1
-                 'USD'  1};
+siUnitSystem =  {
+    'm'        1
+    'kg'       1
+    's'        1
+    'A'        1
+    'K'        1
+    'mol'      1
+    'cd'       1
+    'currency' 1
+    };
 
 siDimensionNames = siUnitSystem(:,1);
 siMultipliers = [siUnitSystem{:,2}];
@@ -69,50 +71,57 @@ if ischar(unitSystem)
         case {'SI' 'MKS' 'METRIC' 'INTERNATIONAL'}
             unitSystem = siUnitSystem;
         case 'IPS'
-            unitSystem = {'in'  1/0.0254
+            unitSystem = {
+                'in'  1/0.0254
                 'lbm'   2.2046
                 's'    1
                 'A'    1
                 'R'    1.8};
         case 'IPSK'
-            unitSystem = {'in'  1/0.0254
+            unitSystem = {
+                'in'  1/0.0254
                 'lbm'   2.2046};
         case {'FPS' 'EE' 'AE' 'IMPERIAL' 'AMERICAN'} 
             % EE = English Engineering; AE = Absolute English
-            unitSystem = {'ft'  1/0.3048
+            unitSystem = {
+                'ft'  1/0.3048
                 'lbm'   2.2046 
                 's'    1
                 'A'    1
                 'R'    1.8};
         case 'FPSK'
-            unitSystem = {'ft'  1/0.3048
+            unitSystem = {
+                'ft'  1/0.3048
                 'lbm'   2.2046};
         case {'FSS' 'BG' 'GRAVITATIONAL FPS' 'TECHNICAL FPS'} 
             % BG = British Gravitational
-            unitSystem = {'ft'  1/0.3048
+            unitSystem = {
+                'ft'  1/0.3048
                 'slug' 0.3048/4.4482216152605 %exact
                 's'    1
                 'A'    1
                 'R'    1.8};
         case {'VERBOSE' 'VERBOSE MKS' 'VERBOSE SI' 'SI VERBOSE' ...
                 'MKS VERBOSE'}
-            unitSystem = {'meter'  1
-                'kilogram'   1
+            unitSystem = {
+                'meter'     1
+                'kilogram'  1
                 'second'    1
                 'ampere'    1
                 'kelvin'    1
                 'mole'      1
                 'candela'   1
-                'dollar'    1};
+                'currency'  1};
         case {'VERBOSE FPS' 'FPS VERBOSE' 'VERBOSE EE' 'EE VERBOSE'}
-            unitSystem = {'foot'  1/0.3048
-                'poundMass'   2.2046
+            unitSystem = {
+                'foot'  1/0.3048
+                'poundMass' 2.2046
                 'second'    1
                 'ampere'    1
-                'Rankine'    1.8
+                'Rankine'   1.8
                 'mole'      1
                 'candela'   1
-                'dollar'    1};
+                'currency'  1};
         case 'MTS' % Meter–tonne–second
             unitSystem = {'m'   1
                  't'    1/1000};
@@ -149,8 +158,7 @@ if nargin == 2 && ischar(varargin{1}) && strncmpi('-',varargin{1},1)
     switch upper(varargin{1})
         case '-SI'
             % Standard set of common derived SI units.
-            varargin = {'N' 'Pa' 'J' 'W' 'C' 'V' 'F'...
-                'Ohm' 'S' 'Wb' 'T' 'H'};
+            varargin = {'N' 'Pa' 'J' 'W' 'C' 'V' 'F' 'Ohm' 'S' 'Wb' 'T' 'H'};
             
         case '-FPS'
             varargin = {'lbf' 'psf' 'hp' 'V' 'Ohm'};
@@ -531,10 +539,21 @@ u.lm = u.cd*u.sr;             % lumen
 u.lx = u.lm/u.m^2;            % lux
 
 %---- currency ----
+% For display purposes - not for exchange rates.
 % See also mathworks.com/matlabcentral/fileexchange/47255
 
-u.dollar = u.USD;
-u.cent = u.USD/100;
+u.cent = u.currency/100;
+u.pip = u.cent/100;
+u.USD = u.currency;
+u.EUR = u.currency;
+u.GBP = u.currency;
+u.JPY = u.currency;
+u.AUD = u.currency;
+u.CAD = u.currency;
+u.CHF = u.currency;
+u.CNY = u.currency;
+u.dollar = u.currency;
+u.franc = u.currency;
 
 end
 

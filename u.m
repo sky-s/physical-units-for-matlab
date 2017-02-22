@@ -15,12 +15,12 @@ classdef u < handle
     %   
     %   A variable with unusual units will display as a combination of fundamental
     %   base units (mass, length, time, temperature, ...). By default these are the
-    %   SI base units of kg, m, s, A, K, etc. However, the display of any unit,
-    %   whether a base unit or a derived unit, can be customized. For example,
-    %   instead of displaying power as [m^2][kg]/s^3, customizing base units could
-    %   make it display in terms of [ft^2][lbm]/s^3. Or, if desired for a given
-    %   project, all variables with units corresponding to "power" could instead be
-    %   displayed in terms of a single derived unit, e.g. W or hp. 
+    %   SI base units of kg, m, s, A, K, mol, cd, and currency. However, the display
+    %   of any unit, whether a base unit or a derived unit, can be customized. For
+    %   example, instead of displaying power as [m^2][kg]/s^3, customizing base
+    %   units could make it display in terms of [ft^2][lbm]/s^3. Or, if desired for
+    %   a given project, all variables with units corresponding to "power" could
+    %   instead be displayed in terms of a single derived unit, e.g. W or hp.
     %   
     %   Display customization is set by whatever myUnits.m file is highest on the
     %   MATLAB search path, so a unique myUnits.m can be placed in a project's
@@ -46,22 +46,22 @@ classdef u < handle
     %   Copyright Sky Sartorius
     %   www.mathworks.com/matlabcentral/fileexchange/authors/101715
         
-    properties (Access = 'protected', Constant = true)
+    properties (Constant = true)
+        %% Initialization:
         % Establishes base unit system and display preferences based on whatever
         % myUnits.m file is highest on the MATLAB search path.
-        baseUnits = myUnits()
-    end
-    properties (Constant = true)        
+        U = myUnits()
+     
         %% Base units:
         
-        m =     u.baseUnits.m       % meter (base unit)
-        kg =    u.baseUnits.kg      % kilogram (base unit)
-        s =     u.baseUnits.s       % second (base unit)
-        A =     u.baseUnits.A       % ampere (base unit)
-        K =     u.baseUnits.K       % kelvin (base unit)
-        mol =   u.baseUnits.mol     % mole (base unit)
-        cd =    u.baseUnits.cd      % candela (base unit)
-        USD =   u.baseUnits.USD     % currency (base unit)
+        m           = u.U.m         % meter (base unit)
+        kg          = u.U.kg        % kilogram (base unit)
+        s           = u.U.s         % second (base unit)
+        A           = u.U.A         % ampere (base unit)
+        K           = u.U.K         % kelvin (base unit)
+        mol         = u.U.mol       % mole (base unit)
+        cd          = u.U.cd        % candela (base unit)
+        currency    = u.U.currency  % currency (base unit)
         
         %% Derived units:        
         %---- length ----
@@ -367,14 +367,30 @@ classdef u < handle
         %---- currency ----
         % See also mathworks.com/matlabcentral/fileexchange/47255
         
-        dollar = u.USD;
-        cent = u.USD/100;
+        %---- currency ----
+        % For display purposes - not for exchange rates.
+        % See also mathworks.com/matlabcentral/fileexchange/47255
+
+        cent = u.currency/100;
+        pip = u.cent/100;
+        USD = u.currency;
+        EUR = u.currency;
+        GBP = u.currency;
+        JPY = u.currency;
+        AUD = u.currency;
+        CAD = u.currency;
+        CHF = u.currency;
+        CNY = u.currency;
+        franc = u.currency;
+        dollar = u.currency;
         
     end
     
     %% METHODS
     methods
-        %% Plotting and display methods:
+        %% 
+        
+        %% Plotting and display:
         function disp(o)
             try    dispdisp(o);
             catch; builtin('disp',o);  end
