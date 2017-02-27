@@ -1,7 +1,9 @@
 classdef u < handle
     % u  Physical units. 
     % 
-    %   Multiply/divide by u.(unitName) to attach physical units to a variable. For
+    %   If the Physical Units Toolbox is on your MATLAB path, there is nothing to
+    %   initialize, add to your workspace, or pass to functions - simply
+    %   multiply/divide by u.(unitName) to attach physical units to a variable. For
     %   example, to define a speed using a supported unit: carSpeed = 100 * u.kph.
     %   Or, define a speed with an unsupported unit as a combination of supported
     %   units: snailSpeed = 20 * u.m/u.week.
@@ -28,7 +30,7 @@ classdef u < handle
     %   clear the class when changing projects or else the old myUnits.m will remain
     %   in effect.
     % 
-    %   Many MATLAB functions won't accept variables with physical units. See u2num.
+    %   Some MATLAB functions won't accept variables with physical units. See u2num.
     %
     %   Example 1: Shaft power.
     %       rotationSpeed = 2500 * u.rpm;
