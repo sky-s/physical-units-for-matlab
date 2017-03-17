@@ -89,6 +89,7 @@ u = units(baseUnits,dispUnits);
 %     'K'     1
 %     'mol'   1
 %     'cd'    1
+%     'bit'   1
 %     'USD'   1       % 1     USD / generic currency
 %     };
 % 
@@ -115,7 +116,7 @@ u = units(baseUnits,dispUnits);
 %% Do not use phsical units at all and just define all base units as 1. 
 % (Use when calls to DimVar methods are significanly slowing execution.)
 
-% [u.m, u.kg, u.s, u.A, u.K, u.mol, u.cd, u.currency] = deal(1);
+% [u.m, u.kg, u.s, u.A, u.K, u.mol, u.cd, u.bit, u.currency] = deal(1);
 
 % While writing code using physical units makes code faster to develop, easier
 % to read, and easier to debug, it may slow the code down due to all the calls

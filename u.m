@@ -65,6 +65,7 @@ classdef u < handle
         K           = u.U.K         % kelvin (°C = °K-273.15)
         mol         = u.U.mol       % mole
         cd          = u.U.cd        % candela
+        bit         = u.U.bit       % bit
         currency    = u.U.currency  % currency
         
         %% Derived units:
@@ -276,6 +277,7 @@ classdef u < handle
         kHz = 1e3*u.Hz;             % kilohertz
         MHz = 1e6*u.Hz;             % megahertz
         GHz = 1e9*u.Hz;             % gigahertz
+        Bd = 1/u.s;                 % baud
         
         %---- energy ----
         
@@ -577,8 +579,7 @@ classdef u < handle
         
         %---- constants ----
         
-        kB = 1.38064852e-23*u.J/u.K;        % Boltzmann constant
-        k_B = u.kB;                         % Boltzmann constant
+        k_B = 1.38064852e-23*u.J/u.K;       % Boltzmann constant
         sigma_SB = 5.670367e-8*u.W/(u.m^2*u.K^4); % Stefan–Boltzmann constant
         h_c = 6.626070040e-34*u.J*u.s;      % Planck constant
         h_bar = u.h/(2*pi);                 % Dirac constant
@@ -605,6 +606,36 @@ classdef u < handle
         b_c = 2.8977729e-3*u.m*u.K;         % Wien wavelength displ. law const.
         R_air = 287.05287*u.J/u.kg/u.K;     % spec. gas const., air (ESDU 77022)
         R_bar = 8.3144598*u.J/u.mol/u.K;    % molar gas constant
+        
+        %---- digital information ----
+        
+        nibble = 4*u.bit;                   % nibble
+        B = 8*u.bit;                        % byte
+        byte = u.B;                         % byte
+        octet = u.B;                        % octet
+        kB = 1e3*u.B;                       % kilobyte
+        MB = 1e6*u.B;                       % megabyte
+        GB = 1e9*u.B;                       % gigabyte
+        TB = 1e12*u.B;                      % terabyte
+        PB = 1e15*u.B;                      % petabyte
+        EB = 1e18*u.B;                      % exabyte
+        Kibit = 2^10*u.bit;                 % kibibit
+        KiB = 2^10*u.B;                     % kibibyte
+        Mibit = 2^20*u.bit;                 % mebibit
+        MiB = 2^20*u.B;                     % mebibyte
+        Gibit = 2^30*u.bit;                 % gibibit
+        GiB = 2^30*u.B;                     % gibibyte
+        Tibit = 2^40*u.bit;                 % tebibit
+        TiB = 2^40*u.B;                     % tebibyte
+        Pibit = 2^50*u.bit;                 % pebibit
+        PiB = 2^50*u.B;                     % pebibyte
+        Eibit = 2^60*u.bit;                 % exbibit
+        EiB = 2^60*u.B;                     % exbibyte
+        bps = u.bit/u.s;                    % bit per second
+        kbps = 1e3*u.bps;                   % kilobit per second
+        Mbps = 1e6*u.bps;                   % megabit per second
+        Gbps = 1e9*u.bps;                   % gigabit per second
+        Tbps = 1e12*u.bps;                  % terabit per second
         
         %---- currency ----
         % For display purposes - not for exchange rates.

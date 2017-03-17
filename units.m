@@ -63,6 +63,7 @@ siUnitSystem =  {
     'K'        1
     'mol'      1
     'cd'       1
+    'bit'      1
     'currency' 1
     };
 
@@ -118,6 +119,7 @@ if ischar(unitSystem)
                 'kelvin'    1
                 'mole'      1
                 'candela'   1
+                'bit'       1
                 'currency'  1};
         case {'VERBOSE FPS' 'FPS VERBOSE' 'VERBOSE EE' 'EE VERBOSE'}
             unitSystem = {
@@ -128,6 +130,7 @@ if ischar(unitSystem)
                 'Rankine'   1.8
                 'mole'      1
                 'candela'   1
+                'bit'       1
                 'currency'  1};
         case 'MTS' % Meter–tonne–second
             unitSystem = {'m'   1
@@ -453,6 +456,7 @@ u.Hz = 1/u.s;   % hertz (NB: incompatible with angle and angular velocity)
 u.kHz = 1e3*u.Hz;             % kilohertz
 u.MHz = 1e6*u.Hz;             % megahertz
 u.GHz = 1e9*u.Hz;             % gigahertz
+u.Bd = 1/u.s;                 % baud
 
 %---- energy ----
 
@@ -754,8 +758,7 @@ u.Ci = 3.7e10*u.Bq;           % curie
 
 %---- constants ----
 
-u.kB = 1.38064852e-23*u.J/u.K;        % Boltzmann constant
-u.k_B = u.kB;                         % Boltzmann constant
+u.k_B = 1.38064852e-23*u.J/u.K;       % Boltzmann constant
 u.sigma_SB = 5.670367e-8*u.W/(u.m^2*u.K^4); % Stefan–Boltzmann constant
 u.h_c = 6.626070040e-34*u.J*u.s;      % Planck constant
 u.h_bar = u.h/(2*pi);                 % Dirac constant
@@ -783,6 +786,36 @@ u.b_c = 2.8977729e-3*u.m*u.K;         % Wien wavelength displ. law const.
 u.R_air = 287.05287*u.J/u.kg/u.K;     % spec. gas const., air (ESDU 77022)
 u.R_bar = 8.3144598*u.J/u.mol/u.K;    % molar gas constant
 
+%---- digital information ----
+
+u.nibble = 4*u.bit;                   % nibble
+u.B = 8*u.bit;                        % byte
+u.byte = u.B;                         % byte
+u.octet = u.B;                        % octet
+u.kB = 1e3*u.B;                       % kilobyte
+u.MB = 1e6*u.B;                       % megabyte
+u.GB = 1e9*u.B;                       % gigabyte
+u.TB = 1e12*u.B;                      % terabyte
+u.PB = 1e15*u.B;                      % petabyte
+u.EB = 1e18*u.B;                      % exabyte
+u.Kibit = 2^10*u.bit;                 % kibibit
+u.KiB = 2^10*u.B;                     % kibibyte
+u.Mibit = 2^20*u.bit;                 % mebibit
+u.MiB = 2^20*u.B;                     % mebibyte
+u.Gibit = 2^30*u.bit;                 % gibibit
+u.GiB = 2^30*u.B;                     % gibibyte
+u.Tibit = 2^40*u.bit;                 % tebibit
+u.TiB = 2^40*u.B;                     % tebibyte
+u.Pibit = 2^50*u.bit;                 % pebibit
+u.PiB = 2^50*u.B;                     % pebibyte
+u.Eibit = 2^60*u.bit;                 % exbibit
+u.EiB = 2^60*u.B;                     % exbibyte
+u.bps = u.bit/u.s;                    % bit per second
+u.kbps = 1e3*u.bps;                   % kilobit per second
+u.Mbps = 1e6*u.bps;                   % megabit per second
+u.Gbps = 1e9*u.bps;                   % gigabit per second
+u.Tbps = 1e12*u.bps;                  % terabit per second
+
 %---- currency ----
 % For display purposes - not for exchange rates.
 % See also mathworks.com/matlabcentral/fileexchange/47255
@@ -801,15 +834,11 @@ u.CNY = u.currency;           % currency
 u.dollar = u.currency;        % currency
 u.franc = u.currency;         % currency
 
-%---- used by symunits but not here ----
+%---- used by symunit but not here ----
 % gg -gauge
 % land - league
 % ha_US - US survey hectare
 % molecule
-% bps - bit per second
-% Bd - baud
-% B - byte
-% bit
 % HP_UK - British imperial horsepower
 % PS_SAE - net horsepower (SAE J1349)
 % PS_DIN - horsepower (DIN 70020)
