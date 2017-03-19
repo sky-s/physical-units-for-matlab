@@ -33,7 +33,7 @@ classdef DimVar
     end
     methods (Static)
         [listString,list] = unitslist(varargin)
-        [cTo,cInverse] = strconv(sFrom,sTo,u) % added 2013-10-29/Sartorius
+        [cTo,cInverse] = strconv(sFrom,sTo,varargin)
         
         function displayunitsstruct(u) % 2014-11-19
             % Display the struct created by calling units.
