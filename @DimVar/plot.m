@@ -10,13 +10,12 @@ function [h, xLabelUnitString, yLabelUnitString] = plot(varargin)
 %   axes. The string is empty if an axis did not have a DimVar input.
 % 
 %   Example:
-%     units
 %     edgeL = (0:5)*u.in;
 %     squareA = edgeL.^2;
 %     triangleA = edgeL.^2*sqrt(3)/4;
 %     [~,xStr,yStr] = plot(edgeL,squareA,'s',edgeL,triangleA,'^');
 % 
-%   See also plot, xlabel, ylabel, text, units, DimVar.num2str.
+%   See also plot, xlabel, ylabel, text, units, DimVar.num2str, DimVar.plot3.
 
 %   Copyright 2014 Sky Sartorius
 %   www.mathworks.com/matlabcentral/fileexchange/authors/101715 

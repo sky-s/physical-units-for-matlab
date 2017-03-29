@@ -9,7 +9,6 @@ function varargout = unitsOf(v)
 %   Example: Use unitsOf to use MATLAB functions that are undefined for
 %   dimensioned variables. (Note: MESHGRID is actually defined for
 %   dimensioned variables - this is just an example.)
-%       u = units;
 %       V = u.kph*(0:5:80); P = u.kW*(15:10:65);
 %       tempV = u2num(V); tempP = u2num(P);
 %       [tempV,tempP] = meshgrid(tempV,tempP);

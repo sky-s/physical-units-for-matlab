@@ -12,7 +12,6 @@ function num = u2num(inVariable,inUnit)
 %   cancel.
 %
 %   Example:
-%     u = units;
 %     t = (0:.01:2)*u.s; w = (2*pi)*2*u.Hz; y = (3*u.in)*sin(w.*t);
 %     % plot(t,y); % BAD: plot function not defined for dimensioned input.
 %     plot(u2num(t),u2num(y)); % Good
