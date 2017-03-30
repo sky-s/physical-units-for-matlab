@@ -118,6 +118,8 @@ classdef u < handle
         foot_US = u.ft_US;          % US survey foot
         kft = 1e3*u.ft;             % kilofoot
         kilofoot = u.kft;
+        FL = 100*u.ft;              % flight level
+        flightLevel = u.FL;
         yd = 3*u.ft;                % yard
         yard = u.yd;
         ftm = 6*u.ft;               % fathom
