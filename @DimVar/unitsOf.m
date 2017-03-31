@@ -1,5 +1,5 @@
 function varargout = unitsOf(v)
-% uv = UNITSOF(x) returns a value = 1 dimenioned variable with same units
+% uv = UNITSOF(x) returns a value = 1 dimensioned variable with same units
 % as x.
 % 
 %   [uv,us] = UNITSOF(x) returns the the same uv as with s single output
