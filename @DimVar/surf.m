@@ -62,9 +62,11 @@ try
         %     zlabel(zLabelUnitString) % Prior versions.
     end
     
-catch
-    warning(['DimVar.surf in development and designed for R2015b. '...
-        'Convert DimVar to double then use normal builtin function.'])
+catch ME
+    warning('%s\nSee <a href="%s">%s</a>.',...
+        'Not all functionality is supported for inputs of type DimVar.',...
+        'matlab:help DimVar/u2num','u2num');
+    rethrow(ME)
 end
 
 if nargout
