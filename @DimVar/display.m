@@ -69,7 +69,7 @@ if nargout
 end
 
 showName = inputname(1);
-if isempty(showName);
+if isempty(showName)
     showName = 'ans';
 end
 
