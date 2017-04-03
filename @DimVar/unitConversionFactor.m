@@ -9,7 +9,7 @@ function [cTo,cInverse] = unitConversionFactor(from,to,varargin)
 %   incompatible units, in which case the function may return DimVars instead of
 %   throwing an error. This is the same as calling c = FROM./TO.
 % 
-%   See also u, strconv, compatible, symunit/unitConversionFactor.
+%   See also u, strconv, str2u, compatible, symunit/unitConversionFactor.
 
 if ischar(from)
     from = str2u(from);
