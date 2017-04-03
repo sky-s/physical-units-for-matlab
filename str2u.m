@@ -30,8 +30,8 @@ end
 
 validateattributes(inStr,{'char'},{'row'},'str2u');
 
-out = eval(regexprep(inStr,{'([A-Za-z]+\w*)' '(-)(?=[A-Za-z]+)'  '²'  '³'},...
-                           {'u.$0'           '*'                 '^2' '^3'}));
+out = eval(regexprep(inStr,{'([A-Za-z]+\w*)' '-(?=[A-Za-z]+)'  '²'  '³'},...
+                           {'u.$0'           '*'               '^2' '^3'}));
 
 % Revision history:
 %{
