@@ -15,7 +15,7 @@ if ischar(from)
     from = str2u(from);
 end
 if ischar(to)
-    from = str2u(to);
+    to = str2u(to);
 end
 
 p = inputParser;
