@@ -7,8 +7,10 @@ function out = str2u(inStr)
 % 
 %   Compound units are allowed with operators * and - for multiplication and /
 %   for division. The characters ² and ³ are also interpreted as ^2 and ^3,
-%   respectively. Other operators (such as + or \, which should be avoided) will
-%   be passed to the eval function.
+%   respectively. Other operators will be passed to the eval function.
+% 
+%   Grouping with parentheses for clarity is advisable. Note that
+%   str2u('km/h-s') does not return the same result as str2u('km/(h-s)').
 % 
 %   Example: str2u('kg-m²/s^3') returns a DimVar with units of watts (same as
 %   calling u.W).
@@ -32,8 +34,5 @@ validateattributes(inStr,{'char'},{'row'},'str2u');
 
 out = eval(regexprep(inStr,{'([A-Za-z]+\w*)' '-(?=[A-Za-z]+)'  '²'  '³'},...
                            {'u.$0'           '*'               '^2' '^3'}));
-
-% Revision history:
-%{
-2017-01-06 Created.
-%}
+% TODO: allow '-' to have different behavior from '*' such that str2u('km/h-s')
+% = str2u('km/(h-s)') or str2u('km/h-s-K') also works as str2u('km/(h-s-K)')
