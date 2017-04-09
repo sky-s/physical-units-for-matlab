@@ -12,7 +12,16 @@ function u = myUnits()
 %   See also u, units.
 % 
 %   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%   Returned struct must have fields: m, kg, s, A, K, mol, cd, and currency.
+%   Returned struct must have fields:
+%         m        (meter)
+%         kg       (kilogram)
+%         s        (second)
+%         A        (ampere)
+%         K        (kelvin)
+%         mol      (mole)
+%         cd       (candela)
+%         bit      (bit)
+%         currency (currency).
 %   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Basic SI, no special display for derived units.
