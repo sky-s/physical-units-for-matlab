@@ -141,6 +141,7 @@ classdef u < handle
         nauticalMile = u.nmi;
         nm_UK = 6080*u.ft;          % Imperial nautical mile
         nmile = u.nm_UK;            % Imperial nautical mile
+        dataMile = 6000*u.ft;
         au = 149597870.7*u.km;      % astronomical unit
         astronomicalUnit = u.au;
         pc = 648000/pi*u.au;        % parsec
@@ -918,6 +919,10 @@ classdef u < handle
         specificGasConstant_air = u.R_air;
         R_bar = 8.3144598*u.J/u.mol/u.K;    % molar gas constant
         molarGasConstant = u.R_bar;
+        radarStatuteMile = 2*u.mi/u.c;
+        radarNauticalMile = 2*u.NM/u.c;
+        radarDataMile = 2*u.dataMile/u.c;
+        radarKilometer = 2*u.km/u.c;
         
         %---- digital information ----
         

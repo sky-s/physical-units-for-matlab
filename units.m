@@ -320,6 +320,7 @@ u.inm = u.nmi;                % nautical mile
 u.nauticalMile = u.nmi;
 u.nm_UK = 6080*u.ft;          % Imperial nautical mile
 u.nmile = u.nm_UK;            % Imperial nautical mile
+u.dataMile = 6000*u.ft;
 u.au = 149597870.7*u.km;      % astronomical unit
 u.astronomicalUnit = u.au;
 u.pc = 648000/pi*u.au;        % parsec
@@ -1097,6 +1098,10 @@ u.R_air = 287.05287*u.J/u.kg/u.K;     % spec. gas const., air (ESDU 77022)
 u.specificGasConstant_air = u.R_air;
 u.R_bar = 8.3144598*u.J/u.mol/u.K;    % molar gas constant
 u.molarGasConstant = u.R_bar;
+u.radarStatuteMile = 2*u.mi/u.c;
+u.radarNauticalMile = 2*u.NM/u.c;
+u.radarDataMile = 2*u.dataMile/u.c;
+u.radarKilometer = 2*u.km/u.c;
 
 %---- digital information ----
 
