@@ -1,9 +1,8 @@
 function [h, xLabelUnitString, yLabelUnitString] = plot(varargin)
 % DimVar.plot plotting method that automatically labels axes with units of
 % DimVar inputs.
-%   Used the same as plot, but accepts DimVar inputs. Multiple inputs of X
-%   and Y must be compatible units. The workaround for this is the use the
-%   hold function.
+%   Used with most of the same syntax as plot, but accepts DimVar inputs.
+%   Multiple inputs of X and Y must be compatible units.
 % 
 %   [h, xLabelUnitString, yLabelUnitString] = plot(...) in addition to the
 %   handle, returns the strings used by the function for labeling the
@@ -15,10 +14,13 @@ function [h, xLabelUnitString, yLabelUnitString] = plot(varargin)
 %     triangleA = edgeL.^2*sqrt(3)/4;
 %     [~,xStr,yStr] = plot(edgeL,squareA,'s',edgeL,triangleA,'^');
 % 
-%   See also plot, xlabel, ylabel, text, units, DimVar.num2str, DimVar.plot3.
+%   See also plot, xlabel, ylabel, text, units, DimVar.num2str, DimVar.plot3,
+%       .
 
 %   Copyright 2014 Sky Sartorius
 %   www.mathworks.com/matlabcentral/fileexchange/authors/101715 
+
+[varargin,props] = parseplotparams(varargin);
 
 specInd = strncmp('',varargin,0);
 args = varargin(~specInd);
@@ -77,7 +79,7 @@ yLabelUnitString = s{2};
 
 
 try
-    h_ = plot(varargin{:});
+    h_ = plot(varargin{:},props{:});
     a = gca;
     if ~isempty(xLabelUnitString)
         a.XAxis.TickLabelFormat = ['%g ' xLabelUnitString]; % R2015b
@@ -99,4 +101,17 @@ if nargout
     h = h_;
 end
 
+end
+
+function [args,props] = parseplotparams(args)
+% Ignore all arguments from the last char preceded by multiple numerics. See
+% also parseparams.
+props = {};
+for i = numel(args):-1:3
+    if ischar(args{i}) && isnumeric(args{i-1}) && isnumeric(args{i-2})
+        props = args(i:end);
+        args = args(1:i-1);
+        break
+    end
+end
 end

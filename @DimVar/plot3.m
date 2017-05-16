@@ -8,6 +8,8 @@ function [h, xLabelString, yLabelString, zLabelString] = plot3(varargin)
 %   Copyright 2014 Sky Sartorius
 %   www.mathworks.com/matlabcentral/fileexchange/authors/101715 
 
+[varargin,props] = parseplotparams(varargin);
+
 specInd = strncmp('',varargin,0);
 args = varargin(~specInd);
 
@@ -72,7 +74,7 @@ yLabelString = s{2};
 zLabelString = s{3};
 
 try
-    h_ = plot3(varargin{:});
+    h_ = plot3(varargin{:},props{:});
     a = gca;
     if ~isempty(xLabelString)
         a.XAxis.TickLabelFormat = ['%g ' xLabelString]; % R2015b
@@ -98,4 +100,17 @@ if nargout
     h = h_;
 end
 
+end
+
+function [args,props] = parseplotparams(args)
+% Ignore all arguments from the last char preceded by multiple numerics. See
+% also parseparams.
+props = {};
+for i = numel(args):-1:3
+    if ischar(args{i}) && isnumeric(args{i-1}) && isnumeric(args{i-2})
+        props = args(i:end);
+        args = args(1:i-1);
+        break
+    end
+end
 end
