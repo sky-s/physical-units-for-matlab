@@ -1,5 +1,3 @@
-function v = circshift(v,shiftIndicator)
+function v = circshift(v,varargin)
 
-v.value = circshift(v.value,shiftIndicator);
-
-% 2014-05-14/Sartorius: simplified.
+v.value = circshift(v.value,varargin{:});
