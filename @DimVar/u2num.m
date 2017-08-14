@@ -18,7 +18,7 @@ function num = u2num(inVariable,inUnit)
 %     plot(t/u.s,y/u.cm); % Better: Explicitly state desired units to plot.
 %     plot(u2num(t,u.s),u2num(y,u.cm)); % Also better.
 %
-%   See also UNITS, UNITSOF.
+%   See also UNITS, UNITSOF, DISPLAYINGVALUE.
 
 if nargin == 1
 %     if isa(inVariable, 'DimVar')

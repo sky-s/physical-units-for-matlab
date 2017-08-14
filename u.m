@@ -156,12 +156,13 @@ classdef u < handle
         
         %---- area ----
         
-        square = 100*u.ft^2;        % square
+        sqft = u.ft^2;              % square foot
+        square = 100*u.sqft;        % square
         ha = 10000*u.m^2;           % hectare
         hectare = u.ha;
         a = 100*u.m^2;              % are
         are = u.a;
-        ac = 43560*u.ft^2;          % acre
+        ac = 43560*u.sqft;          % acre
         acre = u.ac;
         ro = 1/4*u.acre;            % rood
         rood = u.ro;

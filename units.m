@@ -335,12 +335,13 @@ u.RydbergConstant = u.R_inf;
 
 %---- area ----
 
-u.square = 100*u.ft^2;        % square
+u.sqft = u.ft^2;              % square foot
+u.square = 100*u.sqft;        % square
 u.ha = 10000*u.m^2;           % hectare
 u.hectare = u.ha;
 u.a = 100*u.m^2;              % are
 u.are = u.a;
-u.ac = 43560*u.ft^2;          % acre
+u.ac = 43560*u.sqft;          % acre
 u.acre = u.ac;
 u.ro = 1/4*u.acre;            % rood
 u.rood = u.ro;
