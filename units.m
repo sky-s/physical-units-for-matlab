@@ -478,6 +478,8 @@ u.hundredweight = u.cwt;
 u.cwt_UK = 8*u.stone;         % British imperial short hundredweight
 u.quarter = u.cwt_UK/4;       % British imperial quarter
 u.slug = u.lbf/(u.ft/u.s^2);  % slug
+u.slinch = u.lbf/(u.in/u.s^2);
+u.blob = u.slinch;
 u.oz = u.lbm/16;              % ounce
 u.ounce = u.oz;
 u.dr = u.oz/16;               % dram
@@ -498,8 +500,10 @@ u.electronMass = u.m_e;
 u.mug = u.kgf/(u.m/u.s^2);    % metric slug
 u.metricSlug = u.mug;
 u.hyl = u.mug;                % hyl
+u.par = u.mug;                % par
 u.TMU = u.mug;                % technische Masseneinheit
 u.technischeMasseneinheit = u.TMU;
+u.glug = u.g*u.g0/(u.cm/u.s^2);
 
 %---- more force ----
 

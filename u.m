@@ -299,6 +299,8 @@ classdef u < handle
         cwt_UK = 8*u.stone;         % British imperial short hundredweight
         quarter = u.cwt_UK/4;       % British imperial quarter
         slug = u.lbf/(u.ft/u.s^2);  % slug
+        slinch = u.lbf/(u.in/u.s^2);
+        blob = u.slinch;
         oz = u.lbm/16;              % ounce
         ounce = u.oz;
         dr = u.oz/16;               % dram
@@ -319,8 +321,10 @@ classdef u < handle
         mug = u.kgf/(u.m/u.s^2);    % metric slug
         metricSlug = u.mug;
         hyl = u.mug;                % hyl
+        par = u.mug;                % par
         TMU = u.mug;                % technische Masseneinheit
         technischeMasseneinheit = u.TMU;
+        glug = u.g*u.g0/(u.cm/u.s^2);
         
         %---- more force ----
         
