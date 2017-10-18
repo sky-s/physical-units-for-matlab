@@ -1,7 +1,8 @@
-function [s, appendString, v] = num2str(v, varargin)
+function [s, appendString, v, val] = num2str(v, varargin)
 
 [numeratorString, denominatorString, v] = display(v);
-s = num2str(v.value, varargin{:});
+val = v.value;
+s = num2str(val, varargin{:});
 [m, ~] = size(s);
 
 
@@ -19,13 +20,10 @@ else
         s = '[]';
     end
     
-    [~,n] = size(v.value);
+    [~,n] = size(val);
     if n > 1
         % Indicate row vector using brackets.
         s = ['[' s ']'];
     end
     s = [s ' ' appendString];
 end
-
-% Created 2014-08-25
-% More outputs 2014-11-05
