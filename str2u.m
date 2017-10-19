@@ -16,16 +16,17 @@ function out = str2u(inStr)
 %     str2u('kg-m²/s^3') returns a DimVar with units of watts (same as calling
 %     u.W).
 % 
-%     str2u('-5km/s') or str2u('-5 km /s') is the same as calling -5*u.km/u.s.
+%     str2u('-5km/s') or str2u('-5 km / s') is the same as calling -5*u.km/u.s.
 % 
 %     str2u(["5 ft" "horsepower"]) returns a cell array.
-% 
-%     str2u('-.4 ft') str2u('.4ft') str2u('.4 ft')
 % 
 %   See also u, eval.
 
 %   Sky Sartorius 
 %   www.mathworks.com/matlabcentral/fileexchange/authors/101715
+
+try out = eval(inStr); return; end %#ok<TRYNC>
+% This first eval try is a shortcut as well as covers some plain number inputs.
 
 if isstring(inStr)
     inStr = cellstr(inStr);
@@ -37,7 +38,7 @@ if iscellstr(inStr)
 end
 
 if isempty(inStr)
-    out = 1;
+    out = [];
     return
 end
 
@@ -46,7 +47,7 @@ validateattributes(inStr,{'char' 'string'},{'row'},'str2u');
 % Interpret everything prior to the first alphabetic character (incl. case of
 % leading - or .) as the value.
 
-exp = {'^[^A-Za-z]+' '([A-Za-z]+\w*)' '-(?=[A-Za-z]+)'  '²'  '³' };
-rep = {'$0*'         'u.$0'           '*'               '^2' '^3'};
+exp = {'^[-+.0-9]+' '([A-Za-z]+\w*)' '-(?=[A-Za-z]+)'  '²'  '³' };
+rep = {'$0*'        'u.$0'           '*'               '^2' '^3'};
 
 out = eval(regexprep(strtrim(inStr),exp,rep));
