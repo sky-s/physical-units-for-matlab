@@ -73,11 +73,17 @@ if isempty(showName)
     showName = 'ans';
 end
 
+if strcmp(matlab.internal.display.formatSpacing,'loose')
+    looseLine = '\n';
+else
+    looseLine = '';
+end
+
 % Alternative 1 (my favorite):
-fprintf('\n%s =\n\n',showName)
+fprintf([looseLine '%s =\n' looseLine],showName)
 disp(v.value)
 if isempty(denString)
-    fprintf('\t\t %s\n', numString);
+    fprintf(['\t\t %s' looseLine], numString);
 else
     numLength = length(numString);
     denLength = length(denString);
@@ -90,7 +96,7 @@ else
     denBuffer = repmat(' ',1,max(0,floor((-denLength+numLength)/2)));
     denString = [denBuffer denString];
     
-    fprintf('\t\t%s\n\t\t%s\n\t\t%s\n\n',numString,hbar,denString);
+    fprintf(['\t\t%s\n\t\t%s\n\t\t%s\n' looseLine],numString,hbar,denString);
     
 end
 
@@ -123,7 +129,3 @@ end
 % fprintf('\n%s =\n\n',showName)
 % disp(v.value)
 % pretty(sym([numString '/' denString]))
-
-% 2013-07-15/Sartorius: modified whole display function
-% 2013-09-19/Sartorius: took care of problem displaying units with no
-%   denominator, e.g. Hz
