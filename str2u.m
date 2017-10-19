@@ -12,13 +12,24 @@ function out = str2u(inStr)
 %   Grouping with parentheses for clarity is advisable. Note that
 %   str2u('km/h-s') does not return the same result as str2u('km/(h-s)').
 % 
-%   Example: str2u('kg-m²/s^3') returns a DimVar with units of watts (same as
-%   calling u.W).
+%   Examples: 
+%     str2u('kg-m²/s^3') returns a DimVar with units of watts (same as calling
+%     u.W).
+% 
+%     str2u('-5km/s') or str2u('-5 km /s') is the same as calling -5*u.km/u.s.
+% 
+%     str2u(["5 ft" "horsepower"]) returns a cell array.
+% 
+%     str2u('-.4 ft') str2u('.4ft') str2u('.4 ft')
 % 
 %   See also u, eval.
 
 %   Sky Sartorius 
 %   www.mathworks.com/matlabcentral/fileexchange/authors/101715
+
+if isstring(inStr)
+    inStr = cellstr(inStr);
+end
 
 if iscellstr(inStr)
     out = cellfun(@str2u,inStr,'UniformOutput',0);
@@ -30,9 +41,12 @@ if isempty(inStr)
     return
 end
 
-validateattributes(inStr,{'char'},{'row'},'str2u');
+validateattributes(inStr,{'char' 'string'},{'row'},'str2u');
 
-out = eval(regexprep(inStr,{'([A-Za-z]+\w*)' '-(?=[A-Za-z]+)'  '²'  '³'},...
-                           {'u.$0'           '*'               '^2' '^3'}));
-% TODO: allow '-' to have different behavior from '*' such that str2u('km/h-s')
-% = str2u('km/(h-s)') or str2u('km/h-s-K') also works as str2u('km/(h-s-K)')
+% Interpret everything prior to the first alphabetic character (incl. case of
+% leading - or .) as the value.
+
+exp = {'^[^A-Za-z]+' '([A-Za-z]+\w*)' '-(?=[A-Za-z]+)'  '²'  '³' };
+rep = {'$0*'         'u.$0'           '*'               '^2' '^3'};
+
+out = eval(regexprep(strtrim(inStr),exp,rep));
