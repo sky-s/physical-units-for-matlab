@@ -35,7 +35,7 @@ classdef DimVar
         [listString,list] = unitslist(varargin)
         [cTo,cInverse] = strconv(sFrom,sTo,varargin)
         
-        function displayunitsstruct(u) % 2014-11-19
+        function displayunitsstruct(u)
             % Display the struct created by calling units.
             % 
             %   See also units.
@@ -58,6 +58,3 @@ classdef DimVar
         end
     end
 end
-
-% New classdef on 2013-07-15/Sartorius
-% 2015-08-23 added validateattributes method.

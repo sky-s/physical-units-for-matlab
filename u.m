@@ -1014,6 +1014,3 @@ classdef u < handle
         end
     end
 end
-
-
-% 2015-10-06 Created.

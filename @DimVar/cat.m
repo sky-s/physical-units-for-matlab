@@ -6,5 +6,3 @@ for i = 1:length(varargin)
         v.value = cat(dim,v.value,vi.value);
     end
 end
-
-% 2016-01-12 created.

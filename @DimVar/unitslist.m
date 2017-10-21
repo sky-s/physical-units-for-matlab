@@ -271,10 +271,3 @@ if ischar(istr)
     ostr = ostr{1};
 end
 end
-
-% 2013-08-28/Sartorius - created
-% 2013-09-02/Sartorius
-%   Got rid of lots of code by using regexp
-%   Integrated fileexchange/4645 to handle comments better
-%   Added error catching for file-defined u fields etc.
-% 2013-09-24/Sartorius added eval and copy options

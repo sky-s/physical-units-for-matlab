@@ -17,5 +17,3 @@ else % BOTH v1 and v2 are DimVars.
     
     vOut = clearcanceledunits(vOut);
 end
-
-% 2014-11-12 Created.
