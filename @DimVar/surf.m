@@ -11,7 +11,7 @@ function [h, xLabelString, yLabelString, zLabelString] = surf(varargin)
 
 args = varargin;
 
-if ishandle(varargin{1})
+if isscalar(varargin{1}) && isgraphics(varargin{1},'axes')
     % First argument is axes.
     args = args(2:end);
     axisInput = true;
@@ -19,26 +19,27 @@ else
     axisInput = false;
 end
 
-nArgs = numel(args);
-
 labelStrings = {'' '' ''};
-for i = 1:nArgs
-    if isa(args{i},'DimVar')
-        [~, labelStrings{i}, jnk] = num2str(args{i});
-        args{i} = jnk.value;
+numericInds = cellfun(@isnumeric,args);
+numericArgs = args(numericInds);
+nNumericArgs = numel(numericArgs);
+for i = 1:nNumericArgs
+    if isa(numericArgs{i},'DimVar')
+        [~, labelStrings{i}, ~, numericArgs{i}] = num2str(numericArgs{i});
     end
 end
+args(numericInds) = numericArgs;
 
-s = regexprep(labelStrings,{'(' ')'},{'{' '}'});
-if nArgs < 3
-    % No X or Y provided.
-    xLabelString = s{2};
-    yLabelString = s{3};
-    zLabelString = s{1};
+labelStrings = regexprep(labelStrings,{'(' ')'},{'{' '}'});
+if nNumericArgs < 2
+    % Only Z provided.
+    xLabelString = labelStrings{2};
+    yLabelString = labelStrings{3};
+    zLabelString = labelStrings{1};
 else
-    xLabelString = s{1};
-    yLabelString = s{2};
-    zLabelString = s{3};
+    xLabelString = labelStrings{1};
+    yLabelString = labelStrings{2};
+    zLabelString = labelStrings{3};
 end
 
 try

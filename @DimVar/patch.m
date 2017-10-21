@@ -3,11 +3,9 @@ function [h, xLabelString, yLabelString, zLabelString] = patch(varargin)
 % 
 %   See also patch, DimVar.plot, DimVar.u2num.
 
-% 2 special cases: ax as first argument; no x or y provided
-
 args = varargin;
 
-if ishandle(varargin{1})
+if isscalar(varargin{1}) && isgraphics(varargin{1},'axes')
     % First argument is axes.
     args = args(2:end);
     axisInput = true;
@@ -15,27 +13,23 @@ else
     axisInput = false;
 end
 
-nArgs = numel(args);
-
 labelStrings = {'' '' ''};
-for i = 1:nArgs
-    if isa(args{i},'DimVar')
-        [~, labelStrings{i}, jnk] = num2str(args{i});
-        args{i} = jnk.value;
+numericInds = cellfun(@isnumeric,args);
+numericArgs = args(numericInds);
+nNumericArgs = numel(numericArgs);
+for i = 1:nNumericArgs
+    if isa(numericArgs{i},'DimVar')
+        [~, labelStrings{i}, ~, numericArgs{i}] = num2str(numericArgs{i});
     end
 end
+args(numericInds) = numericArgs;
 
-s = regexprep(labelStrings,{'(' ')'},{'{' '}'});
-% if nArgs < 3
-%     % No X or Y provided.
-%     xLabelString = s{2};
-%     yLabelString = s{3};
-%     zLabelString = s{1};
-% else
-xLabelString = s{1};
-yLabelString = s{2};
-zLabelString = s{3};
-% end
+labelStrings = regexprep(labelStrings,{'(' ')'},{'{' '}'});
+
+xLabelString = labelStrings{1};
+yLabelString = labelStrings{2};
+zLabelString = labelStrings{3};
+
 
 try
     if axisInput
