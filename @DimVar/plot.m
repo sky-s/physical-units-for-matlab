@@ -37,16 +37,14 @@ if length(args) == 1
 else
     firstX = args{1};
     if isa(firstX,'DimVar')
-    [~, xs, firstX] = num2str(firstX);
-    args{1} = firstX.value;
+        [~, xs, ~, args{1}] = num2str(firstX);
     end
     firstY = args{2};
     if isa(firstY,'DimVar')
-    [~, ys, firstY] = num2str(firstY);
-    args{2} = firstY.value;
+        [~, ys, ~, args{2}] = num2str(firstY);
     end
     
-
+    
     % Check to make sure nPairs is an integer.
     if nPairs ~= round(nPairs)
         error('Data must be a single matrix Y or a list of pairs X,Y.')
@@ -58,12 +56,12 @@ for i = 2:nPairs
     y = args{2*i};
     
     % Check compatibility.
-    if isa(x,'DimVar')
+    if isa(x,'DimVar') || isa(firstX,'DimVar')
         compatible(firstX, x);
         [~, ~, x] = display(x);
         args{2*i-1} = x.value;
     end
-    if isa(y,'DimVar')
+    if isa(y,'DimVar') || isa(firstY,'DimVar')
         compatible(firstY, y);
         [~, ~, y] = display(y);
         args{2*i} = y.value;

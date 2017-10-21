@@ -22,18 +22,15 @@ zs = '';
 
 firstX = args{1};
 if isa(firstX,'DimVar')
-    [~, xs, firstX] = num2str(firstX);
-    args{1} = firstX.value;
+    [~, xs, ~, args{1}] = num2str(firstX);
 end
 firstY = args{2};
 if isa(firstY,'DimVar')
-    [~, ys, firstY] = num2str(firstY);
-    args{2} = firstY.value;
+    [~, ys, ~, args{2}] = num2str(firstY);
 end
 firstZ = args{3};
 if isa(firstZ,'DimVar')
-    [~, zs, firstZ] = num2str(firstZ);
-    args{3} = firstZ.value;
+    [~, zs, ~, args{3}] = num2str(firstZ);
 end
 
 
@@ -49,17 +46,17 @@ for i = 2:nTrips
     z = args{3*i};
     
     % Check compatibility.
-    if isa(x,'DimVar')
+    if isa(x,'DimVar') || isa(firstX,'DimVar')
         compatible(firstX, x);
         [~, ~, x] = display(x);
         args{3*i-2} = x.value;
     end
-    if isa(y,'DimVar')
+    if isa(y,'DimVar') || isa(firstY,'DimVar')
         compatible(firstY, y);
         [~, ~, y] = display(y);
         args{3*i-1} = y.value;
     end
-    if isa(z,'DimVar')
+    if isa(z,'DimVar') || isa(firstZ,'DimVar')
         compatible(firstZ, z);
         [~, ~, z] = display(z);
         args{3*i} = z.value;
