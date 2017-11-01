@@ -1,9 +1,9 @@
-function v = duration2u(d,u)
+function v = duration2u(d)
 % u2duration Convert duration DimVar.
-%   V = duration2u(D,u) simply executes v = u.s*seconds(D) after checking
-%   to ensure that D is in fact a duration type.
+%   V = duration2u(D) simply executes v = u.s*seconds(D) after checking to
+%   ensure that D is in fact a duration type.
 % 
-%   See also duration, seconds, units.
+%   See also duration, seconds, units, u.
 
 if isduration(d)
     v = u.s*seconds(d);
