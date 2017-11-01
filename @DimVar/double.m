@@ -1,6 +1,6 @@
 function vOut = double(v)
-% DimVar.double(V)  Returns double(u2num(V)).
+% DimVar.double(V)  Returns value (not diplayingvalue) of V. 
 % 
-% See also u2num.
+% See also u2num, displayingvalue.
 
-vOut = double(u2num(v));
+vOut = v.value;
