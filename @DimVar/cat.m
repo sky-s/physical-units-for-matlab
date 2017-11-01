@@ -1,8 +1,8 @@
-function v = cat(dim,v,varargin)
+function v = cat(dim,varargin)
 
-for i = 1:length(varargin)
-    vi = varargin{i};
-    if compatible(v,vi)
-        v.value = cat(dim,v.value,vi.value);
-    end
+if compatible(varargin{:})
+    val = cellfun(@(x)x.value,varargin,'UniformOutput',false);
+    
+    v = varargin{1};
+    v.value = cat(dim,val{:});
 end

@@ -1,9 +1,6 @@
 function compatible = compatible(varargin)
-% Checks if two or more inputs are all DimVars with the same units (within
-% tolerance).
-% 
-%   compatible(v1, v2, ...) returns TRUE if all inputs are DimVar with the same
-%   units and throws an error otherwise.
+% compatible(v1, v2, ...) returns TRUE if all inputs are DimVar with the same
+% units and throws an error otherwise.
 % 
 %   If throwing an error is not desired, use incompatible.
 % 
@@ -21,7 +18,9 @@ catch ME
     end
 end
 
-if isequal(c{:})
+if nargin == 1 || isequal(c{:})
+    % Single input is always compatible with itself.
+    
     compatible = true;
 else
     throwAsCaller(MException('DimVar:incompatibleUnits',...
