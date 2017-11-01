@@ -1,7 +1,7 @@
 function v = clearcanceledunits(v)
-% If all DV unit exponents are within tolerance, return normal, non-DV
-% variable.
+% If all DimVar unit exponents are zero, return normal (double) variable.
+% Exponent tolerance is to fifth decimal.
 
-if all( abs(v.exponents) <= v.exponentsZeroTolerance )
+if ~nnz(round(v.exponents,5))
     v = v.value;
 end

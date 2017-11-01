@@ -1,32 +1,30 @@
-function compatible = compatible(v1, v2, throwErrorFlag)
-% Checks if two inputs are both DimVars with the same units (within tolerance).
+function compatible = compatible(varargin)
+% Checks if two or more inputs are all DimVars with the same units (within
+% tolerance).
 % 
-%   compatible(v1, v2) or compatible(v1, v2, 'throwError') returns TRUE if both
-%   inputs are DimVar with the same units and throws an error otherwise.
+%   compatible(v1, v2, ...) returns TRUE if all inputs are DimVar with the same
+%   units and throws an error otherwise.
 % 
-%   TF = compatible(v1, v2, 'noError') will return FALSE instead of throwing an
-%   error for incompatible units.
+%   If throwing an error is not desired, use incompatible.
 % 
-%   See also u.
+%   See also u, incompatible.
 
-if isa(v1,'DimVar') && isa(v2,'DimVar') && ...
-    all(abs(v1.exponents - v2.exponents) <= v1.exponentsZeroTolerance)
-    
-    compatible = true;
-else
-    compatible = false;
-    
-    % Checking error flag here to reduce the overhead for the nominal case,
-    % since this function is called a lot by many DimVar methods.
-    if nargin < 3
-        throwErrorFlag = 'throwError';
-    end
-    throwErrorFlag = validatestring(throwErrorFlag,{'noError','throwError'});
-    
-    if strcmp(throwErrorFlag,'throwError')
+try
+    c = cellfun(@(x) round(x.exponents,5),varargin,'UniformOutput',false);
+catch ME
+    if strcmp(ME.identifier,'MATLAB:structRefFromNonStruct')
         throwAsCaller(MException('DimVar:incompatibleUnits',...
             ['Incompatible units. Cannot perform operation on '...
             'variables with different units.']));
+    else
+        rethrow(ME)
     end
+end
 
+if isequal(c{:})
+    compatible = true;
+else
+    throwAsCaller(MException('DimVar:incompatibleUnits',...
+        ['Incompatible units. Cannot perform operation on '...
+        'variables with different units.']));
 end

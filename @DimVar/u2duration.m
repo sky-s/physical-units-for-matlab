@@ -1,5 +1,5 @@
 function d = u2duration(v)
-% u2duration Convert DimVar time to duration data type.
+% u2duration  Convert DimVar time to duration data type.
 %   D = u2duration(V) converts time value contained in DimVar V to a
 %   duration.
 % 
@@ -13,10 +13,9 @@ function d = u2duration(v)
 % 
 %   See also duration, seconds, units, u2num.
 
-v.exponents(3) = v.exponents(3) - 1; 
-% This must be all zeros for this conversion to be valid.
-
-if all(abs(v.exponents) <= v.exponentsZeroTolerance);
+if isa(v/u.s,'DimVar')
+    error('A pure time DimVar (with exponent of one) is required.')
+else
     switch lower(v.names{3})
         case {'s' 'ss' 'sec' 'secs' 'second' 'seconds'}
             d = seconds(v.value);
@@ -28,8 +27,5 @@ if all(abs(v.exponents) <= v.exponentsZeroTolerance);
             d = days(v.value);
         otherwise
             error('Unknown time unit name.')
-    end    
-            
-else
-    error('A pure time DimVar (with exponent of one) is required.')
+    end        
 end

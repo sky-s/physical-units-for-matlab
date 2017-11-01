@@ -3,8 +3,7 @@ classdef DimVar
     properties (Access = protected)
         names
         exponents
-        exponentsZeroTolerance = 1e-6;
-        value = 1;
+        value = 1
         dispUnits
     end
     
