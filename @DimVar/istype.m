@@ -1,18 +1,16 @@
-function tf = isa(v,name)
-% ISA  Determine if input DimVar is of a specified category of units. 
+function tf = istype(v,name)
+% ISTYPE  Determine if input DimVar is of a specified category of units. 
 % 
-%   ISA(dv,'Unit Category') returns true if dv is a DimVar of the category.
-%   Valid categories are case sensitive, and valid options are: Length, Mass,
-%   Time, Temperature, Currency, Area, Volume, Acceleration, Force, Energy,
-%   Pressure, Power, Velocity. Otherwise, built-in ISA is used.
+%   ISTYPE(dv,'Unit Category') returns true if dv is a DimVar of the category.
+%   Categories are case sensitive, and valid options are: Length, Mass, Time,
+%   Temperature, Currency, Area, Volume, Acceleration, Force, Energy, Pressure,
+%   Power, Velocity. Otherwise, built-in isa is used.
 % 
 %   See also isa, u.
 
 tf = false;
 
 switch name
-    case 'DimVar'
-        tf = builtin('isa',v,name);
     case 'Length'
         if nnz(v.exponents) == 1 && v.exponents(1) == 1
             tf = true;
@@ -66,5 +64,5 @@ switch name
             tf = true;
         end
     otherwise
-        tf = builtin('isa',v,name);
+        tf = isa(v,name);
 end
