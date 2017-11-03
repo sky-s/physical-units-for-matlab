@@ -1,13 +1,9 @@
 function v = mpower(v,y)
-% 
 
 if isa(y,'DimVar')
-    error('Exponent may not be a DimVar.');
-else
-    v.value = v.value^y; % ^ will catch if y isn't scalar.
-    v.exponents = y*v.exponents;
-    
-    v = clearcanceledunits(v);
+    error('For Z = X^y, y may not be a DimVar.');
 end
+v.value = v.value^y;
+v.exponents = y*v.exponents;
 
-% 2014-05-16/Sartorius: reworked.
+v = clearcanceledunits(v);
