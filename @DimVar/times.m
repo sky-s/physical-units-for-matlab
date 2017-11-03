@@ -1,22 +1,12 @@
-function vOut = times(v1,v2)
+function v1 = times(v1,v2)
 
-
-if ~isa(v2,'DimVar') % v1 is the DimVar.
-    vOut = v1;
-    vOut.value = v1.value .* v2;    
-
-
-elseif ~isa(v1,'DimVar') % v2 is the DimVar.
-    vOut = v2;
-    vOut.value = v1 .* v2.value;
-
-
+if ~isa(v2,'DimVar') % v1 is the only DimVar.
+    v1.value = v1.value .* v2;
+elseif ~isa(v1,'DimVar') % v2 is the only DimVar.
+    v2.value = v1 .* v2.value;
+    v1 = v2;
 else % BOTH v1 and v2 are DimVars.
-    vOut = v1;
-    vOut.value = v1.value .* v2.value;
-    vOut.exponents = v1.exponents + v2.exponents;
-    
-    vOut = clearcanceledunits(vOut);
+    v1.value = v1.value .* v2.value;
+    v1.exponents = v1.exponents + v2.exponents;
+    v1 = clearcanceledunits(v1);
 end
-
-% 2014-05-16/Sartorius: Modestly simplified.
