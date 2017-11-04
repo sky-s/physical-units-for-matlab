@@ -1,39 +1,29 @@
-function compatible(varargin)
+function compatible(v,varargin)
 % compatible(v1, v2, ...) returns TRUE if all inputs are DimVar with the same
 % units and throws an error otherwise.
 % 
-%   If throwing an error is not desired, use incompatible.
+%   If throwing an error is not desired, use iscompatible.
 % 
-%   See also u, incompatible.
+%   See also u, iscompatible.
 
-if nargin == 2
-    % Simplified and faster version for only two inputs.
-    if ~isa(varargin{1},'DimVar') || ~isa(varargin{2},'DimVar') || ...
-            ~isequal(varargin{1}.exponents,varargin{2}.exponents)
+if ~isa(v,'DimVar')
+    
+    ME = MException('DimVar:incompatibleUnits',...
+        'Incompatible units. All inputs must be DimVar.');
+    throwAsCaller(ME);
+    
+end
+
+vExpos = v.exponents;
+
+for i = 1:numel(varargin)
+    
+    if ~isa(varargin{i},'DimVar') || ~isequal(vExpos,varargin{i}.exponents)
+        
         ME = MException('DimVar:incompatibleUnits',...
             ['Incompatible units. Cannot perform operation on '...
             'variables with different units.']);
         throwAsCaller(ME);
+        
     end
-    return
-end
-
-try
-    c = cellfun(@(x) round(x.exponents,5),varargin,'UniformOutput',false);
-catch ME
-    if strcmp(ME.identifier,'MATLAB:structRefFromNonStruct')
-        throwAsCaller(MException('DimVar:incompatibleUnits',...
-            ['Incompatible units. Cannot perform operation on '...
-            'variables with different units.']));
-    else
-        rethrow(ME)
-    end
-end
-
-if nargin == 1 || isequal(c{:})
-    % Single input is always compatible with itself.
-else
-    throwAsCaller(MException('DimVar:incompatibleUnits',...
-        ['Incompatible units. Cannot perform operation on '...
-        'variables with different units.']));
 end
