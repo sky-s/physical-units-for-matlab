@@ -83,7 +83,7 @@ end
 fprintf([looseLine '%s =\n' looseLine],showName)
 disp(v.value)
 if isempty(denString)
-    fprintf(['\t\t %s' looseLine], numString);
+    fprintf(['\t\t %s\n' looseLine], numString);
 else
     numLength = length(numString);
     denLength = length(denString);

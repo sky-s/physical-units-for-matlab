@@ -1,0 +1,10 @@
+{
+"istype":
+{
+    "inputs": 
+    [
+        {"name":"dv", "kind":"required", "type":"DimVar"},
+        {"name":"dvtype", "kind":"required", "type":"choices={'Length' 'Mass' 'Time' 'Temperature' 'Currency' 'Area' 'Volume' 'Acceleration' 'Force' 'Energy' 'Pressure' 'Power' 'Velocity'}"}
+    ]
+}
+}
