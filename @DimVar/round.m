@@ -1,5 +1,4 @@
-function v = round(v)
+function v = round(v,varargin)
+warning('DimVar:round','Using round with DimVars may yield unexpected results.')
 
-v.value = round(v.value);
-
-% 2014-05-16/Sartorius: simplified.
+v.value = round(v.value,varargin{:});
