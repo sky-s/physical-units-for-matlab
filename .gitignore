@@ -3,5 +3,5 @@
 *.m~
 
 # Dev files
-files
+~files
 uHelpScript.m

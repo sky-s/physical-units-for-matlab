@@ -20,13 +20,21 @@ classdef DimVar
         end
         
         function validateattributes(a,classes,varargin)
-            % Check to make sure that DimVar was specified as an okay input.
-            if any(strcmp('DimVar',classes))
-                % DimVar okay. Value should be double, so allow it.
+            % Categorize DimVar as numeric for purposes of validating
+            % attributes.
+            
+            if any(strcmp('numeric',classes)) || any(strcmp('DimVar',classes))
+                % DimVar is allowed. Evaluate against value.
+                
                 classes = strrep(classes,'DimVar','double');
+                % Does not need a 'unique' call since validateattributes is okay
+                % with doubling up the classes input (e.g. {'double' 'double'}.
+                
                 validateattributes(a.value,classes,varargin{:})
             else
                 builtin('validateattributes',a,classes,varargin{:})
+                % Use built-in function to throw appropriate error for
+                % non-DimVar input.
             end
         end
     end
