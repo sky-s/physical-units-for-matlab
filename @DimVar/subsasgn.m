@@ -58,21 +58,3 @@ end
     end
 
 end
-
-% Revision history
-%{
-2013-04-12/Sartorius
-   -In response to FEX user feedback ("Very cool, I use it extensively and
-    it really helps. One thing that I encountered is that assignements such
-    as vect(index)=[] which remove elements in a vector don't work when
-    using a Dimensioned Variable vector. Also preallocating arrays e.g.
-    before a loop is not possible when we don't know the unit of the
-    content at the moment of allocation. Maybe NaN and 0 should be treated
-    specially, in a sense these have no unit and any unit at the same
-    time.")
-   -I threw out the entire old function that had lots of EVAL calls and
-    implemented this more elegant version. I hope it works for everything,
-    but I'm not sure.
-   -Changing the units of v1 for all-nan v1 might have problems, but I hope
-    not.
-%}

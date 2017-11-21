@@ -2,7 +2,7 @@ function [tf,ME] = iscompatible(varargin)
 % Returns true if all inputs are DimVars with the same units (compatible
 % executes successfully) and otherwise returns false.
 % 
-%   See also u, compatible.
+%   See also u, DimVar.compatible.
 
 try 
     compatible(varargin{:});

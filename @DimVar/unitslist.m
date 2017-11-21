@@ -244,7 +244,6 @@ for i = 1 : numel(ostr)
         str = [lf, str, lf];      % prepend and append an LF
     end
     
-    % 2013-09-02/Sartorius 'tokenize' lines removed
     % Remove comment lines.
     str = regexprep(str, '(^|\n)[^\S\n]*%[^\n]*', '$1');
     
