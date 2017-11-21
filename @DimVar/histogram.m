@@ -12,7 +12,7 @@ function [h, xLabelUnitString] = histogram(varargin)
 
 x = varargin{1};
 
-[~, xs] = num2str(x);
+[~,~,xs] = displayparser(x);
 xLabelUnitString = regexprep(xs,{'(' ')'},{'{' '}'});
 
 % Go through arguments to check compatibility with arguments such as bin width,
@@ -21,10 +21,7 @@ for i = 1:numel(varargin)
     if isa(varargin{i},'DimVar')
         compatible(varargin{i},x); % Check for compatibility.
         
-        [~, ~, varargin{i}] = display(varargin{i});  
-        % Adjust value for display units.
-        
-        varargin{i} = varargin{i}.value;
+        varargin{i} = displayparser(varargin{i});
     end
 end
 

@@ -25,7 +25,7 @@ numericArgs = args(numericInds);
 nNumericArgs = numel(numericArgs);
 for i = 1:nNumericArgs
     if isa(numericArgs{i},'DimVar')
-        [~, labelStrings{i}, ~, numericArgs{i}] = num2str(numericArgs{i});
+        [numericArgs{i},~,labelStrings{i}] = displayparser(numericArgs{i});
     end
 end
 args(numericInds) = numericArgs;

@@ -5,6 +5,5 @@ function v = displayingvalue(v)
 %   See also makehgtform, DimVar.display, DimVar.u2num, DimVar.plot.
 
 if isa(v,'DimVar')
-    [~, ~, v] = display(v);
-    v = double(v);
+    v = displayparser(v);
 end

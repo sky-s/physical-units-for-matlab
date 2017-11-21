@@ -22,15 +22,15 @@ zs = '';
 
 firstX = args{1};
 if isa(firstX,'DimVar')
-    [~, xs, ~, args{1}] = num2str(firstX);
+    [args{1},~,xs] = displayparser(firstX);
 end
 firstY = args{2};
 if isa(firstY,'DimVar')
-    [~, ys, ~, args{2}] = num2str(firstY);
+    [args{2},~,ys] = displayparser(firstY);
 end
 firstZ = args{3};
 if isa(firstZ,'DimVar')
-    [~, zs, ~, args{3}] = num2str(firstZ);
+    [args{3},~,zs] = displayparser(firstZ);
 end
 
 
@@ -48,18 +48,15 @@ for i = 2:nTrips
     % Check compatibility.
     if isa(x,'DimVar') || isa(firstX,'DimVar')
         compatible(firstX, x);
-        [~, ~, x] = display(x);
-        args{3*i-2} = x.value;
+        args{3*i-2} = displayparser(x);
     end
     if isa(y,'DimVar') || isa(firstY,'DimVar')
         compatible(firstY, y);
-        [~, ~, y] = display(y);
-        args{3*i-1} = y.value;
+        args{3*i-1} = displayparser(y);
     end
     if isa(z,'DimVar') || isa(firstZ,'DimVar')
         compatible(firstZ, z);
-        [~, ~, z] = display(z);
-        args{3*i} = z.value;
+        args{3*i} = displayparser(z);
     end
 end
    
@@ -74,15 +71,15 @@ try
     h_ = plot3(varargin{:},props{:});
     a = gca;
     if ~isempty(xLabelString)
-        a.XAxis.TickLabelFormat = ['%g ' xLabelString]; % R2015b
+        a.XAxis.TickLabelFormat = ['%g ' xLabelString]; % R2015b+
         %     xlabel(xLabelUnitString) % Prior versions.
     end
     if ~isempty(yLabelString)
-        a.YAxis.TickLabelFormat = ['%g ' yLabelString]; % R2015b
+        a.YAxis.TickLabelFormat = ['%g ' yLabelString]; % R2015b+
         %     ylabel(yLabelUnitString) % Prior versions.
     end
     if ~isempty(zLabelString)
-        a.ZAxis.TickLabelFormat = ['%g ' zLabelString]; % R2015b
+        a.ZAxis.TickLabelFormat = ['%g ' zLabelString]; % R2015b+
         %     zlabel(zLabelUnitString) % Prior versions.
     end
     

@@ -37,11 +37,11 @@ if length(args) == 1
 else
     firstX = args{1};
     if isa(firstX,'DimVar')
-        [~, xs, ~, args{1}] = num2str(firstX);
+        [args{1},~,xs] = displayparser(firstX);
     end
     firstY = args{2};
     if isa(firstY,'DimVar')
-        [~, ys, ~, args{2}] = num2str(firstY);
+        [args{2},~,ys] = displayparser(firstY);
     end
     
     
@@ -58,13 +58,11 @@ for i = 2:nPairs
     % Check compatibility.
     if isa(x,'DimVar') || isa(firstX,'DimVar')
         compatible(firstX, x);
-        [~, ~, x] = display(x);
-        args{2*i-1} = x.value;
+        args{2*i-1} = displayparser(x);
     end
     if isa(y,'DimVar') || isa(firstY,'DimVar')
         compatible(firstY, y);
-        [~, ~, y] = display(y);
-        args{2*i} = y.value;
+        args{2*i} = displayparser(y);
     end
 end
    
@@ -79,11 +77,11 @@ try
     h_ = plot(varargin{:},props{:});
     a = gca;
     if ~isempty(xLabelUnitString)
-        a.XAxis.TickLabelFormat = ['%g ' xLabelUnitString]; % R2015b
+        a.XAxis.TickLabelFormat = ['%g ' xLabelUnitString]; % R2015b+
         %     xlabel(xLabelUnitString) % Prior versions.
     end
     if ~isempty(yLabelUnitString)
-        a.YAxis.TickLabelFormat = ['%g ' yLabelUnitString]; % R2015b
+        a.YAxis.TickLabelFormat = ['%g ' yLabelUnitString]; % R2015b+
         %     ylabel(yLabelUnitString) % Prior versions.
     end
     
