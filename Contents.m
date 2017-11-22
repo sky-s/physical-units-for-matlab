@@ -2,5 +2,6 @@
 % Version 3.1 14-Jul-2017 .
 %
 %   u                    - u  Physical units.
-%   myUnits              - myUnits  Sets the base set of fundamental units and display preferences.
+%   displayUnits         - displayUnits  Sets preferred units for display and plotting.
+%   baseUnitSystem       - baseUnitSystem  Sets base units (advanced).
 %   unitconversionfactor - unitconversionfactor  Find conversion factor between units.

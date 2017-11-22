@@ -1,44 +1,51 @@
-function [dispVal,dispVar,unitStr,numString,denString] = displayparser(dispVar)
+function [dispVal,dispVar,unitStr,numString,denString,labelStr] = ...
+    displayparser(dispVar)
 % Parse a DimVar into useful values and strings for display, etc. 
-% [dispVal,dispVar,unitStr,numString,denString] = displayparser(v)
+% [dispVal,dispVar,unitStr,numString,denString,labelStr] = displayparser(v)
 % 
-%   To make a TeX-interpreted label: regexprep(unitStr,{'(' ')'},{'{' '}'});
-% 
-%   See also DimVar.disp, DimVar.display, DimVar.num2str, DimVar.plot, xlabel.
+%   See also u, DimVar.disp, DimVar.display, DimVar.plot, xlabel.
+dispVal = dispVar.value;
 
 numString = '';
 denString = '';
 
-dispVal = dispVar.value;
-
 %% Preferred units.
 % Determine if it matches a preferred unit. Preferred units can be list or
 % 2-column cell array.
-if isempty(dispVar.dispUnits)
+if isempty(u.dispUnits)
     % Do nothing.
-elseif iscellstr(dispVar.dispUnits)
-    for i = 1:length(dispVar.dispUnits)
-        str = dispVar.dispUnits{i};
-        test = dispVar/u.(str);
+elseif iscellstr(u.dispUnits)
+    for i = 1:length(u.dispUnits)
+        str = u.dispUnits{i};
+        try
+            test = dispVar/u.(str);
+        catch ME
+            if strcmp(ME.identifier,...
+                    'MATLAB:subscripting:classHasNoPropertyOrMethod')
+                test = dispVar/str2u(str);
+                % try/catch block is to avoid the overhead of str2u in most
+                % cases.
+            else
+                throw(ME)
+            end
+        end
         if ~isa(test, 'DimVar')
             % Units match.
             numString = str;
-            denString = '';
             dispVar.value = test;
             dispVal = test;
             buildAppendStr();
             return
         end
     end
-elseif iscell(dispVar.dispUnits)
-    prefStrings = dispVar.dispUnits(:,1);
-    prefUnits = dispVar.dispUnits(:,2);
+elseif iscell(u.dispUnits)
+    prefStrings = u.dispUnits(:,1);
+    prefUnits = u.dispUnits(:,2);
     for i = 1:numel(prefStrings)
         test = dispVar/prefUnits{i};
         if ~isa(test, 'DimVar')
             % Units match.
             numString = prefStrings{i};
-            denString = '';
             dispVar.value = test;
             dispVal = test;
             buildAppendStr();
@@ -53,7 +60,7 @@ if nargout <= 2
     return
 end
 %% Built from base units.
-names = dispVar.names;
+names = u.baseNames;
 
 for nd = 1:numel(names)
     currentExp = dispVar.exponents(nd);
@@ -115,5 +122,6 @@ buildAppendStr();
         else
             unitStr = sprintf('%s/%s', numString, denString);
         end
+        labelStr = regexprep(unitStr,{'(' ')'},{'{' '}'});
     end
 end

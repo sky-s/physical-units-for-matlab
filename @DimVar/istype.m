@@ -40,27 +40,27 @@ switch name
             tf = true;
         end
     case 'Acceleration'
-        if nnz(v.exponents) == 2 && isequal(v.exponents(1:3),[1 0 -2]')
+        if nnz(v.exponents) == 2 && isequal(v.exponents(1:3),[1 0 -2])
             tf = true;
         end
     case 'Force'
-        if nnz(v.exponents) == 3 && isequal(v.exponents(1:3),[1 1 -2]')
+        if nnz(v.exponents) == 3 && isequal(v.exponents(1:3),[1 1 -2])
             tf = true;
         end
     case 'Energy'
-        if nnz(v.exponents) == 3 && isequal(v.exponents(1:3),[2 1 -2]')
+        if nnz(v.exponents) == 3 && isequal(v.exponents(1:3),[2 1 -2])
             tf = true;
         end
     case 'Pressure'
-        if nnz(v.exponents) == 3 && isequal(v.exponents(1:3),[-1 1 -2]')
+        if nnz(v.exponents) == 3 && isequal(v.exponents(1:3),[-1 1 -2])
             tf = true;
         end
     case 'Power'
-        if nnz(v.exponents) == 3 && isequal(v.exponents(1:3),[2 1 -3]')
+        if nnz(v.exponents) == 3 && isequal(v.exponents(1:3),[2 1 -3])
             tf = true;
         end
     case 'Velocity'
-        if nnz(v.exponents) == 2 && isequal(v.exponents(1:3),[1 0 -1]')
+        if nnz(v.exponents) == 2 && isequal(v.exponents(1:3),[1 0 -1])
             tf = true;
         end
     otherwise

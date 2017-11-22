@@ -14,7 +14,7 @@ function [h, xLabelUnitString, yLabelUnitString] = plot(varargin)
 %     triangleA = edgeL.^2*sqrt(3)/4;
 %     [~,xStr,yStr] = plot(edgeL,squareA,'s',edgeL,triangleA,'^');
 % 
-%   See also plot, xlabel, ylabel, text, units, DimVar.num2str, DimVar.plot3.
+%   See also plot, xlabel, ylabel, text, u, displayingvalue, DimVar.plot3.
 
 %   Copyright 2014 Sky Sartorius
 %   www.mathworks.com/matlabcentral/fileexchange/authors/101715 
@@ -32,8 +32,7 @@ ys = '';
 
 if length(args) == 1
     % Special case of only one argument.
-    [~, ys] = num2str(args{1});
-    args{1} = args{1}.value;
+    [args{1},~,ys] = displayparser(args{1});
 else
     firstX = args{1};
     if isa(firstX,'DimVar')

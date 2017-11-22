@@ -11,12 +11,13 @@ function d = u2duration(v)
 %   Note that units uses the Julian year (which defines the light-year),
 %   rather than the Gregorian year that duration uses.
 % 
-%   See also duration, seconds, units, u2num.
+%   See also duration, seconds, u, u2num.
 
 if isa(v/u.s,'DimVar')
     error('A pure time DimVar (with exponent of one) is required.')
 else
-    switch lower(v.names{3})
+    [~,~,unitStr] = displayparser(v);
+    switch unitStr
         case {'s' 'ss' 'sec' 'secs' 'second' 'seconds'}
             d = seconds(v.value);
         case {'m' 'mm' 'min' 'mins' 'minute' 'minutes'}
