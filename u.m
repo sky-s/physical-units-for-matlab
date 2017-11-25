@@ -57,22 +57,22 @@ properties (Hidden, Constant = true)
     baseUnitSystem =    evalin('base','baseUnitSystem')
     dispUnits =         evalin('base','displayUnits')
 
-    U = buildCoreUnits(u.baseUnitSystem);
+    coreUnits = buildCoreUnits(u.baseUnitSystem);
 end
 properties (Constant = true)
 
     %% Core units:
     baseNames(1,9) cell = u.baseUnitSystem(:,1)'
 
-    m           = u.U.m         % meter
-    kg          = u.U.kg        % kilogram
-    s           = u.U.s         % second
-    A           = u.U.A         % ampere
-    K           = u.U.K         % kelvin (°C = °K-273.15)
-    mol         = u.U.mol       % mole
-    cd          = u.U.cd        % candela
-    bit         = u.U.bit       % bit
-    currency    = u.U.currency  % currency
+    m           = u.coreUnits.m         % meter
+    kg          = u.coreUnits.kg        % kilogram
+    s           = u.coreUnits.s         % second
+    A           = u.coreUnits.A         % ampere
+    K           = u.coreUnits.K         % kelvin (°C = °K-273.15)
+    mol         = u.coreUnits.mol       % mole
+    cd          = u.coreUnits.cd        % candela
+    bit         = u.coreUnits.bit       % bit
+    currency    = u.coreUnits.currency  % currency
 
     %% Derived units list:
     % References:
@@ -1028,8 +1028,22 @@ end
 methods
     %% Plotting and display:
     function disp(o)
-        try    dispdisp(o); % mathworks.com/matlabcentral/fileexchange/48637
-        catch; builtin('disp',o);  end
+        try    
+            dispdisp(o); % mathworks.com/matlabcentral/fileexchange/48637
+        catch
+            % builtin('disp',o);
+            
+            url = 'http://www.mathworks.com/matlabcentral/fileexchange/48637/';
+            dlCmd = sprintf('matlab:unzip(websave(tempname,''%s%s''),pwd);u',...
+                url,'?download=true');
+            
+            warning('The function <a href="%s">%s</a> %s\n%s',...
+                'www.mathworks.com/matlabcentral/fileexchange/48637',...
+                'dispdisp',...
+                'is recommended for display of physical units.',...
+                ['<a href="' dlCmd ...
+                '">Direct download of dispdisp into current directory</a>']);
+        end
     end
 end
 end

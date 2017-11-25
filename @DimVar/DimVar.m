@@ -4,7 +4,7 @@ classdef DimVar
 % Copyright (c) 2012-2017, Sky Sartorius.
 properties (Access = protected)
     exponents
-    value = 1
+    value
 end
 
 methods
