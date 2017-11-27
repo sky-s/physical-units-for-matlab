@@ -62,7 +62,7 @@ end
 properties (Constant = true)
 
     %% Core units:
-    baseNames(1,9) cell = u.baseUnitSystem(:,1)'
+    baseNames = u.baseUnitSystem(:,1)'
 
     m           = u.coreUnits.m         % meter
     kg          = u.coreUnits.kg        % kilogram
@@ -1052,20 +1052,21 @@ end
 function U = buildCoreUnits(baseUnitSystem)
 coreBaseNames = {'m' 'kg' 's' 'A' 'K' 'mol' 'cd' 'bit' 'currency'};
 
-if isvector(baseUnitSystem)
-    % Use normal variables - not DimVars.
+if ischar(baseUnitSystem) && strcmpi('none',baseUnitSystem)
+    % Use normal variables - not DimVars - if baseUnitSystem is 'none'.
     U = cell2struct(num2cell(ones(size(coreBaseNames))),coreBaseNames,2);
     return
 end
 
+validateattributes(baseUnitSystem,{'cell'},{'size',[9,2]},'u','baseUnitSystem');
+
+if ~iscellstr(u.baseUnitSystem(:,1))
+    error('First column of baseUnitSystem must be type char.')
+end
 
 baseValues = baseUnitSystem(:,2);
-
 if ~all(cellfun('isclass', baseValues, 'double'))
     error('Second column of baseUnitSystem must contain doubles.')
-end
-if numel(baseValues) ~= 9
-    error('Exactly 9 base units expected.')
 end
 
 expos = eye(numel(coreBaseNames));

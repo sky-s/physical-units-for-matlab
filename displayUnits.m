@@ -11,6 +11,8 @@ function dispUnits = displayUnits()
 %   fields of u (or valid input to str2u) or a 2-column cell array with the
 %   first column for display strings and the second containing DimVars with the
 %   corresponding unit.
+% 
+%   Remember to clear classes whenever changing displayUnits.
 %   
 %   <a href="matlab:edit displayUnits">Open displayUnits.m in editor</a>.
 % 

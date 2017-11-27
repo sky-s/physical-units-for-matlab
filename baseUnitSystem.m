@@ -15,11 +15,13 @@ function baseUnitSystem = baseUnitSystem()
 %   the base SI unit. For example, to use cm as the default length, the value in
 %   the second column would be 100 (100 cm in one meter). See in-code examples.
 % 
-%   Alternatively, return any vector cell array (e.g., just one column or
-%   {'none'} to have the u class contain non-DimVars. Use this option for when
-%   you need a bit more speed on code that has already been developed and
-%   debugged by getting rid of the DimVar method overhead, including e.g. unit
-%   compatibility checking.
+%   Alternatively, make baseUnitSystem return 'none' (or set a variable
+%   baseUnitSystem = 'none' in the base workspace) to have the u class contain
+%   non-DimVars. Use this option for when you need a bit more speed on code that
+%   has already been developed and debugged by getting rid of the DimVar method
+%   overhead, including e.g. unit compatibility checking.
+% 
+%   Remember to clear classes whenever changing baseUnitSystem.
 % 
 %   See also u, displayUnits.
 
@@ -141,7 +143,7 @@ baseUnitSystem(1:size(unitSystem,1),:) = unitSystem;
 %% %% CUSTOM EXAMPLES BELOW %%%%
 
 %% No units.
-% baseUnitSystem = {'none'};
+% baseUnitSystem = 'none';
 
 %% GCS with cents for currency, µA for current, ms for time.
 % baseUnitSystem = {
