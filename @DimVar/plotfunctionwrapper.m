@@ -1,23 +1,4 @@
 function varargout = plotfunctionwrapper(plotFunction,varargin)
-% plotFunction is string or handle for feval.
-
-%% Possible formats
-%{
-surf(z,c,...); surf(z)
-
-plot, plot3, fill, and fill3 can't take name/value pairs (XData, YData, etc.),
-so these simply get data labels based on the first plottable arguments.
-
-
-things that might want dimvar in follow-on param/value pairs:
-histogram, histogram2
-
-nothing else that I know of:
-patch
-plot
-surf
-fill
-%}
 
 %% Execute function.
 % Convert all DimVar arguments to regular variables.
@@ -148,75 +129,6 @@ if warnFlag
     warning('DimVar:plotunitscompatibility',...
         ['Potentially incompatible units in inputs for ' plotFunction '.'])    
 end
-
-%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 
-% %% Parse out the intent of the plotting; check compatibility if it's easy.
-% warnFlag = false;
-% 
-% switch char(plotFunction)
-%     case {'hist','histogram','histcounts'}
-%         % All DimVar inputs should be compatible.
-%         if ~iscompatible(dimVarArgs{:})
-%             warnFlag = true;
-%         end
-%         labelaxes(ax,plottableArgs{1},[],[]);
-%         
-%     case {'histogram2','histcounts2'}
-%         if ~iscompatible(plottableArgs{1:2:end}) ||...
-%                 ~iscompatible(plottableArgs{2:2:end})
-%             warnFlag = true;
-%         end
-%         labelaxes(ax,plottableArgs{1:2},[])
-%         
-%     case {'surf','surface'}
-%         if nPlottableArgs <= 2
-%             % surf(z,c,...); surf(z)
-%             labelaxes(ax,[],[],plottableArgs{1})
-%             
-%         else
-%             % surf(x,y,z); surf(x,y,z,c)
-%             labelaxes(ax,plottableArgs{1:3})
-%             
-%         end
-%         
-%     case {'patch'}
-%         % (x,y,c),(x,y,z,c), 
-%         if nPlottableArgs == 0
-%             % Assume struct input.
-%         elseif nPlo
-%         end
-% end       
-%% Label axes
-
-% if ~isempty(ys)
-%     ax.YAxis.TickLabelFormat = ['%g ' ys]; % R2015b+
-%     %     ylabel(ys) % Prior versions.
-% end
-% if ~isempty(zs)
-%     ax.ZAxis.TickLabelFormat = ['%g ' zs]; % R2015b+
-%     %     zlabel(zs) % Prior versions.
-% end
-
-
-% switch nDimVarArgs
-% for i = 1:nDimVars
-%     ind = dimVarArgLocations(i);
-%     
-%     
-% end
-
-
-% should work with plot(Y), plot(X,Y), surf(Z), surf(X,Y,Z), ...
-% patch, surf, histogram, plot, plot3, histogram2, 
-
-
-% axescheck
-% parseparams
-% (InferiorClasses = {?matlab.graphics.axis.Axes}) DimVAr
-% 
-% function [newArgList,labels] = parseplotunits(varargin)
-% 
 end
 
 function labelaxes(ax,X,Y,Z)
