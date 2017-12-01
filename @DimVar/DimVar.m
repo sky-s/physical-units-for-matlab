@@ -1,4 +1,4 @@
-classdef DimVar
+classdef (InferiorClasses = {?matlab.graphics.axis.Axes}) DimVar
 % See also u.
 
 % Copyright (c) 2012-2017, Sky Sartorius.
@@ -8,7 +8,7 @@ properties (Access = protected)
 end
 
 methods
-    %% Core functions.
+    %% Core methods (not overloads).
     % Constructor:
     function v = DimVar(expos,val)
         % See also u.
@@ -217,6 +217,47 @@ methods
     function out = sign(v);     out = sign(v.value);    end
     function varargout = size(x,varargin)
         [varargout{1:nargout}] = size(x.value,varargin{:});
+    end
+    
+    %% Plotting functions.
+    function varargout = fill(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('fill',varargin{:});
+    end
+    function varargout = fill3(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('fill3',varargin{:});
+    end
+    function varargout = hist(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('hist',varargin{:});
+    end
+    function varargout = histcounts(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('histcounts',varargin{:});
+    end
+     function varargout = histcounts2(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('histcounts2',varargin{:});
+    end
+    function varargout = histogram(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('histogram',varargin{:});
+    end
+    function varargout = histogram2(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('histogram2',varargin{:});
+    end
+    function varargout = line(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('line',varargin{:});
+    end
+    function varargout = patch(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('patch',varargin{:});
+    end
+    function varargout = plot(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('plot',varargin{:});
+    end
+    function varargout = plot3(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('plot3',varargin{:});
+    end
+    function varargout = surf(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('surf',varargin{:});
+    end
+    function varargout = surface(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('surface',varargin{:});
     end
 
 end
