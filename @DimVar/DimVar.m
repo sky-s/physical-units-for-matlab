@@ -219,7 +219,19 @@ methods
         [varargout{1:nargout}] = size(x.value,varargin{:});
     end
     
-    %% Plotting functions.
+    %% Plot-like functions.
+    function varargout = contour(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('contour',varargin{:});
+    end
+    function varargout = contour3(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('contour3',varargin{:});
+    end
+    function varargout = contourf(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('contourf',varargin{:});
+    end
+    function varargout = contourc(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('contourc',varargin{:});
+    end
     function varargout = fill(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('fill',varargin{:});
     end
@@ -258,6 +270,9 @@ methods
     end
     function varargout = surface(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('surface',varargin{:});
+    end
+    function varargout = text(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('text',varargin{:});
     end
 
 end

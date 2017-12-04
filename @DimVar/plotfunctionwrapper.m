@@ -1,10 +1,30 @@
 function varargout = plotfunctionwrapper(plotFunction,varargin)
+% plotfunctionwrapper(plotFunction,varargin)  Converts all inputs in varargin
+% using displayingvalue and passes to plotFunction using feval. If plotFunction
+% is a plotting function (i.e., not something like histcounts or contourc),
+% plotfunctionwrapper will also add appropriate unit labels to the axes returned
+% by gca.
+% 
+%   See also displayingvalue, feval.
+
 
 %% Execute function.
 % Convert all DimVar arguments to regular variables.
-cleanedArgs = cellfun(@displayingvalue,varargin,'UniformOutput',false);
+if numel(varargin) <= 2 && isstruct(varargin{end})
+    % Special case of struct input for e.g. patch plotting. Note: because no
+    % inputs are DimVar in this case, the overloaded method will not be called,
+    % so this block is only here for future/alternative use.
+    
+    cleanedArgs = varargin;
+    S = varargin{end};
+    C = cellfun(@displayingvalue,struct2cell(S),'UniformOutput',false);
+    cleanedArgs{end} = cell2struct(C,fieldnames(S));
+    
+else
+    cleanedArgs = cellfun(@displayingvalue,varargin,'UniformOutput',false);
+    
+end
 [varargout{1:nargout}] = feval(plotFunction,cleanedArgs{:});
-ax = gca;
 
 %%
 args = varargin;
@@ -24,10 +44,10 @@ end
 
 %% Easy scheme.
 [X,Y,Z] = deal([]);
-if isstruct(args{1}) || ischar(args{1})
-    S = struct(args{:}); % Works with single input struct.
-    
+if ischar(args{1}) || isstruct(args{1})
+    S = struct(args{:}); % Also works with single input struct.
     % struct input scheme.
+    
     if isfield(S,'Vertices') 
         % Order is important. Patch will use XData, etc. instead of Vertices if
         % both are present.
@@ -47,7 +67,7 @@ if isstruct(args{1}) || ischar(args{1})
         Z = S.ZData;
     end
     
-    labelaxes(ax,X,Y,Z)
+    labelaxes(gca,X,Y,Z)
     return
 end
 
@@ -69,38 +89,43 @@ switch char(plotFunction)
             % All DimVar inputs should be compatible.
             warnFlag = true;
         end
-        labelaxes(ax,plottableArgs{1},[],[]);
+        labelaxes(gca,plottableArgs{1},[],[]);
         
     case {'histogram2'}
-        labelaxes(ax,plottableArgs{1:2},[])
+        labelaxes(gca,plottableArgs{1:2},[])
         
-    case {'surf','surface'}
+    case {'contour','contourf'}
+        if nPlottableArgs >= 3
+            labelaxes(gca,plottableArgs{1:2},[])
+        end
+    
+    case {'surf','surface','contour3'}
         if nPlottableArgs <= 2
             % surf(z,c,...); surf(z)
-            labelaxes(ax,[],[],plottableArgs{1})
+            labelaxes(gca,[],[],plottableArgs{1})
             
         else
             % surf(x,y,z); surf(x,y,z,c)
-            labelaxes(ax,plottableArgs{1:3})
+            labelaxes(gca,plottableArgs{1:3})
             
         end
         
     case {'patch'}
         if nPlottableArgs <= 3
             % patch(x,y,c)
-            labelaxes(ax,plottableArgs{1:2},[])
+            labelaxes(gca,plottableArgs{1:2},[])
             
         else
             % patch(x,y,z,c)
-            labelaxes(ax,plottableArgs{1:3})
+            labelaxes(gca,plottableArgs{1:3})
             
         end
         
-    case {'line'}
+    case {'line','text'}
         if nPlottableArgs <= 2
-            labelaxes(ax,plottableArgs{1:2},[])
+            labelaxes(gca,plottableArgs{1:2},[])
         else
-            labelaxes(ax,plottableArgs{1:3})
+            labelaxes(gca,plottableArgs{1:3})
         end
         
     case {'plot','fill'}
@@ -110,7 +135,7 @@ switch char(plotFunction)
             warnFlag = true;
         end
         
-        labelaxes(ax,plottableArgs{1:2},[])
+        labelaxes(gca,plottableArgs{1:2},[])
         
     case {'plot3','fill3'}
         % Check compatibility.
@@ -120,7 +145,7 @@ switch char(plotFunction)
             warnFlag = true;
         end
         
-        labelaxes(ax,plottableArgs{1:3})
+        labelaxes(gca,plottableArgs{1:3})
         
 end
 
