@@ -5,7 +5,9 @@ function varargout = plotfunctionwrapper(plotFunction,varargin)
 % plotfunctionwrapper will also add appropriate unit labels to the axes returned
 % by gca.
 % 
-%   See also displayingvalue, feval.
+%   See also displayingvalue, feval, 
+%     AddSecondAxis - http://www.mathworks.com/matlabcentral/fileexchange/38852,
+%     addaxis_unit  - http://www.mathworks.com/matlabcentral/fileexchange/26928.
 
 
 %% Execute function.
