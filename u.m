@@ -390,6 +390,7 @@ properties (Constant = true)
     year_Tropical = 365.24219*u.day; % tropical year
     year_Gregorian = 365.2425*u.day; % gregorian year
     month = u.yr/12;            % 1/12th julian year
+    flick = u.s/705600000;
 
     %---- frequency ----
 
