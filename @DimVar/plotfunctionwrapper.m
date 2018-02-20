@@ -137,7 +137,11 @@ switch char(plotFunction)
             warnFlag = true;
         end
         
-        labelaxes(gca,plottableArgs{1:2},[])
+        if nPlottableArgs == 1
+            labelaxes(gca,[],plottableArgs{1},[])
+        else
+            labelaxes(gca,plottableArgs{1:2},[])
+        end
         
     case {'plot3','fill3'}
         % Check compatibility.
