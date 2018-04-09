@@ -186,6 +186,24 @@ properties (Constant = true)
     circularInch = u.circ_inch;
     b = 100*u.fm^2;             % barn
     barn = u.b;
+    sqin = u.in^2               % square inch
+    squareInch = u.sqin
+    sqmil = u.mil^2             % square mil
+    squareMil = u.sqmil
+    sqmi = u.mi^2               % square mile
+    squareMile = u.sqmi
+    sqnmi = u.nmi^2             % square nautical mile
+    squareNauticalMile = u.sqnmi
+    sqm = u.m^2                 % square meter
+    squareMeter = u.sqm
+    sqkm = u.km^2               % square kilometer
+    squareKilometer = u.sqkm
+    sqcm = u.cm^2               % square centimeter
+    squareCentimeter = u.sqcm
+    sqmm = u.mm^2               % square millimeter
+    squareMillimeter = u.sqmm
+    sqdm = u.dm^2               % square decimeter
+    squareDecimeter = u.sqdm
 
     %---- volume ----
 
@@ -211,7 +229,7 @@ properties (Constant = true)
     kiloliter = u.kl;
     cuin = 16.387064*u.mL;      % cubic inch
     cubicInch = u.cuin;
-    FBM = u.ft^2*u.in;          % board foot
+    FBM = u.sqft*u.in;          % board foot
     boardFoot = u.FBM;
     gal = 231*u.cuin;           % gallon (US)
     gallon = u.gal;
@@ -488,7 +506,7 @@ properties (Constant = true)
 
     %---- pressure ----
 
-    Pa = u.N/u.m^2;             % pascal
+    Pa = u.N/u.sqm;             % pascal
     pascal = u.Pa;
     mPa = 1e-3*u.Pa;            % millipascal
     millipascal = u.mPa;
@@ -512,23 +530,23 @@ properties (Constant = true)
     atm = 101325*u.Pa;          % standard atmosphere
     atmosphere = u.atm;
     standardAtmosphere = u.atm;
-    at = u.kgf/u.cm^2;          % technical atmosphere
+    at = u.kgf/u.sqcm;          % technical atmosphere
     technicalAtmosphere = u.at;
-    psi = u.lbf/u.in^2;         % pound force per square inch
+    psi = u.lbf/u.sqin;         % pound force per square inch
     poundPerSquareInch = u.psi;
     ksi = 1e3*u.psi;            % kip per square inch
     kipPerSquareInch = u.ksi;
     Msi = 1e6*u.psi;            % million pound force per square inch
     megapoundPerSquareInch = u.Msi;
-    psf = u.lbf/u.ft^2;         % pound force per square foot
+    psf = u.lbf/u.sqft;         % pound force per square foot
     poundPerSquareFoot = u.psf;
-    ksf = u.kip/u.ft^2;         % kip per square foot
+    ksf = u.kip/u.sqft;         % kip per square foot
     kipPerSquareFoot = u.ksf;
     Ba = 0.1*u.Pa;              % barye
     barye = u.Ba;
     pz = u.kPa;                 % pièze
     pieze = u.pz;
-    mmHg = 13.5951*u.kgf/u.m^2; % millimeter of mercury
+    mmHg = 13.5951*u.kgf/u.sqm; % millimeter of mercury
     millimeterMercury = u.mmHg;
     cmHg = 10*u.mmHg;           % centimeter of mercury
     centimeterMercury = u.cmHg;
@@ -538,7 +556,7 @@ properties (Constant = true)
     inchMercury = u.inHg;
     ftHg = 12*u.inHg;           % foot of mercury
     footMercury = u.ftHg;
-    mmH20 = u.kgf/u.m^2;        % millimeter of water (density 1 g/cc)
+    mmH20 = u.kgf/u.sqm;        % millimeter of water (density 1 g/cc)
     mmAq = u.mmH20;             % millimeter of water
     millimeterWater = u.mmH20;
     cmH20 = 10*u.mmH20;         % centimeter of water
@@ -558,16 +576,16 @@ properties (Constant = true)
 
     %---- viscosity ----
 
-    St = u.cm^2/u.s;            % stokes
+    St = u.sqcm/u.s;            % stokes
     stokes = u.St;
     cSt = u.St/100;             % centistokes
     centistokes = u.cSt;
-    newt = u.in^2/u.s;          % newt
+    newt = u.sqin/u.s;          % newt
     P = u.Pa*u.s / 10;          % poise
     poise = u.P;
     cP = u.mPa*u.s;             % centipoise
     centipoise = u.cP;
-    reyn = u.lbf*u.s/u.in^2;    % reyn
+    reyn = u.lbf*u.s/u.sqin;    % reyn
 
     %---- power ----
 
@@ -841,17 +859,17 @@ properties (Constant = true)
     %---- Luminance etc. ----
 
     candela = u.cd;
-    asb = u.cd/u.m^2;           % apostilb
+    asb = u.cd/u.sqm;           % apostilb
     apostilb = u.asb;
-    sb = u.cd/u.cm^2;           % stilb
+    sb = u.cd/u.sqcm;           % stilb
     stilb = u.sb;
-    ph = 1e4*u.cd*u.sr/u.m^2;   % phot
+    ph = 1e4*u.cd*u.sr/u.sqm;   % phot
     phot = u.ph;
     cp = 0.981*u.cd;            % candlepower
     candlepower = u.cp;
     lm = u.cd*u.sr;             % lumen
     lumen = u.lm;
-    lx = u.lm/u.m^2;            % lux
+    lx = u.lm/u.sqm;            % lux
     lux = u.lx;
     nx = 1e-3*u.lx;             % nox
     nox = u.nx;
@@ -877,7 +895,7 @@ properties (Constant = true)
     rem = u.Sv/100;             % roentgen equivalent man
     roentgenEquivalentMan = u.rem;
     roentgen = 2.58e-4*u.C/u.kg;% roentgen
-    Ly = u.cal_th/u.cm^2;       % langley
+    Ly = u.cal_th/u.sqcm;       % langley
     lan = u.Ly;                 % langley
     langley = u.lan;
     Bq = 1/u.s;                 % becquerel
@@ -889,7 +907,7 @@ properties (Constant = true)
 
     k_B = 1.38064852e-23*u.J/u.K;       % Boltzmann constant
     BoltzmannConstant = u.k_B;
-    sigma_SB = 5.670367e-8*u.W/(u.m^2*u.K^4); % Stefan–Boltzmann constant
+    sigma_SB = 5.670367e-8*u.W/(u.sqm*u.K^4); % Stefan–Boltzmann constant
     Stefan_BoltzmannConstant = u.sigma_SB;
     h_c = 6.626070040e-34*u.J*u.s;      % Planck constant
     PlanckConstant = u.h_c;
@@ -927,7 +945,7 @@ properties (Constant = true)
     alpha = 7.2973525664e-3;            % fine-structure constant
     fine_structureConstant = u.alpha;
     SommerfeldConstant = u.alpha;
-    c1 = 3.741771790e-16*u.W/u.m^2;     % first radiation constant
+    c1 = 3.741771790e-16*u.W/u.sqm;     % first radiation constant
     firstRadiationConstant = u.c1;
     c2 = 1.43877736e-2*u.m*u.K;         % second radiation constant
     secondRadiationConstant = u.c2;
@@ -946,9 +964,9 @@ properties (Constant = true)
 
     %---- digital information ----
 
-    nibble = 4*u.bit;                   % nibble
+    nibble = 4*u.bit;
     B = 8*u.bit;                        % byte
-    byte = u.B;                         % byte
+    byte = u.B;
     octet = u.B;                        % octet
     kB = 1e3*u.B;                       % kilobyte
     kilobyte = u.kB;
@@ -1017,7 +1035,7 @@ properties (Constant = true)
     franc = u.currency;         % currency
 
     %---- used by Matlab's symunit but not here ----
-    % gg -gauge
+    % gg - gauge
     % land - league
     % ha_US - US survey hectare
     % molecule
