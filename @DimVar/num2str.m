@@ -1,9 +1,9 @@
 function [s] = num2str(v, varargin)
 
-% Compensation for behavior of @tabular\disp.m trying to format with %d:
 ST = dbstack(1,'-completenames');
 if isequal(varargin,{'%d    '}) && ...
         contains(ST(1).file,['@tabular' filesep 'disp.m'])
+    % Compensation for behavior of @tabular\disp.m trying to format with %d:
     varargin = {getFloatFormats()}; % Assume double value.
 end
 
