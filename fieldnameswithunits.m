@@ -30,8 +30,10 @@ function [names,S,T,C] = fieldnameswithunits(S,exceptionNames,...
 if nargin < 2
     exceptionNames = {};
 end
-if nargin < 4
+if nargin == 3
     exceptionUnits = str2u(exceptionUnitStr);
+elseif nargin < 3
+    exceptionUnits = {};
 end
 if numel(exceptionNames) ~= numel(exceptionUnits)
     error('Exception inputs must have the same number of elements.')
