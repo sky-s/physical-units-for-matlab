@@ -38,6 +38,9 @@ end
 if numel(exceptionNames) ~= numel(exceptionUnits)
     error('Exception inputs must have the same number of elements.')
 end
+if ~(iscellstr(exceptionNames) || isstring(exceptionNames))
+    error('exceptionNames must be cellstr or string array.')
+end
 
 names = fieldnames(S);
 T = struct2table(S);
@@ -53,7 +56,7 @@ for i = 1:numel(names)
         if ~isempty(uN{i})
             names{i} = [fn ' (' uN{i} ')'];
         end
-        T.(fn) = var./exceptionUnits(exceptionInd);
+        T.(fn) = var./exceptionUnits{exceptionInd};
         
     elseif isa(var,'DimVar')
         [T.(fn),~,uN{i}] = displayparser(var);
