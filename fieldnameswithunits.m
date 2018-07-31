@@ -27,6 +27,10 @@ function [names,S,T,C] = fieldnameswithunits(S,exceptionNames,...
 % 
 %   See also u, displayparser str2u. 
 
+
+% Copyright 2018 Sky Sartorius
+% Contact: www.mathworks.com/matlabcentral/fileexchange/authors/101715
+
 if nargin < 2
     exceptionNames = {};
 end
@@ -51,18 +55,17 @@ for i = 1:numel(names)
     fn = names{i};
     var = T.(fn);
     exceptionInd = strcmp(fn,exceptionNames);
-    if any(exceptionInd)
+    if ~isa(var,'DimVar')
+        uN{i} = '';
+    elseif any(exceptionInd)
         uN{i} = exceptionUnitStr(exceptionInd);
         if ~isempty(uN{i})
             names{i} = [fn ' (' uN{i} ')'];
         end
         T.(fn) = var./exceptionUnits{exceptionInd};
-        
-    elseif isa(var,'DimVar')
+    else
         [T.(fn),~,uN{i}] = displayparser(var);
         names{i} = [fn ' (' uN{i} ')'];
-    else
-        uN{i} = '';
     end
 end
 if nargout > 1
