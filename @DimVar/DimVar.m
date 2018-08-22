@@ -218,6 +218,9 @@ methods
     function varargout = size(x,varargin)
         [varargout{1:nargout}] = size(x.value,varargin{:});
     end
+    function out = issorted(v,varargin)
+        out = issorted(v.value,varargin{:});
+    end
     
     %% Plot-like functions.
     function varargout = contour(varargin)
