@@ -36,6 +36,7 @@ if nargin < 2
 end
 if nargin == 3
     exceptionUnits = str2u(exceptionUnitStr);
+%     exceptionUnitStr = cellstr(exceptionUnitStr);
 elseif nargin < 3
     exceptionUnits = {};
 end
@@ -58,21 +59,21 @@ for i = 1:numel(names)
     if ~isa(var,'DimVar')
         uN{i} = '';
     elseif any(exceptionInd)
-        uN{i} = exceptionUnitStr(exceptionInd);
+        uN{i} = exceptionUnitStr{exceptionInd};
         if ~isempty(uN{i})
-            names{i} = [fn ' (' uN{i} ')'];
+            names{i} = strcat(fn,' (',uN{i},')');
         end
         T.(fn) = var./exceptionUnits{exceptionInd};
     else
         [T.(fn),~,uN{i}] = displayparser(var);
-        names{i} = [fn ' (' uN{i} ')'];
+        names{i} = strcat(fn,' (',uN{i},')');
     end
 end
 if nargout > 1
     S = table2struct(T);
     if nargout > 2
-        T = struct2table(S);
-        T.Properties.VariableUnits = uN;
+        T = struct2table(S,'AsArray',true);
+        % T.Properties.VariableUnits = uN;
         if nargout > 3
             C = [names';table2cell(T)];
         end
