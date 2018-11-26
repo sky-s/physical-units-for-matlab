@@ -8,7 +8,16 @@ function v = scale(v, sf)
 %   See also u.
 
 a = 0*v.exponents;
-a(1:3) = [1 3 0.5];
+a(1:7) = [
+    1   % Length
+    3   % Mass
+    1/2 % Time
+    9/4 % Current (driven by Ohm scaling with length/area, K/K²)
+    0   % Temp
+    3   % Amount
+    7/2 % cd (driven by matching scaling of watts/steridian)
+    ];
+
 
 v.value = v.value .* sf.^sum(v.exponents.*a);
 
