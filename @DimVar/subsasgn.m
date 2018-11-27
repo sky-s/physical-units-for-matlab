@@ -1,8 +1,9 @@
 function v1 = subsasgn(v1,S,v2)
-% v1 = subsasgn(v1,ind,v2) is the same as v1(ind) = v2. v1 is a DimVar. v2
-% must match the units of v1 -OR- v2 can be undimensioned NaN or []. If v1
-% is all NaN, v1's units will be changed to match those of v2 (with a
-% warning), even if v2 is all NaN.
+% v1 = subsasgn(v1,ind,v2) is the same as v1(ind) = v2. v1 is a DimVar. v2 must
+% match the units of v1 -OR- v2 can be undimensioned NaN or []. If v1 is not a
+% DimVar, this method is only called when using the subsasgn(...) syntax.
+% Otherwise there is no error checking, and assignment will use the builtin
+% subsasgn and, for example, convert v2 to double, so be careful.
 
 % There are 21 possible scenarios for which this will get called for the 5
 % possible inputs for each of v1 and v2: 
@@ -15,46 +16,24 @@ function v1 = subsasgn(v1,S,v2)
 % subsasgn. I've done what testing I can, and the 6 most common cases all
 % have the desired behavior. However, please report unexpected behavior.
 
-if isempty(v1)
+if isempty(v1) && ~isa(v1,'DimVar')
+    % Covers new variable case. I do not know any way to detect the difference
+    % between a new variable and simply v1 = [].
     v1 = []*unitsOf(v2);
-end
-
-if isempty(v2)
-    makesub([]);
-    return
 end
 
 if isa(v2,'DimVar')
     if isequal(v2.exponents,v1.exponents)
-        if isempty(v2.value)
-            %don't allow shrinking array without consistent units
-            makesub([]);
-        else
-            makesub(v2.value);
-        end
-    elseif all(isnan(v1.value(:)))
-        % initialized NaN array - throw out exponents
-        v1.exponents = v2.exponents;
-        warning(['Units of all-NaN assignee array "' inputname(1)...
-            '" changed to match units of assignment "' inputname(3) '".'])
-        makesub(v2.value)
+            v1.value(S.subs{:}) = v2.value;
     else
         error('Assignement of DimVar to DimVar must have consistent units.')
     end
     
-elseif isempty(v2)
-    makesub([]);
-elseif isnan(v2) 
-    % isnan returns TRUE for NaN*u.xx, hence catching ALL DimensionedVars
-    % in the first nested if above
-    makesub(nan);
+elseif isempty(v2) || all(isnan(v2))
+    % Allow deletion or assigning non-DimVar NaN without unit matching.
+    v1.value(S.subs{:}) = v2;
 else
     error('Assignment must be NaN, [], or consistent DimVar.')
 end
-
-
-    function makesub(v2)
-        v1.value(S.subs{:}) = v2;
-    end
 
 end
