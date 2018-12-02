@@ -10,6 +10,25 @@ numString = '';
 denString = '';
 
 %% Preferred units.
+% First use customDisplay if there is one.
+if ~isempty(dispVar.customDisplay)
+    str = dispVar.customDisplay;
+    if isprop(u,str)
+        test = dispVar/u.(str);
+    else
+        test = dispVar/str2u(str);
+        % avoid the overhead of str2u in most cases.
+    end
+    if ~isa(test, 'DimVar')
+        % Units match.
+        numString = str;
+        dispVar.value = test;
+        dispVal = test;
+        buildAppendStr();
+        return
+    end
+end
+
 % Determine if it matches a preferred unit. Preferred units can be list or
 % 2-column cell array.
 if isempty(u.dispUnits)
@@ -17,17 +36,11 @@ if isempty(u.dispUnits)
 elseif iscellstr(u.dispUnits)
     for i = 1:length(u.dispUnits)
         str = u.dispUnits{i};
-        try
+        if isprop(u,str)
             test = dispVar/u.(str);
-        catch ME
-            if strcmp(ME.identifier,...
-                    'MATLAB:subscripting:classHasNoPropertyOrMethod')
-                test = dispVar/str2u(str);
-                % try/catch block is to avoid the overhead of str2u in most
-                % cases.
-            else
-                throw(ME)
-            end
+        else
+            test = dispVar/str2u(str);
+            % avoid the overhead of str2u in most cases.
         end
         if ~isa(test, 'DimVar')
             % Units match.

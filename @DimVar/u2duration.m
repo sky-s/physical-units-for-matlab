@@ -19,14 +19,16 @@ else
     [~,~,unitStr] = displayparser(v);
     switch unitStr
         case {'s' 'ss' 'sec' 'secs' 'second' 'seconds'}
-            d = seconds(v.value);
+            d = seconds(v/u.s);
         case {'m' 'mm' 'min' 'mins' 'minute' 'minutes'}
-            d = minutes(v.value);
+            d = minutes(v/u.min);
         case {'h' 'hh' 'hr' 'hrs' 'hour' 'hours'}
-            d = hours(v.value);
-        case {'day' 'days'}
-            d = days(v.value);
+            d = hours(v/u.hr);
+        case {'d' 'dd' 'day' 'days'}
+            d = days(v/u.day);
+        case {'y' 'yr' 'yrs' 'year' 'years'}
+            d = years(v/u.year_Gregorian);
         otherwise
-            error('Unknown time unit name.')
+            d = duration(0,0,v/u.s);
     end        
 end

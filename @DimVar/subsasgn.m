@@ -19,7 +19,7 @@ function v1 = subsasgn(v1,S,v2)
 if isempty(v1) && ~isa(v1,'DimVar')
     % Covers new variable case. I do not know any way to detect the difference
     % between a new variable and simply v1 = [].
-    v1 = []*unitsOf(v2);
+    v1 = []*scd(DimVar(v2.exponents,1),v2.customDisplay);
 end
 
 if isa(v2,'DimVar')

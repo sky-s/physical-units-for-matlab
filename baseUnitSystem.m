@@ -35,7 +35,7 @@ baseUnitSystem = {
     'mol'      1
     'cd'       1
     'bit'      1
-    '$'        1 % Alternate symbol for more generic currency: ¤.
+    '¤'        1 
     };
 
 % return

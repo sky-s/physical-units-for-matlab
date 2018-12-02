@@ -6,8 +6,21 @@ properties (Access = protected)
     exponents
     value
 end
+properties
+    customDisplay
+end
 
 methods
+    function v = scd(v,val)
+        % scd  Set custom display units on a per-variable basis. This is cleared
+        % by most operations that change the units. 
+        %   See also displayUnits.
+        if nargin == 1
+            v.customDisplay = '';
+        else
+            v.customDisplay = val;
+        end
+    end
     %% Core methods (not overloads).
     % Constructor:
     function v = DimVar(expos,val)
@@ -22,6 +35,11 @@ methods
         
         if ~any(round(1e5*v.exponents)) % Seems to be faster than round(x,5).
             v = v.value;
+        else
+            v.customDisplay = '';
+            % The customDisplay property is invalid after e.g. a multiply or
+            % divide operation, so clean it up from the new variable to prevent
+            % any undesirable side effects later.
         end
     end
     
