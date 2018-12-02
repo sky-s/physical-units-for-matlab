@@ -15,22 +15,25 @@ classdef u < handle
 %   variables will automatically perform dimensional analysis and can create new
 %   units or cancel units and return a normal variable.
 %
-%   Variables with units listed in displayUnits display, plot, etc. in terms of
-%   those units. A variable with units not in the list will display as a
-%   combination of fundamental base units (mass, length, time, temperature,
-%   ...). To customize the list, see displayUnits. For more advanced
+%   When displaying variables with units or using them in plot, etc., the units
+%   used for display will be, in order if available and valid: 1) per-variable
+%   preferred display units, 2) units listed in displayUnits, 3) a combination
+%   of fundamental base units (mass, length, time, temperature, ...). To set (or
+%   clear) custom display units for a given variable, see the scd function. To
+%   customize the displayUnits list, see displayUnits. For more advanced
 %   customization of the base units themselves, see baseUnitSystem.
 %
-%   Customization is set by calls to displayUnits and/or baseUnitSystem (either
-%   function files or variables in the base workspace). Tailor preferences for a
-%   specific project by defining these variables at the top of a script (before
-%   any units are called) or placing unique versions of the files in a project's
-%   directory. Be sure to clear the class when changing projects or else the old
-%   customizations will remain in effect.
+%   Display customization is set by calls to displayUnits and/or baseUnitSystem
+%   (either function files or variables in the base workspace). Tailor
+%   preferences for a specific project by defining these variables at the top of
+%   a script (before any units are called) or placing unique versions of the
+%   files in a project's directory. Be sure to clear the class when changing
+%   projects or else the old customizations will remain in effect.
 %
-%   Some MATLAB functions won't accept variables with physical units. Most of
-%   the time displayingvalue, which returns value in terms of preferred display
-%   units, will be the appropriate tool, but there is also double and u2num.
+%   Some MATLAB functions won't accept variables with physical units (DimVars).
+%   Most of the time displayingvalue, which returns value in terms of preferred
+%   display units, will be the appropriate tool, but there is also double, which
+%   returns the value in terms of base units, and u2num.
 %
 %   Example 1: Shaft power.
 %       rotationSpeed = 2500 * u.rpm;
@@ -41,8 +44,18 @@ classdef u < handle
 %   Example 2: Unit conversion.
 %       100 * u.acre/u.ha;  % Convert 100 acres to hectares.
 %       u.st/u.kg;          % Return conversion factor for stone to kilos.
-%
-%   See also displayUnits, clear, str2u, symunit, displayingvalue,
+% 
+%   Example 3: Custom display.
+%       fieldSize = 3*u.sqkm
+%       % Muliplies and divides remove any per-variable custom display units.
+%       % It's nice to display in the units that make sense for that variable.
+%       rate = 3.7*u.acre/u.day
+%       rate = scd(rate,'sqm/hr')
+%       timeNeeded = fieldSize/rate
+%       timeNeeded = scd(timeNeeded,'month')
+% 
+%   See also displayUnits, baseUnitSystem, scd, clear, displayingvalue,
+%   DimVar.double, u2num, str2u, symunit,
 %     dispdisp - http://www.mathworks.com/matlabcentral/fileexchange/48637.
 
 %   Copyright Sky Sartorius
@@ -1060,10 +1073,20 @@ end
 methods
     %% Plotting and display:
     function disp(o)
+        f = fieldnames(o);
+        for iField = 1:length(f)
+            thisField = u.(f{iField});
+            if isa(thisField,'DimVar')
+                thisField = scd(thisField);
+            end
+            uDisplayStruct.(f{iField}) = thisField;
+        end
+                
         try    
-            dispdisp(o); % mathworks.com/matlabcentral/fileexchange/48637
+            dispdisp(uDisplayStrucasdft);
+            % mathworks.com/matlabcentral/fileexchange/48637
         catch
-            % builtin('disp',o);
+            builtin('disp',uDisplayStruct);
             
             url = 'http://www.mathworks.com/matlabcentral/fileexchange/48637/';
             dlCmd = sprintf('matlab:unzip(websave(tempname,''%s%s''),pwd);u',...

@@ -12,9 +12,15 @@ end
 
 methods
     function v = scd(v,val)
-        % scd  Set custom display units on a per-variable basis. This is cleared
-        % by most operations that change the units. 
-        %   See also displayUnits.
+        % scd  Set custom display units on a per-variable basis. 
+        %   v = scd(v,str) uses str as the preferred custom display unit for v.
+        %   str must be a valid field of u or be evaluable by str2u.
+        %
+        %   v = scd(v) with only one input returns v with custom display units
+        %   cleared. Custom display units are also cleared by most operations
+        %   that change the units.
+        %   
+        %   See also str2u, displayUnits.
         if nargin == 1
             v.customDisplay = '';
         else

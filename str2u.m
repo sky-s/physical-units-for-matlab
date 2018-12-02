@@ -12,6 +12,9 @@ function out = str2u(inStr)
 %   Grouping with parentheses for clarity is advisable. Note that
 %   str2u('km/h-s') does not return the same result as str2u('km/(h-s)').
 % 
+%   The returned variable will have the unit portion of the input string as its
+%   custom display unit.
+% 
 %   Examples: 
 %     str2u('kg-m²/s^3') returns a DimVar with units of watts (same as calling
 %     u.W).

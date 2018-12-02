@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Physical Units Toolbox - notes and demos</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-02-26"><meta name="DC.source" content="uHelpScript.m"><style type="text/css">
+      --><title>Physical Units Toolbox - notes and demos</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-12-01"><meta name="DC.source" content="uHelpScript.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,10 +66,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Physical Units Toolbox - notes and demos</h1><!--introduction--><p>Author: Sky Sartorius.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Basic Use</a></li><li><a href="#5">Consistency Enforcement</a></li><li><a href="#9">Examples</a></li><li><a href="#11">Displaying and Plotting</a></li></ul></div><h2>Basic Use<a name="1"></a></h2><p>If the Physical Units Toolbox is on your MATLAB path, there is nothing to initialize, add to your workspace, or pass to functions - simply multiply/divide by u.(unitName) to attach physical units to a variable. For example, to define a speed using a supported unit:</p><pre class="codeinput">carSpeed = 100 * u.kph;
+  </style></head><body><div class="content"><h1>Physical Units Toolbox - notes and demos</h1><!--introduction--><p>Author: Sky Sartorius.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Basic Use</a></li><li><a href="#5">Consistency Enforcement</a></li><li><a href="#9">Examples</a></li><li><a href="#11">Displaying and Plotting</a></li></ul></div><h2 id="1">Basic Use</h2><p>If the Physical Units Toolbox is on your MATLAB path, there is nothing to initialize, add to your workspace, or pass to functions - simply multiply/divide by u.(unitName) to attach physical units to a variable. For example, to define a speed using a supported unit:</p><pre class="codeinput">carSpeed = 100 * u.kph;
 </pre><p>Or, define a speed with an unsupported unit as a combination of supported units:</p><pre class="codeinput">snailSpeed = 20 * u.m/u.week;
 </pre><p>Alternatively, strings representing physical units can also be used with str2u.</p><pre class="codeinput">weightGainRate = 6 * str2u(<span class="string">'lb/year'</span>);
-</pre><p>Variables with physical units attached are of the class DimVar ("dimenensioned variable"). Math operations performed on dimensioned variables will automatically perform dimensional analysis and can create new units or cancel units and return a normal variable.</p><h2>Consistency Enforcement<a name="5"></a></h2><p>Math with dimensioned variables is just like numeric variables except that dimensional consistency is enforced. For example, adding two variables having different fundamental units will result in an error.</p><pre class="language-matlab">3*u.s + 2*u.kg
+</pre><p>Variables with physical units attached are of the class DimVar ("dimenensioned variable"). Math operations performed on dimensioned variables will automatically perform dimensional analysis and can create new units or cancel units and return a normal variable.</p><h2 id="5">Consistency Enforcement</h2><p>Math with dimensioned variables is just like numeric variables except that dimensional consistency is enforced. For example, adding two variables having different fundamental units will result in an error.</p><pre class="language-matlab">3*u.s + 2*u.kg
 </pre><p>Returns an error ("Incompatible units.").</p><p>Many MATLAB functions will not accept variables with physical units. This is because most non-mathematical functions are only defined for dimensionless arguments.</p><pre class="codeinput">t = (0:.1:1) * u.s;
 w = (2*pi)*10 * u.Hz;
 <span class="comment">% y = (3 * u.in)*sin(t); % sin undefined for dimensioned argument t.</span>
@@ -78,26 +78,27 @@ y = (3 * u.in) * sin(w.*t); <span class="comment">% sin function now defined (w*
 fprintf(<span class="string">'There are %g degrees in one radian.\n'</span>,u.rad/u.deg)
 </pre><pre class="codeoutput">The class of u.deg is "double."
 There are 57.2958 degrees in one radian.
-</pre><h2>Examples<a name="9"></a></h2><p>Example: Shaft power.</p><pre class="codeinput">rotationSpeed = 2500 * u.rpm;
+</pre><h2 id="9">Examples</h2><p>Example: Shaft power.</p><pre class="codeinput">rotationSpeed = 2500 * u.rpm;
 torque = 95 * str2u(<span class="string">'ft-lbf'</span>);  <span class="comment">% Use alternate string-based definition.</span>
 power = rotationSpeed * torque; <span class="comment">% Returns variable with units of power.</span>
 horsePower = power / u.hp;      <span class="comment">% Convert/cancel units.</span>
 </pre><p>Example: Unit conversion.</p><pre class="codeinput">100 * u.acre/u.ha;  <span class="comment">% Convert 100 acres to hectares.</span>
 u.st/u.kg;          <span class="comment">% Retern conversion factor for stone to kilos.</span>
-</pre><h2>Displaying and Plotting<a name="11"></a></h2><p>Methods such as disp, num2str, and plot are defined for DimVars.</p><pre class="codeinput">acceleration = 1/6*u.g0;
+</pre><h2 id="11">Displaying and Plotting</h2><p>Methods such as disp, num2str, and plot are defined for DimVars.</p><pre class="codeinput">acceleration = 1/6*u.g0;
 fallDistance = linspace(0,5)*u.ft;
 
 disp(<span class="string">'Total time:'</span>)
 disp(sqrt(2*fallDistance(end)/acceleration))
 </pre><pre class="codeoutput">Total time:
-1.3656 s
+    1.3656	s
 </pre><pre class="codeinput">v = sqrt(2*acceleration*fallDistance);
-[~,xStr,yStr] = plot(fallDistance,v);
+h = plot(fallDistance,v);
 title(sprintf(<span class="string">'Dropping an object on the moon\n(acceleration = %s)'</span>,<span class="keyword">...</span>
-    num2str(acceleration)));
-</pre><img vspace="5" hspace="5" src="uHelpScript_01.png" style="width:938px;height:602px;" alt=""> <p>Use the label text to add information.</p><pre class="codeinput">xlabel(sprintf(<span class="string">'Fall distance (%s)'</span>,xStr));
-ylabel(sprintf(<span class="string">'Velocity (%s)'</span>,yStr));
-</pre><img vspace="5" hspace="5" src="uHelpScript_02.png" style="width:938px;height:602px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+    num2str(scd(acceleration,<span class="string">'in/s^2'</span>))));
+
+xlabel(<span class="string">'Fall distance'</span>);
+ylabel(<span class="string">'Velocity'</span>);
+</pre><img vspace="5" hspace="5" src="uHelpScript_01.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Physical Units Toolbox - notes and demos
 % Author: Sky Sartorius.
@@ -172,13 +173,11 @@ disp(sqrt(2*fallDistance(end)/acceleration))
 
 %%
 v = sqrt(2*acceleration*fallDistance);
-[~,xStr,yStr] = plot(fallDistance,v);
+h = plot(fallDistance,v);
 title(sprintf('Dropping an object on the moon\n(acceleration = %s)',...
-    num2str(acceleration)));
+    num2str(scd(acceleration,'in/s^2'))));
 
-%%
-% Use the label text to add information.
-xlabel(sprintf('Fall distance (%s)',xStr));
-ylabel(sprintf('Velocity (%s)',yStr));
+xlabel('Fall distance');
+ylabel('Velocity');
 ##### SOURCE END #####
 --></body></html>
