@@ -279,6 +279,7 @@ properties (Constant = true)
     %---- acceleration ----
 
     g0 = scd(9.80665*u.m/u.s^2,'g0') % standard gravity
+    g_0 = scd(u.g0,'g_0') % standard gravity
     gn = scd(u.g0,'gn') % standard gravity
     g_n = scd(u.g0,'g_n') % standard gravity
     gee = scd(u.g0,'gee') % standard gravity
@@ -300,10 +301,12 @@ properties (Constant = true)
     dyn = scd(1e-5*u.N,'dyn') % dyne
     dyne = scd(u.dyn,'dyne') 
     lbf = scd(4.4482216152605*u.N,'lbf') % pound force
+    lb_f = scd(u.lbf,'lb_f') % pound force
     poundForce = scd(u.lbf,'poundForce') 
     kip = scd(1000*u.lbf,'kip') % kip
     kilopoundForce = scd(u.kip,'kilopoundForce') 
     kgf = scd(u.kg*u.g0,'kgf') % kilogram force
+    kg_f = scd(u.kgf,'kg_f') % kilogram force
     kilogramForce = scd(u.kgf,'kilogramForce') 
     kp = scd(u.kgf,'kp') % kilopond
     kilopond = scd(u.kp,'kilopond') 
@@ -329,6 +332,7 @@ properties (Constant = true)
     Mt = scd(1e6*u.t,'Mt') % metric megatonne
     megatonne = scd(u.Mt,'megatonne') 
     lbm = scd(0.45359237*u.kg,'lbm') % pound mass
+    lb_m = scd(u.lbm,'lb_m') % pound mass
     poundMass = scd(u.lbm,'poundMass') 
     lb = scd(u.lbm,'lb') % pound mass
     pound = scd(u.lb,'pound') 
@@ -374,10 +378,13 @@ properties (Constant = true)
     pdl = scd(u.lbm*u.ft/u.s^2,'pdl') % poundal
     poundal = scd(u.pdl,'poundal') 
     gf = scd(u.gram*u.g0,'gf') % gram force
+    g_f = scd(u.gf,'g_f') %gram force
     gramForce = scd(u.gf,'gramForce') 
     ozf = scd(u.oz*u.g0,'ozf') % ounce force
+    oz_f = scd(u.ozf,'oz_f') % ounce force
     ounceForce = scd(u.ozf,'ounceForce') 
     tonf = scd(u.tn*u.g0,'tonf') % short ton force
+    ton_f = scd(u.tonf,'ton_f') % short ton force
     tonForce = scd(u.tonf,'tonForce') 
 
     %---- mass per length ----
