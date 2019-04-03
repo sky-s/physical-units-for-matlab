@@ -1,2 +1,2 @@
 function v = scd(v,~)
-% See DimVar.scd
+% See also DimVar.scd

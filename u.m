@@ -86,6 +86,7 @@ properties (Constant = true)
     cd          = scd(u.coreUnits.cd,'cd') % candela
     bit         = scd(u.coreUnits.bit,'bit') % bit
     currency    = scd(u.coreUnits.currency,'currency') % currency
+    unit        = scd(u.coreUnits.unit,'unit') % user unit
 
     %% Derived units list:
     % References:
@@ -1112,7 +1113,7 @@ end
 
 %% Processing base units.
 function U = buildCoreUnits(baseUnitSystem)
-coreBaseNames = {'m' 'kg' 's' 'A' 'K' 'mol' 'cd' 'bit' 'currency'};
+coreBaseNames = {'m' 'kg' 's' 'A' 'K' 'mol' 'cd' 'bit' 'currency' 'unit'};
 
 if ischar(baseUnitSystem) && strcmpi('none',baseUnitSystem)
     % Use normal variables - not DimVars - if baseUnitSystem is 'none'.
@@ -1120,7 +1121,8 @@ if ischar(baseUnitSystem) && strcmpi('none',baseUnitSystem)
     return
 end
 
-validateattributes(baseUnitSystem,{'cell'},{'size',[9,2]},'u','baseUnitSystem');
+validateattributes(baseUnitSystem,{'cell'},{'size',[10,2]},...
+    'u','baseUnitSystem');
 
 if ~iscellstr(u.baseUnitSystem(:,1))
     error('First column of baseUnitSystem must be type char.')

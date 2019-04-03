@@ -36,6 +36,7 @@ baseUnitSystem = {
     'cd'       1
     'bit'      1
     '¤'        1 
+    'unit'     1  % Custom user unit.
     };
 
 % return
