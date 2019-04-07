@@ -1,7 +1,7 @@
 function varargout = plotfunctionwrapper(plotFunction,varargin)
 % plotfunctionwrapper(plotFunction,varargin)  Converts all inputs in varargin
-% using displayingvalue and passes to plotFunction using feval. If plotFunction
-% is a plotting function (i.e., not something like histcounts or contourc),
+% using plottingvalue and passes to plotFunction using feval. If plotFunction is
+% a plotting function (i.e., not something like histcounts or contourc),
 % plotfunctionwrapper will also add appropriate unit labels to the axes returned
 % by gca.
 % 
@@ -9,10 +9,9 @@ function varargout = plotfunctionwrapper(plotFunction,varargin)
 % per-variable custom display units. This ensures that multiple elements on the
 % same axes are correct.
 % 
-%   See also displayingvalue, feval, displayUnits,
+%   See also plottingvalue, feval, displayUnits,
 %     AddSecondAxis - http://www.mathworks.com/matlabcentral/fileexchange/38852,
 %     addaxis_unit  - http://www.mathworks.com/matlabcentral/fileexchange/26928.
-
 
 %% Execute function.
 % Convert all DimVar arguments to regular variables.
@@ -23,13 +22,11 @@ if numel(varargin) <= 2 && isstruct(varargin{end})
     
     cleanedArgs = varargin;
     S = varargin{end};
-    C = cellfun(@(arg) displayingvalue(scd(arg)),struct2cell(S),...
-        'UniformOutput',false);
+    C = cellfun(@plottingvalue,struct2cell(S),'UniformOutput',false);
     cleanedArgs{end} = cell2struct(C,fieldnames(S));
     
 else
-    cleanedArgs = cellfun(@(arg) displayingvalue(scd(arg)),varargin,...
-        'UniformOutput',false);
+    cleanedArgs = cellfun(@plottingvalue,varargin,'UniformOutput',false);
     
 end
 [varargout{1:nargout}] = feval(plotFunction,cleanedArgs{:});
