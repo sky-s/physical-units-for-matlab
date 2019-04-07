@@ -5,7 +5,11 @@ function varargout = plotfunctionwrapper(plotFunction,varargin)
 % plotfunctionwrapper will also add appropriate unit labels to the axes returned
 % by gca.
 % 
-%   See also displayingvalue, feval, 
+% Units used for plotting are determined by displayUnits and baseUnitSystem, not
+% per-variable custom display units. This ensures that multiple elements on the
+% same axes are correct.
+% 
+%   See also displayingvalue, feval, displayUnits,
 %     AddSecondAxis - http://www.mathworks.com/matlabcentral/fileexchange/38852,
 %     addaxis_unit  - http://www.mathworks.com/matlabcentral/fileexchange/26928.
 
@@ -19,11 +23,13 @@ if numel(varargin) <= 2 && isstruct(varargin{end})
     
     cleanedArgs = varargin;
     S = varargin{end};
-    C = cellfun(@displayingvalue,struct2cell(S),'UniformOutput',false);
+    C = cellfun(@(arg) displayingvalue(scd(arg)),struct2cell(S),...
+        'UniformOutput',false);
     cleanedArgs{end} = cell2struct(C,fieldnames(S));
     
 else
-    cleanedArgs = cellfun(@displayingvalue,varargin,'UniformOutput',false);
+    cleanedArgs = cellfun(@(arg) displayingvalue(scd(arg)),varargin,...
+        'UniformOutput',false);
     
 end
 [varargout{1:nargout}] = feval(plotFunction,cleanedArgs{:});
@@ -38,17 +44,18 @@ if numel(args) && ...
         || isa(args{1},'matlab.ui.control.UIAxes'))
     
     args = varargin(2:end);
+    providedAxes = true;
+    providedAxesHandle = varargin{1};
     
 else
     args = varargin;
-    
+    providedAxes = false;
 end
 
-%% Easy scheme.
+%% Easy scheme with struct-style input.
 [X,Y,Z] = deal([]);
 if ischar(args{1}) || isstruct(args{1})
     S = struct(args{:}); % Also works with single input struct.
-    % struct input scheme.
     
     if isfield(S,'Vertices') 
         % Order is important. Patch will use XData, etc. instead of Vertices if
@@ -69,7 +76,7 @@ if ischar(args{1}) || isstruct(args{1})
         Z = S.ZData;
     end
     
-    labelaxes(gca,X,Y,Z)
+    labelaxes(X,Y,Z)
     return
 end
 
@@ -91,43 +98,43 @@ switch char(plotFunction)
             % All DimVar inputs should be compatible.
             warnFlag = true;
         end
-        labelaxes(gca,plottableArgs{1},[],[]);
+        labelaxes(plottableArgs{1},[],[]);
         
     case {'histogram2'}
-        labelaxes(gca,plottableArgs{1:2},[])
+        labelaxes(plottableArgs{1:2},[])
         
     case {'contour','contourf'}
         if nPlottableArgs >= 3
-            labelaxes(gca,plottableArgs{1:2},[])
+            labelaxes(plottableArgs{1:2},[])
         end
     
     case {'surf','surface','contour3'}
         if nPlottableArgs <= 2
             % surf(z,c,...); surf(z)
-            labelaxes(gca,[],[],plottableArgs{1})
+            labelaxes([],[],plottableArgs{1})
             
         else
             % surf(x,y,z); surf(x,y,z,c)
-            labelaxes(gca,plottableArgs{1:3})
+            labelaxes(plottableArgs{1:3})
             
         end
         
     case {'patch'}
         if nPlottableArgs <= 3
             % patch(x,y,c)
-            labelaxes(gca,plottableArgs{1:2},[])
+            labelaxes(plottableArgs{1:2},[])
             
         else
             % patch(x,y,z,c)
-            labelaxes(gca,plottableArgs{1:3})
+            labelaxes(plottableArgs{1:3})
             
         end
         
     case {'line','text'}
         if nPlottableArgs <= 2
-            labelaxes(gca,plottableArgs{1:2},[])
+            labelaxes(plottableArgs{1:2},[])
         else
-            labelaxes(gca,plottableArgs{1:3})
+            labelaxes(plottableArgs{1:3})
         end
         
     case {'plot','fill'}
@@ -138,9 +145,9 @@ switch char(plotFunction)
         end
         
         if nPlottableArgs == 1
-            labelaxes(gca,[],plottableArgs{1},[])
+            labelaxes([],plottableArgs{1},[])
         else
-            labelaxes(gca,plottableArgs{1:2},[])
+            labelaxes(plottableArgs{1:2},[])
         end
         
     case {'plot3','fill3'}
@@ -151,7 +158,7 @@ switch char(plotFunction)
             warnFlag = true;
         end
         
-        labelaxes(gca,plottableArgs{1:3})
+        labelaxes(plottableArgs{1:3})
         
 end
 
@@ -160,22 +167,28 @@ if warnFlag
     warning('DimVar:plotunitscompatibility',...
         ['Potentially incompatible units in inputs for ' plotFunction '.'])    
 end
-end
 
-function labelaxes(ax,X,Y,Z)
-if isa(X,'DimVar')
-    [~,~,~,~,~,xs] = displayparser(X);
-    ax.XAxis.TickLabelFormat = ['%g ' xs]; % R2015b+
-end
-if isa(Y,'DimVar')
-    [~,~,~,~,~,ys] = displayparser(Y);
-    ax.YAxis.TickLabelFormat = ['%g ' ys]; % R2015b+
-end
-if isa(Z,'DimVar')
-    [~,~,~,~,~,zs] = displayparser(Z);
-    ax.ZAxis.TickLabelFormat = ['%g ' zs]; % R2015b+
-end
 
+    function labelaxes(X,Y,Z)
+        if providedAxes
+            ax = providedAxesHandle;
+        else
+            ax = gca;
+        end
+        if isa(X,'DimVar')
+            [~,~,~,~,~,xs] = displayparser(scd(X));
+            ax.XAxis.TickLabelFormat = ['%g ' xs]; % R2015b+
+        end
+        if isa(Y,'DimVar')
+            [~,~,~,~,~,ys] = displayparser(scd(Y));
+            ax.YAxis.TickLabelFormat = ['%g ' ys]; % R2015b+
+        end
+        if isa(Z,'DimVar')
+            [~,~,~,~,~,zs] = displayparser(scd(Z));
+            ax.ZAxis.TickLabelFormat = ['%g ' zs]; % R2015b+
+        end
+        
+    end
 end
 
 function [args,props] = parseplotparams(args)

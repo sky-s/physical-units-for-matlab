@@ -12,7 +12,7 @@ end
 
 methods
     function v = scd(v,val)
-        % scd  Set custom display units on a per-variable basis. 
+        % scd  Set Custom Display units on a per-variable basis. 
         %   v = scd(v,str) uses str as the preferred custom display unit for v.
         %   str must be a valid field of u or be evaluable by str2u.
         %
