@@ -301,6 +301,12 @@ methods
     function varargout = text(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('text',varargin{:});
     end
+    function varargout = xline(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('xline',varargin{:});
+    end
+    function varargout = yline(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('yline',varargin{:});
+    end
 
 end
 end

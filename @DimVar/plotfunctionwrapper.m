@@ -157,6 +157,12 @@ switch char(plotFunction)
         
         labelaxes(plottableArgs{1:3})
         
+    case {'xline'}
+        labelaxes(plottableArgs{1},[],[])
+        
+    case {'yline'}
+        labelaxes([],plottableArgs{1},[])
+        
 end
 
 %% Send out warning if units might not match.
