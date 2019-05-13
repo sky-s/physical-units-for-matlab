@@ -1,4 +1,4 @@
-function baseUnitSystem = baseUnitSystem()
+function baseUnitSystem = baseUnitSystem(unitSystem)
 % baseUnitSystem  Sets the base set of fundamental units for variables with
 % physical units. Copy this file to your project directory and modify to
 % customize physical units for a particular project.
@@ -7,9 +7,9 @@ function baseUnitSystem = baseUnitSystem()
 %   most users preferences can often be captured by defining only preferred
 %   display units in displayUnits.
 %   
-%   baseUnitSystem should return a 9 by 2 cell array with characters in the
+%   baseUnitSystem should return an n by 2 cell array with characters in the
 %   first column and doubles in the second. The format of the list must
-%   correspond to the default base SI system (m, kg, s, A, K, mol, cd, bit, ¤)
+%   correspond to the core base SI system (m, kg, s, A, K, mol, cd, bit, etc.)
 %   and have the same order. The value in the second column is the factor by
 %   which the user-provided base unit must be multiplied to have the value of
 %   the base SI unit. For example, to use cm as the default length, the value in
@@ -41,7 +41,9 @@ baseUnitSystem = {
 
 % return
 %% Menu
-unitSystem = 'SI'; % Change this value to select system.
+if ~nargin
+    unitSystem = 'SI'; % Change this value to set default system.
+end
 
 switch upper(unitSystem)
     case {'SI' 'MKS' 'METRIC' 'INTERNATIONAL'}

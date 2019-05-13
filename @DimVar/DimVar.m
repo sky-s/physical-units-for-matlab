@@ -307,6 +307,24 @@ methods
     function varargout = yline(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('yline',varargin{:});
     end
+end
 
+methods (Static)
+    function v = loadobj(v)
+        % Loading DimVar objects that may have been saved with an older version
+        % of the Physical Units Toolbox that had a shorter vector of base units.
+        % This will have undesirable behavior if the saved and loaded variables
+        % do not share the same base unit system.
+        
+        base = u.baseUnitSystem;
+        
+        ex = v.exponents;
+        nEx = numel(ex);
+        nBase = length(base);
+        if nEx < nBase
+            v.exponents = zeros(1,nBase);
+            v.exponents(1:nEx) = ex;
+        end
+    end
 end
 end
