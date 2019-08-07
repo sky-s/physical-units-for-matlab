@@ -182,7 +182,8 @@ properties (Constant = true)
 
     %---- area ----
 
-    sqft = scd(u.ft^2,'sqft') % square foot
+    ft2 = scd(u.ft^2,'ft²') % square foot
+    sqft = scd(u.ft2,'sqft') % square foot
     square = scd(100*u.sqft,'square') % square
     ha = scd(10000*u.m^2,'ha') % hectare
     hectare = scd(u.ha,'hectare') 
@@ -208,6 +209,7 @@ properties (Constant = true)
     squareMile = scd(u.sqmi,'squareMile')
     sqnmi = scd(u.nmi^2,'sqnmi') % square nautical mile
     squareNauticalMile = scd(u.sqnmi,'squareNauticalMile')
+    m2 = scd(u.m^2,'m²') % square meter
     sqm = scd(u.m^2,'sqm') % square meter
     squareMeter = scd(u.sqm,'squareMeter')
     sqkm = scd(u.km^2,'sqkm') % square kilometer
@@ -221,6 +223,7 @@ properties (Constant = true)
 
     %---- volume ----
 
+    m3 = scd(u.m^3,'m³') % cubic meter
     cc = scd(u.cm^3,'cc') % cubic centimeter
     cubicCentimeter = scd(u.cc,'cubicCentimeter') 
     L = scd(1000*u.cc,'L') % liter
@@ -242,7 +245,8 @@ properties (Constant = true)
     kl = scd(u.kL,'kl') % kiloliter
     kiloliter = scd(u.kl,'kiloliter') 
     cuin = scd(16.387064*u.mL,'cuin') % cubic inch
-    cubicInch = scd(u.cuin,'cubicInch') 
+    cubicInch = scd(u.cuin,'cubicInch')
+    ft3 = scd(u.ft^3,'ft³') % cubic foot
     FBM = scd(u.sqft*u.in,'FBM') % board foot
     boardFoot = scd(u.FBM,'boardFoot') 
     gal = scd(231*u.cuin,'gal') % gallon (US)
@@ -1091,7 +1095,7 @@ methods
         end
                 
         try    
-            dispdisp(uDisplayStrucasdft);
+            dispdisp(uDisplayStruct);
             % mathworks.com/matlabcentral/fileexchange/48637
         catch
             builtin('disp',uDisplayStruct);
