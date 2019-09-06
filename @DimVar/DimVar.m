@@ -307,6 +307,20 @@ methods
     function varargout = yline(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('yline',varargin{:});
     end
+    
+    %% Axis limits _lim functions.
+    function xlim(varargin)
+        varargin = cellfun(@plottingvalue,varargin,'UniformOutput',false);
+        xlim(varargin{:});
+    end
+    function ylim(varargin)
+        varargin = cellfun(@plottingvalue,varargin,'UniformOutput',false);
+        ylim(varargin{:});
+    end
+    function zlim(varargin)
+        varargin = cellfun(@plottingvalue,varargin,'UniformOutput',false);
+        zlim(varargin{:});
+    end
 end
 
 methods (Static)
