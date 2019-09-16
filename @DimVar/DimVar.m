@@ -50,17 +50,16 @@ methods
     end
     
     function compatible(v,varargin)
-        % compatible(v1, v2, ...) throws an error unless all inputs are DimVar
-        % with the same units.
-        %
-        %   If throwing an error is not desired, use iscompatible.
-        %
-        %   See also u, iscompatible.
+        % See also compatible, iscompatible.
+        
+        % Note: This must be both a function and a DimVar method so that the
+        % method can access the exponents property.
         
         if ~isa(v,'DimVar')
             
             ME = MException('DimVar:incompatibleUnits',...
-                'Incompatible units. All inputs must be DimVar.');
+                ['Incompatible units. Cannot perform operation on '...
+                'variables with different units.']);
             throwAsCaller(ME);
             
         end
@@ -69,7 +68,8 @@ methods
         
         for i = 1:numel(varargin)
             
-            if ~isa(varargin{i},'DimVar') || ~isequal(vExpos,varargin{i}.exponents)
+            if ~isa(varargin{i},'DimVar') ...
+                    || ~isequal(vExpos,varargin{i}.exponents)
                 
                 ME = MException('DimVar:incompatibleUnits',...
                     ['Incompatible units. Cannot perform operation on '...
@@ -321,6 +321,15 @@ methods
         varargin = cellfun(@plottingvalue,varargin,'UniformOutput',false);
         zlim(varargin{:});
     end
+
+% Certain saveobj and loadobj functionality may be desirable to turn on in some
+% circumstances.
+
+%     function s = saveobj(v)
+%         s = struct('exponents',v.exponents,...
+%             'value',v.value,'customDisplay',v.customDisplay,...
+%             'base',u.baseUnitSystem);
+%     end
 end
 
 methods (Static)
@@ -339,6 +348,24 @@ methods (Static)
             v.exponents = zeros(1,nBase);
             v.exponents(1:nEx) = ex;
         end
+        
+%         if isa(v,'DimVar')
+%             return
+%         end
+%         
+%         v_ = DimVar(v.exponents,v.value);
+%         
+%         if isfield(v,'customDisplay')
+%             v_ = scd(v_,v.customDisplay);
+%         end
+%         if isfield(v,'base')
+%             % Check that base unit system (at least the multipliers) is the
+%             % same.
+%             if ~isequal(base(1:nEx,2),v.base(1:nEx,2))
+%                 warning(['Base unit system of loaded object does not match '...
+%                 'current workspace base units system.'])
+%             end
+%         end
     end
 end
 end
