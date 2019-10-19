@@ -212,6 +212,8 @@ methods
     function v = sum(v,varargin);   v.value = sum(v.value,varargin{:});     end
     function v = trace(v);          v.value = trace(v.value);               end
     function v = transpose(v);      v.value = v.value.';                    end
+    function v = tril(v,varargin);  v.value = tril(v.value,varargin{:});    end
+    function v = triu(v,varargin);  v.value = triu(v.value,varargin{:});    end
     function v = uminus(v);         v.value = -v.value;                     end
     function v = uplus(v);                                                  end
     
@@ -283,6 +285,7 @@ methods
     function varargout = line(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('line',varargin{:});
     end
+    % TODO: add mesh, meshc, meshz.
     function varargout = patch(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('patch',varargin{:});
     end
@@ -292,9 +295,11 @@ methods
     function varargout = plot3(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('plot3',varargin{:});
     end
+    % TODO: add ribbon, slice.
     function varargout = surf(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('surf',varargin{:});
     end
+    % TODO: add surfc, surfl.
     function varargout = surface(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('surface',varargin{:});
     end
