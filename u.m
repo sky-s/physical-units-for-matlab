@@ -860,6 +860,7 @@ properties (Constant = true)
     nauticalMilePerHour = scd(u.nmph,'nauticalMilePerHour') 
     kph = scd(u.km/u.hr,'kph') % kilometer per hour
     kmh = scd(u.kph,'kmh') % kilometer per hour
+    kps = scd(u.km/u.s,'kps') % kilometer per second
     kilometerPerHour = scd(u.kmh,'kilometerPerHour') 
     mph = scd(u.mi/u.hr,'mph') % mile per hour
     milePerHour = scd(u.mph,'milePerHour') 
