@@ -184,7 +184,13 @@ end
         end
         if isa(Y,'DimVar')
             [~,~,~,~,~,ys] = displayparser(scd(Y));
-            ax.YAxis.TickLabelFormat = ['%g ' ys]; % R2015b+
+            % Prepare for the possibility of a yyaxis plot with a 2-element
+            % YAxis NumericRuler.
+            if strcmp(ax.YAxisLocation,'right') 
+                ax.YAxis(end).TickLabelFormat = ['%g ' ys]; % R2015b+
+            else
+                ax.YAxis(1).TickLabelFormat = ['%g ' ys]; % R2015b+
+            end
         end
         if isa(Z,'DimVar')
             [~,~,~,~,~,zs] = displayparser(scd(Z));
