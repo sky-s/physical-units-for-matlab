@@ -495,6 +495,7 @@ properties (Constant = true)
     cal_20 = scd(4.182*u.J,'cal_20') % calorie (20°C)
     cal_mean = scd(4.190*u.J,'cal_mean') % calorie (mean)
     cal_th = scd(4.184*u.J,'cal_th') % calorie (thermochemical)
+    tonTnt = scd(u.cal_th*1e9,'tonTnt') % ton of TNT
     kcal = scd(1e3*u.cal,'kcal') % kilocalorie
     kilocalorie = scd(u.kcal,'kilocalorie') 
     kcal_IT = scd(1e3*u.cal_IT,'kcal_IT') % kilocalorie (International Table)
