@@ -5,7 +5,7 @@ function display(v) %#ok<DISPLAY>
 % Note: display used to contain important functionality with the syntax:
 % [numeratorString, denominatorString, v] = display(v).
 
-[dispVal,~,~,numString,denString] = displayparser(v);
+[dispVal,~,numString,denString] = displayparser(v);
 
 showName = inputname(1);
 if isempty(showName)

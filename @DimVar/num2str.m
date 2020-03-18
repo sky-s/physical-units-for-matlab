@@ -8,7 +8,7 @@ if isequal(varargin,{'%d    '}) && ...
 end
 
 
-[dispVal,~,unitStr] = displayparser(v);
+[dispVal,unitStr] = displayparser(v);
 s = num2str(dispVal, varargin{:});
 
 if isempty(s)

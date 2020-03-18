@@ -20,5 +20,5 @@ function [uv,us] = unitsOf(v)
 uv = DimVar(v.exponents,1);
 
 if nargout > 1
-    [~,~,us] = displayparser(v);
+    [~,us] = displayparser(v);
 end

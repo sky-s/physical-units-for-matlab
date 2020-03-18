@@ -8,7 +8,7 @@ function str = mat2str(dv,varargin)
 %   www.mathworks.com/matlabcentral/fileexchange/authors/101715
 
 
-[dispVal,~,unitStr] = displayparser(dv);
+[dispVal,unitStr] = displayparser(dv);
 
 
 % Interpret everything prior to the first alphabetic character (incl. case of

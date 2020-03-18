@@ -179,11 +179,11 @@ end
             ax = gca;
         end
         if isa(X,'DimVar')
-            [~,~,~,~,~,xs] = displayparser(scd(X));
+            [~,~,~,~,xs] = displayparser(scd(X));
             ax.XAxis.TickLabelFormat = ['%g ' xs]; % R2015b+
         end
         if isa(Y,'DimVar')
-            [~,~,~,~,~,ys] = displayparser(scd(Y));
+            [~,~,~,~,ys] = displayparser(scd(Y));
             % Prepare for the possibility of a yyaxis plot with a 2-element
             % YAxis NumericRuler.
             if strcmp(ax.YAxisLocation,'right') 
@@ -193,7 +193,7 @@ end
             end
         end
         if isa(Z,'DimVar')
-            [~,~,~,~,~,zs] = displayparser(scd(Z));
+            [~,~,~,~,zs] = displayparser(scd(Z));
             ax.ZAxis.TickLabelFormat = ['%g ' zs]; % R2015b+
         end
         

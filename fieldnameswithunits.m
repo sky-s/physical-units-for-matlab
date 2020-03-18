@@ -65,7 +65,7 @@ for i = 1:numel(names)
         end
         T.(fn) = var./exceptionUnits{exceptionInd};
     else
-        [T.(fn),~,uN{i}] = displayparser(var);
+        [T.(fn),uN{i}] = displayparser(var);
         names{i} = strcat(fn,' (',uN{i},')');
     end
 end

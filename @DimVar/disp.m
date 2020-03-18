@@ -1,5 +1,5 @@
 function disp(v)
-[val,~,appendStr] = displayparser(v); %#ok<ASGLU>
+[val,appendStr] = displayparser(v); %#ok<ASGLU>
 
 t = evalc('disp(val)');
 if isempty(t)

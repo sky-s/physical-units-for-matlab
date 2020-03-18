@@ -1,9 +1,9 @@
-function [dispVal,dispVar,unitStr,numString,denString,labelStr] = ...
-    displayparser(dispVar)
+function [dispVal,unitStr,numString,denString,labelStr] = displayparser(dispVar)
 % Parse a DimVar into useful values and strings for display, etc. 
-% [dispVal,dispVar,unitStr,numString,denString,labelStr] = displayparser(v)
+% [dispVal,unitStr,numString,denString,labelStr] = displayparser(v)
 % 
 %   See also u, DimVar.disp, DimVar.display, DimVar.plot, xlabel.
+
 dispVal = dispVar.value;
 
 numString = '';
@@ -22,7 +22,6 @@ if ~isempty(dispVar.customDisplay)
     if ~isa(test, 'DimVar')
         % Units match.
         numString = str;
-        dispVar.value = test;
         dispVal = test;
         buildAppendStr();
         return
@@ -45,7 +44,6 @@ elseif iscellstr(u.dispUnits)
         if ~isa(test, 'DimVar')
             % Units match.
             numString = str;
-            dispVar.value = test;
             dispVal = test;
             buildAppendStr();
             return
@@ -59,7 +57,6 @@ elseif iscell(u.dispUnits)
         if ~isa(test, 'DimVar')
             % Units match.
             numString = prefStrings{i};
-            dispVar.value = test;
             dispVal = test;
             buildAppendStr();
             return
@@ -69,7 +66,7 @@ else
     error('dispUnits must be cellstr or 2-column cell array.')
 end
 
-if nargout <= 2
+if nargout == 1
     return
 end
 %% Built from base units.

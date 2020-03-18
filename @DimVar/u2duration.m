@@ -16,7 +16,7 @@ function d = u2duration(v)
 if isa(v/u.s,'DimVar')
     error('A pure time DimVar (with exponent of one) is required.')
 else
-    [~,~,unitStr] = displayparser(v);
+    [~,unitStr] = displayparser(v);
     switch unitStr
         case {'s' 'ss' 'sec' 'secs' 'second' 'seconds'}
             d = seconds(v/u.s);
