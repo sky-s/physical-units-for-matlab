@@ -249,6 +249,18 @@ methods
     end
     
     %% Plot-like functions.
+    function varargout = bar(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('bar',varargin{:});
+    end
+    function varargout = bar3(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('bar3',varargin{:});
+    end
+    function varargout = barh(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('barh',varargin{:});
+    end
+    function varargout = bar3h(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('bar3h',varargin{:});
+    end
     function varargout = contour(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('contour',varargin{:});
     end

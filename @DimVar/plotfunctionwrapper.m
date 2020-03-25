@@ -89,6 +89,34 @@ nPlottableArgs = nnz(plottableArgInd);
 warnFlag = false;
 
 switch char(plotFunction)
+    case {'bar','barh','bar3','bar3h'}
+        if isscalar(plottableArgs{end})
+            % Last argument is width, so ignore it.
+            nPlottableArgs = nPlottableArgs - 1;
+        end
+        if nPlottableArgs == 2
+            % First argument is bar locations.
+            switch char(plotFunction)
+                case 'bar'
+                    labelaxes(plottableArgs{1:2},[])
+                case 'barh'
+                    labelaxes(plottableArgs{2},plottableArgs{1},[])
+                case 'bar3'
+                    labelaxes([],plottableArgs{1:2})
+                case 'bar3h'
+                    labelaxes([],plottableArgs{2},plottableArgs{1})
+            end
+        else
+            switch char(plotFunction)
+                case {'bar','bar3h'}
+                    labelaxes([],plottableArgs{1},[])
+                case 'barh'
+                    labelaxes(plottableArgs{1},[],[])
+                case 'bar3'
+                    labelaxes([],[],plottableArgs{1})
+            end
+        end
+        
     case {'hist','histogram'}
         dimVarArgs = varargin(cellfun('isclass',args,'DimVar'));
         if ~iscompatible(dimVarArgs{:})
