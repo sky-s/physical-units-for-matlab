@@ -4,7 +4,7 @@ function baseUnitSystem = baseUnitSystem(unitSystem)
 % customize physical units for a particular project.
 % 
 %   Most of the time it will be unnecessary to use a custom baseUnitSystem, as
-%   most users preferences can often be captured by defining only preferred
+%   most user preferences can often be captured by defining only preferred
 %   display units in displayUnits.
 %   
 %   baseUnitSystem should return an n by 2 cell array with characters in the
@@ -21,7 +21,7 @@ function baseUnitSystem = baseUnitSystem(unitSystem)
 %   has already been developed and debugged by getting rid of the DimVar method
 %   overhead, including e.g. unit compatibility checking.
 % 
-%   Remember to clear classes whenever changing baseUnitSystem.
+%   Remember to <a href="matlab:clear u">clear u</a> when changing base units.
 % 
 %   See also u, displayUnits.
 

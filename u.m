@@ -28,7 +28,9 @@ classdef u < handle
 %   preferences for a specific project by defining these variables at the top of
 %   a script (before any units are called) or placing unique versions of the
 %   files in a project's directory. Be sure to clear the class when changing
-%   projects or else the old customizations will remain in effect.
+%   projects or else the old customizations will remain in effect, e.g.
+%       <a href="matlab:clear u">clear u</a> or 
+%       <a href="matlab:clear classes">clear classes</a>.
 %
 %   Some MATLAB functions won't accept variables with physical units (DimVars).
 %   Most of the time displayingvalue, which returns value in terms of preferred

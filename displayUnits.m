@@ -12,11 +12,11 @@ function dispUnits = displayUnits()
 %   first column for display strings and the second containing DimVars with the
 %   corresponding unit.
 % 
-%   Remember to clear classes whenever changing displayUnits.
+%   Remember to <a href="matlab:clear u">clear u</a> when changing displayUnits.
 %   
 %   <a href="matlab:edit displayUnits">Open displayUnits.m in editor</a>.
 % 
-%   See also u, baseUnitSystem, str2u.
+%   See also u, baseUnitSystem, str2u, DimVar/scd.
 
 %% Standard SI.
 dispUnits = {'N' 'Pa' 'J' 'W' 'C' 'V' 'F' 'Ohm' 'S' 'Wb' 'T' 'H'};
