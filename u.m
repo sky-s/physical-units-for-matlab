@@ -644,11 +644,17 @@ properties (Constant = true)
     HP_I = scd(u.hp,'HP_I') % mechanical horsepower (550 ft-lbf/s)
     hpE = scd(746*u.W,'hpE') % electrical horsepower
     HP_E = scd(u.hpE,'HP_E') % electrical horsepower
-    electricalHorsepower = scd(u.hp,'electricalHorsepower') 
+    electricalHorsepower = scd(u.hpE,'electricalHorsepower') 
     PS = scd(75*u.kg*u.g0*u.m/u.s,'PS') % metric horsepower (DIN 66036)
     HP = scd(u.PS,'HP') % metric horsepower (DIN 66036)
     HP_DIN = scd(u.PS,'HP_DIN') % metric horsepower (DIN 66036)
     metricHorsepower = scd(u.PS,'metricHorsepower') 
+    VA = scd(u.W,'VA')
+    volt_ampere = scd(u.VA,'volt_ampere')
+    kVA = scd(1000*u.VA,'kVA')
+    kilovolt_ampere = scd(u.kVA,'kilovolt_ampere')
+    var = scd(u.VA,'var')
+    volt_ampere_reactive = scd(u.var,'volt_ampere_reactive')
 
     %---- current ----
 
