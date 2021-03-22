@@ -955,7 +955,7 @@ properties (Constant = true)
 
     k_B = scd(1.38064852e-23*u.J/u.K,'k_B') % Boltzmann constant
     BoltzmannConstant = scd(u.k_B,'BoltzmannConstant') 
-    sigma_SB = scd(5.670367e-8*u.W/(u.sqm*u.K^4),'sigma_SB') % Stefan–Boltzmann constant
+    sigma_SB = scd(5.670367e-8*u.W/(u.sqm*u.K^4),'sigma_SB') % Stefan-Boltzmann constant
     Stefan_BoltzmannConstant = scd(u.sigma_SB,'Stefan_BoltzmannConstant') 
     h_c = scd(6.626070040e-34*u.J*u.s,'h_c') % Planck constant
     PlanckConstant = scd(u.h_c,'PlanckConstant') 
