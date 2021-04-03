@@ -536,6 +536,10 @@ properties (Constant = true)
     Centigrade = u.degC;
     degF = OffsetDimVar(u.R,459.67*u.R) % Fahrenheit
     Fahrenheit = u.degF;
+    deltaK = scd(u.K,'deltaK') % kelvin (relative temperature)
+    deltaDegC = scd(u.K,'deltaDegC') % celsius (relative, °C = °K-273.15)
+    deltaDegR = scd(u.R,'deltaDegR') % rankine (relative temperature)
+    deltaDegF = scd(u.R,'deltaDegF') % fahrenheit (relative, °F = °R-459.67)
     mK = scd(1e-3*u.K,'mK') % millikelvin
     millikelvin = scd(u.mK,'millikelvin') 
     uK = scd(1e-6*u.K,'uK') % microkelvin

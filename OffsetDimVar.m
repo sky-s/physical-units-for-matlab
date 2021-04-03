@@ -1,4 +1,37 @@
 classdef (InferiorClasses = {?DimVar}) OffsetDimVar
+% OffsetDimVar  A special case of DimVar for physical units that have an offset
+% zero reference (i.e., Fahrenheit and Celcius temperatures).
+%
+%   OffsetDimVars should be used only for setting and converting units though
+%   multiplication and division. 
+% 
+%     Use cases:
+%       Set a value with multiplication (before or after scalar): 
+%           roomTemp = 20*u.degC        -> 293.15 K
+%           hotDay = u.degC*40          -> 313.15 K
+%           str2u('20 degC')            -> 293.15 K
+%       Convert units with division:
+%           reallyCold = 200*u.K/u.degC -> -73.15
+%           convertToK = 20*u.degC/u.K  -> 293      treated as (20*u.degC)/u.K
+%           special case: u.degC/u.degF -> 1.8
+% 
+%     Pretty much all other use cases should be avoided and mostly throw an
+%     error, but not always (usually in cases where it will be interpreted at 1
+%     degC = 274.15 K, e.g.), so be careful.
+%       u.kg*u.degC
+%       u.degC*u.degF
+%       u.degC/u.K
+%       str2u('20 degC/s')
+%       u.degC + 5*u.K 
+%       unitconversionfactor(u.K,u.degC)
+%       anything else with unitconversionfactor (since it won't be a "factor"),
+%       e.g. unitconversionfactor('degC','K'), even though this doesn't throw an
+%       error.
+%       20*u.degC + 20*u.degF also doesn't error but should be avoided. Used
+%       u.deltaDegF instead, for example.
+% 
+%   See also DimVar, u, str2u, unitconversionfactor, u.deltaDegC, u.deltaDegF.
+
     properties (Access = protected)
         dv
     end
@@ -6,22 +39,7 @@ classdef (InferiorClasses = {?DimVar}) OffsetDimVar
         offset = 0
     end
     
-% Use cases:
-%   Set a value: 
-%       roomTemp = 20*u.degC -> 293 K
-%       hotDay = u.degC*40
-%       str2u('20 degC')
-%   Convert units:
-%       reallyCold = 200*u.K/u.degC -> -73
-%       convertToSci = 20*u.degC/u.K -> 293
-%       special case: u.degC/u.degF
-%   
-% Pretty much all other use cases should throw an error:
-%   u.kg*u.degC
-%   u.degC*u.degF
-%   u.degC/u.K
-%   anything with unitconversionfactor (since it won't be a "factor")
-%   str2u('20 degC/s')
+
     methods
         function v = OffsetDimVar(dv,offset)
             v.dv = dv;
@@ -48,7 +66,7 @@ classdef (InferiorClasses = {?DimVar}) OffsetDimVar
         function v = rdivide(v1,v2)
             if ~isa(v2,'OffsetDimVar') % v1 is only OffsetDimVar
                 error('OffsetDimVar:undefined',...
-                    'Dividing by an offset physical unit is undefined.')
+                    'Division of an offset physical unit is undefined.')
             elseif ~isa(v1,'OffsetDimVar') % v2 is only OffsetDimVar
                 v = (v1 - v2.offset)./v2.dv;
             else % both, very special case.
