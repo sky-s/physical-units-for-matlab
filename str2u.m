@@ -55,13 +55,13 @@ inStr = strtrim(inStr);
 %% First separate out the leading number.
 [number, unitStr] = regexp(inStr,'^[-+.0-9]+','match','split');
 if ~isempty(number)
-    number = number{1};
+    number = str2double(number{1});
 else
-    number = '1';
+    number = 1;
 end
 unitStr = strtrim(unitStr{end});
 if isempty(unitStr)
-    out = eval(number);
+    out = number;
     return
 end
 
@@ -99,9 +99,8 @@ rep = {
     '*u.'               % 9
     };                
 
-evalStr = regexprep(unitStr,exp,rep);
-out = eval([number '*' evalStr]);
-
-if isa(out,'DimVar')
+eve = eval(regexprep(unitStr,exp,rep));
+out = number*eve;
+if isa(out,'DimVar') && ~isa(eve,'OffsetDimVar')
     out = scd(out,strtrim(unitStr));
 end

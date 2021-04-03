@@ -531,16 +531,17 @@ properties (Constant = true)
     kelvin = scd(u.K,'kelvin') 
     R = scd(u.K*5/9,'R') % rankine (°F = °R-459.67)
     rankine = scd(u.R,'rankine') 
+    degC = OffsetDimVar(u.K,273.15*u.K) % Celcius
+    Celcius = u.degC;
+    Centigrade = u.degC;
+    degF = OffsetDimVar(u.R,459.67*u.R) % Fahrenheit
+    Fahrenheit = u.degF;
     mK = scd(1e-3*u.K,'mK') % millikelvin
     millikelvin = scd(u.mK,'millikelvin') 
     uK = scd(1e-6*u.K,'uK') % microkelvin
     microkelvin = scd(u.uK,'microkelvin') 
     nK = scd(1e-9*u.K,'nK') % nanokelvin
     nanokelvin = scd(u.nK,'nanokelvin') 
-    deltaK = scd(u.K,'deltaK') % kelvin (relative temperature)
-    deltadegC = scd(u.K,'deltadegC') % celsius (relative, °C = °K-273.15)
-    deltadegR = scd(u.R,'deltadegR') % rankine (relative temperature)
-    deltadegF = scd(u.R,'deltadegF') % fahrenheit (relative, °F = °R-459.67)
     TP = scd(1.416808e32*u.K,'TP') % Planck temperature
     PlanckTemperature = scd(u.TP,'PlanckTemperature') 
 
@@ -1108,6 +1109,8 @@ methods
             thisField = u.(f{iField});
             if isa(thisField,'DimVar')
                 thisField = scd(thisField);
+            elseif isa(thisField,'OffsetDimVar')
+                thisField = "value + " + string(thisField.offset);
             end
             uDisplayStruct.(f{iField}) = thisField;
         end
