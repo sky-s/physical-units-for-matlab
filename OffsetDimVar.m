@@ -34,6 +34,7 @@ classdef (InferiorClasses = {?DimVar}) OffsetDimVar
 
     properties (Access = protected)
         dv
+        customDisplay = ''
     end
     properties
         offset = 0
@@ -45,15 +46,22 @@ classdef (InferiorClasses = {?DimVar}) OffsetDimVar
             v.dv = dv;
             v.offset = offset;
         end
+        function v = scd(v,val)
+            if nargin == 1
+                v.customDisplay = '';
+            else
+                v.customDisplay = val;
+            end
+        end
         function disp(varargin)
             dispdisp(varargin{:})
         end
         
         function v = times(v1,v2)
             if ~isa(v2,'OffsetDimVar') % v1 is only OffsetDimVar
-                v = v2 .* v1.dv + v1.offset;
+                v = scd(v2 .* v1.dv + v1.offset,v1.customDisplay);
             elseif ~isa(v1,'OffsetDimVar') % v2 is only OffsetDimVar
-                v = v1 .* v2.dv + v2.offset;
+                v = scd(v1 .* v2.dv + v2.offset,v2.customDisplay);
             else % both
                 error('OffsetDimVar:incompatibleUnits',...
                     'Multiplication should only be used for setting values.')

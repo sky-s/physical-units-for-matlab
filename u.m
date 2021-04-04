@@ -529,17 +529,21 @@ properties (Constant = true)
     % For reference: °C = °K-273.15; °F = °R-459.67.
 
     kelvin = scd(u.K,'kelvin') 
+    degK = scd(u.K,'°K') % degrees kelvin
     R = scd(u.K*5/9,'R') % rankine (°F = °R-459.67)
     rankine = scd(u.R,'rankine') 
-    degC = OffsetDimVar(u.K,273.15*u.K) % Celcius
-    Celcius = u.degC;
-    Centigrade = u.degC;
-    degF = OffsetDimVar(u.R,459.67*u.R) % Fahrenheit
-    Fahrenheit = u.degF;
-    deltaK = scd(u.K,'deltaK') % kelvin (relative temperature)
-    deltaDegC = scd(u.K,'deltaDegC') % celsius (relative, °C = °K-273.15)
-    deltaDegR = scd(u.R,'deltaDegR') % rankine (relative temperature)
-    deltaDegF = scd(u.R,'deltaDegF') % fahrenheit (relative, °F = °R-459.67)
+    degR = scd(u.R,'°R') % degrees rankine
+    degC = scd(OffsetDimVar(u.K,273.15*u.K),'°C') % Celcius
+    Celcius = scd(u.degC,'Celcius');
+    centigrade = scd(u.degC,'centigrade');
+    degF = scd(OffsetDimVar(u.R,459.67*u.R),'°F') % Fahrenheit
+    Fahrenheit = scd(u.degF,'Fahrenheit');
+    % Réaumur
+    % Rømer
+    DeltaK = scd(u.K,'DeltaK') % kelvin (relative temperature)
+    DeltadegC = scd(u.K,'Delta°C') % celsius (relative, °C = °K-273.15)
+    DeltadegR = scd(u.R,'Delta°R') % rankine (relative temperature)
+    DeltadegF = scd(u.R,'Delta°F') % fahrenheit (relative, °F = °R-459.67)
     mK = scd(1e-3*u.K,'mK') % millikelvin
     millikelvin = scd(u.mK,'millikelvin') 
     uK = scd(1e-6*u.K,'uK') % microkelvin

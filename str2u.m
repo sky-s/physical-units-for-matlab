@@ -57,7 +57,7 @@ inStr = strtrim(inStr);
 if ~isempty(number)
     number = str2double(number{1});
 else
-    number = 1;
+    number = "none";
 end
 unitStr = strtrim(unitStr{end});
 if isempty(unitStr)
@@ -66,28 +66,31 @@ if isempty(unitStr)
 end
 
 %% Build the more complex expressions.
+% TODO: Add a full set of possible SI prefixes here such that str2u can be used
+% to fill in any possible missing item from u.m.
 
 normalExpo = '(\^-?[.0-9]+)'; % Numeric exponent.
 parenExpo = '(\^\(-?[.0-9]+(/[.0-9]+)?\))'; % Exponent with parens.
 validUnitStr = '([A-Za-z]+\w*)'; % Valid field names, essentially.
 
 unitWithExponent = sprintf('(%s(%s|%s)?)',validUnitStr,normalExpo,parenExpo);
-hypenated = sprintf('%s(-%s)+',unitWithExponent,unitWithExponent);
+hyphenated = sprintf('%s(-%s)+',unitWithExponent,unitWithExponent);
 
 %% Regexp and eval.
-
 exp = {
+    '°'                 % 0 Degrees
     '²'                 % 1 Squared character.
     '³'                 % 2 Cubed character.
     '(^per |^per-|^/)'  % 3 Leading 'per' special case.
     '( per |-per-)'     % 4 Replace per with /
-    hypenated           % 5 Group hyphen units with parens.
+    hyphenated          % 5 Group hyphen units with parens.
     ')('                % 6 Multiply back-2-back parens.
     ']['                % 7 Multiply back-2-back brackets.
     validUnitStr        % 8 Precede alphanumeric unit w/ u.
     '-u\.'              % 9 - leading unit is *.
     };
 rep = {
+    'deg'               % 0
     '^2'                % 1
     '^3'                % 2
     '1/'                % 3
@@ -100,7 +103,13 @@ rep = {
     };                
 
 eve = eval(regexprep(unitStr,exp,rep));
-out = number*eve;
-if isa(out,'DimVar') && ~isa(eve,'OffsetDimVar')
+if isstring(number)
+    % Avoid converting OffsetDimVar as a special case for use by displayparser
+    % when custom display units are set to an offset type.
+    out = eve;
+else
+    out = number*eve; 
+end
+if isa(out,'DimVar')% && ~isa(eve,'OffsetDimVar')
     out = scd(out,strtrim(unitStr));
 end
