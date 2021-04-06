@@ -110,6 +110,6 @@ if isstring(number)
 else
     out = number*eve; 
 end
-if isa(out,'DimVar')% && ~isa(eve,'OffsetDimVar')
+if isa(out,'DimVar')
     out = scd(out,strtrim(unitStr));
 end

@@ -13,11 +13,11 @@ denString = '';
 % First use customDisplay if there is one.
 if ~isempty(dispVar.customDisplay)
     str = dispVar.customDisplay;
-    if isprop(u,str)
+    if isprop(u,str) % avoid the overhead of str2u in most cases.
         test = dispVar/u.(str);
     else
         test = dispVar/str2u(str);
-        % avoid the overhead of str2u in most cases.
+        
     end
     if ~isa(test, 'DimVar')
         % Units match.
