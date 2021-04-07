@@ -307,6 +307,8 @@ methods
     function varargout = plot3(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('plot3',varargin{:});
     end
+    % TODO: add polarplot, polarhistogram, polarscatter (polar is not
+    % recommended)
     % TODO: add ribbon, slice.
     function varargout = surf(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('surf',varargin{:});

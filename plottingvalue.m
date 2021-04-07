@@ -5,5 +5,5 @@ function v = plottingvalue(v)
 %   See also scd, displayingvalue, makehgtform, DimVar.u2num, DimVar.plot.
 
 if isa(v,'DimVar')
-    v = displayparser(scd(v));
+    v = displayparser(v);
 end
