@@ -72,7 +72,7 @@ plottableArgInd = cellfun(@isplottable,args);
 plottableArgs = args(plottableArgInd);
 nPlottableArgs = nnz(plottableArgInd);
 
-%% Parse out the intent of the plotting; check compatibility if it's easy.
+%% Parse out the intent of the plotting; harmonize if needed.
 nonPlottingFunc = false;
 if ~structInput
     switch char(plotFunction)
@@ -264,10 +264,11 @@ for i = 1:numel(rulers)
         if dataHasUnits
             [~,~,~,~,s] = displayparser(thisData);
         end
+        
+        %% Throw warnings for incompatibility
         if enforcing
-            %% Throw warnings
             axisHasUnits = ~isempty(labelUnits{i});
-            
+            wStr = 'Plotting a %s variable onto an established axis with %s.';
             if axisHasUnits && dataHasUnits
                 % Check for matching plotting units.
                 if strcmp(labelUnits{i}.unit, s)
@@ -277,31 +278,33 @@ for i = 1:numel(rulers)
                     u2 = str2u(s);
                     if ~iscompatible(u1,u2)
                         % Check OffsetDimVar special case.
-                        if ~(isa(u1,'OffsetDimVar') && isa(u2,'OffsetDimVar') ...
+                        if ~(isa(u1,'OffsetDimVar') ...
+                                && isa(u2,'OffsetDimVar') ...
                                 && u1.offset == u2.offset)
-                            warning(['Plotting a dimensioned variable onto an '...
-                            'established axis with incompatible units.'])
+                            warning('DimVar:incompatiblePlottingUnits',wStr,...
+                                'dimensioned','incompatible units');
                         end
                     elseif u1 ~= u2
-                        warning(['Plotting a dimensioned variable onto an '...
-                            'established axis with non-matching display units.'])
+                        warning('DimVar:incompatiblePlottingUnits',wStr,...
+                            'dimensioned','non-matching display units')
                         
-                        %else
+                    %else
                         % u1 == u2% Also good, e.g. Mg and tonne.
                     end
                 end
                 
             elseif dataHasUnits && ~axisHasUnits
-                warning(['Plotting a dimensioned variable onto an established '...
-                    'axis without units.'])
+                warning('DimVar:incompatiblePlottingUnits',wStr,...
+                    'dimensioned','no units')
             elseif axisHasUnits && ~dataHasUnits
-                warning(['Plotting an undimensioned variable onto an established '...
-                    'axis with units.'])
+                warning('DimVar:incompatiblePlottingUnits',wStr,...
+                    'non-dimensioned','units')
             else %if ~axisHasUnits && ~dataHasUnits
                 % All good, no units.
             end
         end
         
+        %% Set TickLabelFormat
         if dataHasUnits
             rulers(i).TickLabelFormat = ['%g ' s];
         else
@@ -310,70 +313,7 @@ for i = 1:numel(rulers)
     end
 end
 
-
-%    
-% 
-%     function labelaxes(ax,X,Y,Z)
-%         
-%         % Only if ALL axes (NOT including the inactive double y axis) are
-%         % unit-free should this proceed without errors, keeping in mind that
-%         % there is no way (save perhaps adding a listener to ax.Children or
-%         % something) to get this to throw the appropriate error when a
-%         % non-DimVar is plotted onto axes with units (since these methods won't
-%         % be called).
-%         
-%                  
-%         setruler(ax.XAxis,X);
-%         
-%         if strcmp(ax.YAxisLocation,'right')
-%             setruler(ax.YAxis(end),Y);
-%         else
-%             setruler(ax.YAxis(1),Y);
-%         end
-%         
-%         setruler(ax.ZAxis,Z);
-%     end
 end
-
-% function setruler(ruler,var)
-% 
-% % This detection method is more robust than, e.g., adding a 'Units' property to
-% % the axis.
-% pat = '%g (?<unit>.+)';
-% tag = regexp(ruler.TickLabelFormat,pat,'names');
-% if isempty(tag)
-%     % No units on existing axis.
-%     if isa(var,'DimVar')
-%         [~,~,~,~,s] = displayparser(var);
-%         ruler.TickLabelFormat = ['%g ' s];
-%     end
-% else
-%     % Units on existing axis - make sure they match.
-%     unit = tag.unit;
-%     if ~isa(var,'DimVar')
-%         error(['Plotting to existing axis requires input with display ' ...
-%             'units of. ' unit '.'])
-%     end
-%     
-%     [~,~,~,~,s] = displayparser(var); 
-%     
-%     if strcmp(unit,s)
-%         % Pass (without overhead of str2u).
-%     else
-%         % u1 = str2u(unit);
-%         % u2 = str2u(s);
-%         % if ~iscompatible(u1,u2) || u1 ~= u2
-%             error('%s%s%s.','Units incompatible with existing axis. ',...
-%                 'Provided input expected DISPLAY units are ',unit)
-%         % end
-%     end
-%     
-%     % Reassert most recently-plotted ticklabelformat
-%     % ruler.TickLabelFormat = ['%g ' s];
-%     
-% end
-%     
-% end
 
 function args = harmonize(args)
 compatible(args{:});
