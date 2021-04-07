@@ -529,18 +529,27 @@ properties (Constant = true)
     % For reference: °C = °K-273.15; °F = °R-459.67.
 
     kelvin = scd(u.K,'kelvin') 
+    degK = scd(u.K,'°K') % degrees kelvin
     R = scd(u.K*5/9,'R') % rankine (°F = °R-459.67)
     rankine = scd(u.R,'rankine') 
+    degR = scd(u.R,'°R') % degrees rankine
+    degC = scd(OffsetDimVar(u.K,273.15*u.K),'°C') % Celcius
+    Celcius = scd(u.degC,'Celcius');
+    centigrade = scd(u.degC,'centigrade');
+    degF = scd(OffsetDimVar(u.R,459.67*u.R),'°F') % Fahrenheit
+    Fahrenheit = scd(u.degF,'Fahrenheit');
+    % Réaumur
+    % Rømer
+    DeltaK = scd(u.K,'DeltaK') % kelvin (relative temperature)
+    DeltadegC = scd(u.K,'Delta°C') % celsius (relative, °C = °K-273.15)
+    DeltadegR = scd(u.R,'Delta°R') % rankine (relative temperature)
+    DeltadegF = scd(u.R,'Delta°F') % fahrenheit (relative, °F = °R-459.67)
     mK = scd(1e-3*u.K,'mK') % millikelvin
     millikelvin = scd(u.mK,'millikelvin') 
     uK = scd(1e-6*u.K,'uK') % microkelvin
     microkelvin = scd(u.uK,'microkelvin') 
     nK = scd(1e-9*u.K,'nK') % nanokelvin
     nanokelvin = scd(u.nK,'nanokelvin') 
-    deltaK = scd(u.K,'deltaK') % kelvin (relative temperature)
-    deltadegC = scd(u.K,'deltadegC') % celsius (relative, °C = °K-273.15)
-    deltadegR = scd(u.R,'deltadegR') % rankine (relative temperature)
-    deltadegF = scd(u.R,'deltadegF') % fahrenheit (relative, °F = °R-459.67)
     TP = scd(1.416808e32*u.K,'TP') % Planck temperature
     PlanckTemperature = scd(u.TP,'PlanckTemperature') 
 
@@ -1108,6 +1117,8 @@ methods
             thisField = u.(f{iField});
             if isa(thisField,'DimVar')
                 thisField = scd(thisField);
+            elseif isa(thisField,'OffsetDimVar')
+                thisField = "value + " + string(thisField.offset);
             end
             uDisplayStruct.(f{iField}) = thisField;
         end

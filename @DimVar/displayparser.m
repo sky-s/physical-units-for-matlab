@@ -13,11 +13,11 @@ denString = '';
 % First use customDisplay if there is one.
 if ~isempty(dispVar.customDisplay)
     str = dispVar.customDisplay;
-    if isprop(u,str)
+    if isprop(u,str) % avoid the overhead of str2u in most cases.
         test = dispVar/u.(str);
     else
         test = dispVar/str2u(str);
-        % avoid the overhead of str2u in most cases.
+        
     end
     if ~isa(test, 'DimVar')
         % Units match.
@@ -38,8 +38,8 @@ elseif iscellstr(u.dispUnits)
         if isprop(u,str)
             test = dispVar/u.(str);
         else
-            test = dispVar/str2u(str);
             % avoid the overhead of str2u in most cases.
+            test = dispVar/str2u(str);
         end
         if ~isa(test, 'DimVar')
             % Units match.
@@ -112,7 +112,7 @@ for nd = 1:numel(names)
     end
 end
 
-% Trim brakets for lonely terms.
+% Trim brackets for lonely terms.
 if 1 == nnz(sign(dispVar.exponents) == 1)
     numString = numString(2:end-1);
 end
