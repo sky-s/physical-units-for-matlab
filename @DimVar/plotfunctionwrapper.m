@@ -167,11 +167,14 @@ if ~structInput
             
             [X,Y,Z] = deal(plottableArgs{1:3});
             
-        case {'xline'}
+        case {'xline','xlim'}
             X = plottableArgs{1};
             
-        case {'yline'}
+        case {'yline','ylim'}
             Y = plottableArgs{1};
+            
+        case {'zlim'}
+            Z = plottableArgs{1};
             
         otherwise
             nonPlottingFunc = true;
@@ -294,8 +297,12 @@ for i = 1:numel(rulers)
                 end
                 
             elseif dataHasUnits && ~axisHasUnits
-                warning('DimVar:incompatiblePlottingUnits',wStr,...
-                    'dimensioned','no units')
+                if i == 2 && numel(ax.YAxis) == 2
+                    % Assume new yyaxis, so don't warn.
+                else
+                    warning('DimVar:incompatiblePlottingUnits',wStr,...
+                        'dimensioned','no units')
+                end
             elseif axisHasUnits && ~dataHasUnits
                 warning('DimVar:incompatiblePlottingUnits',wStr,...
                     'non-dimensioned','units')

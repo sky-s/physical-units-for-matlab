@@ -1,7 +1,8 @@
 function a = colon(a,b,c)
 
 if nargin == 2
-    error('DimVar vector creation with colon is only defined for three inputs.')
+    error('DimVar:colon:incrementRequired',...
+        'DimVar vector creation with colon is only defined for three inputs.')
 end
 
 compatible(a,b,c)

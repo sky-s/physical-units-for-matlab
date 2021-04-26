@@ -26,14 +26,16 @@ if isa(v2,'DimVar')
     if isequal(v2.exponents,v1.exponents)
             v1.value(S.subs{:}) = v2.value;
     else
-        error('Assignement of DimVar to DimVar must have consistent units.')
+        error('DimVar:incompatibleUnits',...
+            'Assignement of DimVar to DimVar must have consistent units.')
     end
     
 elseif isempty(v2) || all(isnan(v2))
     % Allow deletion or assigning non-DimVar NaN without unit matching.
     v1.value(S.subs{:}) = v2;
 else
-    error('Assignment must be NaN, [], or consistent DimVar.')
+    error('DimVar:subsasgn:invalidAssignment',...
+        'Assignment must be NaN, [], or consistent DimVar.')
 end
 
 end

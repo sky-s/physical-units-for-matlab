@@ -327,20 +327,12 @@ methods
         [varargout{1:nargout}] = plotfunctionwrapper('yline',varargin{:});
     end
     
+    
     %% Axis limits _lim functions.
-    function xlim(varargin)
-        varargin = cellfun(@plottingvalue,varargin,'UniformOutput',false);
-        xlim(varargin{:});
-    end
-    function ylim(varargin)
-        varargin = cellfun(@plottingvalue,varargin,'UniformOutput',false);
-        ylim(varargin{:});
-    end
-    function zlim(varargin)
-        varargin = cellfun(@plottingvalue,varargin,'UniformOutput',false);
-        zlim(varargin{:});
-    end
-
+    function xlim(varargin); plotfunctionwrapper('xlim',varargin{:}); end
+    function ylim(varargin); plotfunctionwrapper('ylim',varargin{:}); end
+    function zlim(varargin); plotfunctionwrapper('zlim',varargin{:}); end
+    
 % Certain saveobj and loadobj functionality may be desirable to turn on in some
 % circumstances.
 
