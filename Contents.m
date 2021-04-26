@@ -1,5 +1,5 @@
 % Physical Units Toolbox
-% Version 4.2 .
+% Version 4.3 .
 %
 %   u                    - Units constants.
 %   scd                  - Set Custom Display units on a per-variable basis. 
