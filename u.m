@@ -89,6 +89,37 @@ properties (Constant = true)
     bit         = scd(u.coreUnits.bit,'bit') % bit
     currency    = scd(u.coreUnits.currency,'currency') % currency
     unit        = scd(u.coreUnits.unit,'unit') % user unit
+    
+    %% SI defining constants
+    D_Cs = scd(9192631770/u.s,'D_Cs') % hyperfine transition frequency of Cs
+    c = scd(299792458*u.m/u.s,'c') % speed of light in vacuum
+    c_0 = scd(u.c,'c_0') % speed of light in vacuum
+    lightSpeed = scd(u.c,'lightSpeed') 
+    speedOfLight = scd(u.c,'speedOfLight') 
+    h_c = scd(6.62607015e-34*u.kg*u.m^2/u.s,'h_c') % Planck constant
+    PlanckConstant = scd(u.h_c,'PlanckConstant') 
+    e = scd(1.602176634e-19*u.A*u.s,'e') % elementary charge
+    elementaryCharge = scd(u.e,'elementaryCharge') 
+    k = scd(1.380649e-23*u.kg*u.m^2/u.s^2/u.K,'k') % Boltzmann constant
+    k_B = scd(u.k,'k_B') % Boltzmann constant
+    BoltzmannConstant = scd(u.k,'BoltzmannConstant') 
+    N_A = scd(6.02214076e23/u.mol,'N_A') % Avogadro constant
+    NA = scd(u.N_A,'NA') % Avogadro constant
+    AvogadroConstant = scd(u.N_A,'AvogadroConstant') 
+    K_cd = scd(683*u.cd/(u.kg*u.m^2/u.s^3),'K_cd') % luminous efficacy of 540 THz radiation
+
+    h_bar = scd(u.h_c/(2*pi),'h_bar') % Dirac constant
+    DiracConstant = scd(u.h_bar,'DiracConstant') 
+    
+    %% Important constants with uncertainty
+    alpha = 7.2973525693e-3 % fine-structure constant
+    fine_structureConstant = u.alpha
+    SommerfeldConstant = u.alpha
+    G = scd(6.67430e-11*u.m^3/u.kg/u.s^2,'G') % gravitational constant
+    gravitationalConstant = scd(u.G,'gravitationalConstant') 
+    m_e = scd(9.1093837015e-31*u.kg,'m_e') % electron rest mass
+    electronMass = scd(u.m_e,'electronMass')
+    m_p = scd(1.67262192369e-27*u.kg,'m_e') % proton rest mass
 
     %% Derived units list:
     % References:
@@ -374,8 +405,6 @@ properties (Constant = true)
     mu = scd(u.amu,'mu') % atomic mass unit
     mP = scd(2.176470e-8*u.kg,'mP') % Planck mass
     PlanckMass = scd(u.mP,'PlanckMass') 
-    m_e = scd(9.10938356e-31*u.kg,'m_e') % electron mass
-    electronMass = scd(u.m_e,'electronMass') 
     mug = scd(u.kgf/(u.m/u.s^2),'mug') % metric slug
     metricSlug = scd(u.mug,'metricSlug') 
     hyl = scd(u.mug,'hyl') % hyl
@@ -567,10 +596,6 @@ properties (Constant = true)
     megapascal = scd(u.MPa,'megapascal') 
     GPa = scd(1e9*u.Pa,'GPa') % gigapascal
     gigapascal = scd(u.GPa,'gigapascal') 
-    torr = scd(133.322*u.Pa,'torr') % torr
-    Torr = scd(u.torr,'Torr') % torr
-    mtorr = scd(1e-3*u.torr,'mtorr') % millitorr
-    millitorr = scd(u.mtorr,'millitorr') 
     bar = scd(1e5*u.Pa,'bar') % bar
     mbar = scd(1e-3*u.bar,'mbar') % millibar
     millibar = scd(u.mbar,'millibar') 
@@ -581,6 +606,10 @@ properties (Constant = true)
     standardAtmosphere = scd(u.atm,'standardAtmosphere') 
     at = scd(u.kgf/u.sqcm,'at') % technical atmosphere
     technicalAtmosphere = scd(u.at,'technicalAtmosphere') 
+    torr = scd(u.atm/760,'torr') % torr
+    Torr = scd(u.torr,'Torr') % torr
+    mtorr = scd(1e-3*u.torr,'mtorr') % millitorr
+    millitorr = scd(u.mtorr,'millitorr') 
     psi = scd(u.lbf/u.sqin,'psi') % pound force per square inch
     poundPerSquareInch = scd(u.psi,'poundPerSquareInch') 
     ksi = scd(1e3*u.psi,'ksi') % kip per square inch
@@ -713,8 +742,6 @@ properties (Constant = true)
     franklin = scd(u.Fr,'franklin') 
     esu = scd(u.statC,'esu') % electrostatic unit of charge
     electrostaticUnitCharge = scd(u.esu,'electrostaticUnitCharge') 
-    e = scd(1.6021766208e-19*u.C,'e') % elementary charge
-    elementaryCharge = scd(u.e,'elementaryCharge') 
     mAh = scd(u.mA*u.hr,'mAh') % milliamp-hour
     milliamp_hour = scd(u.mAh,'milliamp_hour') 
     Ah = scd(u.A*u.hr,'Ah') % amp-hour
@@ -968,33 +995,18 @@ properties (Constant = true)
     phi = (1 + sqrt(5))/2 % golden ratio
     EulersNumber = exp(1) % ("e" is reserved for elementary charge)
 
-    k_B = scd(1.38064852e-23*u.J/u.K,'k_B') % Boltzmann constant
-    BoltzmannConstant = scd(u.k_B,'BoltzmannConstant') 
     sigma_SB = scd(5.670367e-8*u.W/(u.sqm*u.K^4),'sigma_SB') % Stefan-Boltzmann constant
     Stefan_BoltzmannConstant = scd(u.sigma_SB,'Stefan_BoltzmannConstant') 
-    h_c = scd(6.626070040e-34*u.J*u.s,'h_c') % Planck constant
-    PlanckConstant = scd(u.h_c,'PlanckConstant') 
-    h_bar = scd(u.h_c/(2*pi),'h_bar') % Dirac constant
-    DiracConstant = scd(u.h_bar,'DiracConstant') 
     mu_B = scd(9.274009994e-24*u.J/u.T,'mu_B') % Bohr magneton
     BohrMagneton = scd(u.mu_B,'BohrMagneton') 
     mu_N = scd(5.050783699e-27*u.J/u.T,'mu_N') % nuclear magneton
     nuclearMagneton = scd(u.mu_N,'nuclearMagneton') 
-    c = scd(299792458*u.m/u.s,'c') % speed of light in vacuum
-    c_0 = scd(u.c,'c_0') % speed of light in vacuum
-    lightSpeed = scd(u.c,'lightSpeed') 
-    speedOfLight = scd(u.c,'speedOfLight') 
     ly = scd(u.c*u.year,'ly') % light-year
     lightYear = scd(u.ly,'lightYear') % light-year
     mu0 = scd(pi*4e-7*u.N/u.A^2,'mu0') % vacuum permeability
     vacuumPermeability = scd(u.mu0,'vacuumPermeability') 
     eps0 = scd(u.c^-2/u.mu0,'eps0') % vacuum permittivity
     vacuumPermittivity = scd(u.eps0,'vacuumPermittivity') 
-    G = scd(6.67408e-11*u.m^3/u.kg/u.s^2,'G') % gravitational constant
-    gravitationalConstant = scd(u.G,'gravitationalConstant') 
-    N_A = scd(6.022140857e23/u.mol,'N_A') % Avogadro constant
-    NA = scd(u.N_A,'NA') % Avogadro constant
-    AvogadroConstant = scd(u.N_A,'AvogadroConstant') 
     NAh = scd(u.N_A*u.h_c,'NAh') % molar Planck constant
     molarPlanckConstant = scd(u.NAh,'molarPlanckConstant') 
     M_u = scd(u.g/u.mol,'M_u') % molar mass constant
@@ -1005,9 +1017,6 @@ properties (Constant = true)
     JosephsonConstant_conv = scd(u.K_J_90,'JosephsonConstant_conv') 
     F_c = scd(96485.33289*u.C/u.mol,'F_c') % Faraday constant
     FaradayConstant = scd(u.F_c,'FaradayConstant') 
-    alpha = 7.2973525664e-3 % fine-structure constant
-    fine_structureConstant = u.alpha
-    SommerfeldConstant = u.alpha
     c1 = scd(3.741771790e-16*u.W/u.sqm,'c1') % first radiation constant
     firstRadiationConstant = scd(u.c1,'firstRadiationConstant') 
     c2 = scd(1.43877736e-2*u.m*u.K,'c2') % second radiation constant
@@ -1157,7 +1166,7 @@ end
 validateattributes(baseUnitSystem,{'cell'},{'size',[10,2]},...
     'u','baseUnitSystem');
 
-if ~iscellstr(u.baseUnitSystem(:,1))
+if ~iscellstr(u.baseUnitSystem(:,1)) %#ok<ISCLSTR>
     error('First column of baseUnitSystem must be type char.')
 end
 
