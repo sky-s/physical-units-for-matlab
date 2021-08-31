@@ -111,6 +111,28 @@ properties (Constant = true)
     h_bar = scd(u.h_c/(2*pi),'h_bar') % Dirac constant
     DiracConstant = scd(u.h_bar,'DiracConstant')
     
+    %% SI prefixes
+    yotta = 1e24; % SI prefix yotta, Y 
+    zetta = 1e21; % SI prefix zetta, Z
+    exa = 1e18; % SI prefix exa, E
+    peta = 1e15; % SI prefix peta, P
+    tera = 1e12; % SI prefix tera, T
+    giga = 1e9; % SI prefix giga, G
+    mega = 1e6; % SI prefix mega, M
+    kilo = 1e3; % SI prefix kilo, k
+    hecto = 1e2; % SI prefix hecto, h
+    deka = 1e1; % SI prefix deka, da
+    deci = 1e-1; % SI prefix deci, d
+    centi = 1e-2; % SI prefix centi, c
+    milli = 1e-3; % SI prefix milli, m
+    micro = 1e-6; % SI prefix micro, µ
+    nano = 1e-9; % SI prefix nano, n
+    pico = 1e-12; % SI prefix pico, p
+    femto = 1e-15; % SI prefix femto, f
+    atto = 1e-18; % SI prefix atto, a
+    zepto = 1e-21; % SI prefix zepto, z
+    yocto = 1e-24; % SI prefix yocto, y
+    
     %% Important constants with uncertainty
     alpha = 7.2973525693e-3 % fine-structure constant
     fine_structureConstant = u.alpha
@@ -364,8 +386,7 @@ properties (Constant = true)
 
     %---- mass ----
 
-    kilogram = scd(u.kg,'kilogram') 
-    kilo = scd(u.kg,'kilo') % kilogram
+    kilogram = scd(u.kg,'kilogram')
     g = scd(1e-3*u.kg,'g') % gram
     gram = scd(u.g,'gram') 
     mg = scd(1e-3*u.gram,'mg') % milligram
