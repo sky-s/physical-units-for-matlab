@@ -37,5 +37,5 @@ shoulderror('DimVar:incompatibleUnits','unitconversionfactor(u.K,u.degC)');
 
 shoulderror('DimVar:incompatibleUnits',"unitconversionfactor('degC','K')");
 
-%% expected to fail: this syntax is bad practice
-shoulderror("20*u.degC + 20*u.degF")
+%% this syntax is bad practice, but it works
+20*u.degC + 20*u.degF;
