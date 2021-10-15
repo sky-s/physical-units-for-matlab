@@ -58,7 +58,7 @@ shoulderror('DimVar:incompatibleUnits','ve(3) = u.kg;');
 %% expected to fail: assign dim to empty norm (doesn't call overloaded method)
 ve = [];
 ve(3) = u.m;
-assert(isequal(ve,u.m*[0 0 1]))
+shoulderror("assert(isequal(ve,u.m*[0 0 1]))");
 
 %% assign dim to empty normal, subsasgn call
 ve = [];
