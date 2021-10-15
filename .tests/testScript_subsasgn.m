@@ -69,7 +69,7 @@ assert(isequal(ve,u.m*[0 0 9]))
 
 %% expected to fail: assign dim to normal (doesn't call overloaded method)
 v1 = 1:4;
-shoulderror("v1([2,6]) = 9*u.lb;")
+shoulderror("v1([2,6]) = 9*u.lb;")%FIXME: something is wrong over here - no error has been thrown and this statement works well for me
 
 %% assign dim to normal, subsasgn call
 v1 = 1:4;
