@@ -229,6 +229,9 @@ assert(axishasunits('hp','hp'))
 
 %% expected to fail: patch (6) (struct doesn't call overloaded method)
 figure
+v2 = [2 4; 2 8; 8 4; 5 0; 5 2; 8 0]*u.hp;
+f2 = [1 2 3; 
+    4 5 6];
 s = struct('Faces',f2,'Vertices',v2,'FaceColor','c');
 patch(s)
 xlabel power
