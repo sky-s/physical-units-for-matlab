@@ -1,0 +1,4 @@
+[submodule ".tests/alertChecking"]
+	path = .tests/alertChecking
+	url = https://github.com/sky-s/alert-checking
+	branch = master
