@@ -85,4 +85,4 @@ assert(isequal(v,u.kg*[0 0 1]))
 %% expected to fail: assign DimVar to NaN (doesn't call overloaded method)
 v1n = NaN(1,4);
 v1n(3) = u.m;
-assert(isequal(v1n,u.m*[NaN NaN 1 NaN]));
+shoulderror("assert(isequal(v1n,u.m*[NaN NaN 1 NaN]))");
