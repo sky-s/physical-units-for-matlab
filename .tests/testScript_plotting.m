@@ -24,7 +24,7 @@ figure
 line(gca,'XData',a*u.acre,'YData',sqrt(a*u.acre),'LineWidth',7)
 xlabel('area')
 ylabel('length')
-assert(axishasunits('acre','ft'))
+assert(axishasunits('acre','ft'))%FIXME: sqrt(a*u.acre) results in m instead of ft
 
 %% histogram
 r = u.R*randp([1,19,22],[1e4,1]);
