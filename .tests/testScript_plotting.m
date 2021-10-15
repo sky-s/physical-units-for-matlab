@@ -233,7 +233,7 @@ v2 = [2 4; 2 8; 8 4; 5 0; 5 2; 8 0]*u.hp;
 f2 = [1 2 3; 
     4 5 6];
 s = struct('Faces',f2,'Vertices',v2,'FaceColor','c');
-patch(s)
+shoulderror('patch(s)');
 xlabel power
 ylabel power
 zlabel power
