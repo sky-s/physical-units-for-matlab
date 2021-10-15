@@ -7,8 +7,8 @@ clear all
 baseUnitSystem = 'none';
 
 %% Normal
-assert(1==u.m)
-assert(0.3048==u.ft)
+assert(1==u.m)  %FIXME: fails with `Incompatible units. Cannot perform operation on variables with different units.` what is an expected behaviour of comparing a number with unit? magnitude comparison?
+assert(0.3048==u.ft)%FIXME: fails with `Incompatible units. Cannot perform operation on variables with different units.` what is an expected behaviour of comparing a number with unit? magnitude comparison?
 
 %% Offset
 assert(isa(u.degC,'OffsetDimVar'))
