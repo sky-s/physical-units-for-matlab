@@ -13,10 +13,22 @@ b = u.rpm*(5:5:600);
 c = u.kg*(1:50);
 d = u.Pa*(5:3:20);
 
+T = table;
+T.a = a(:);
+T.b = b(1:50)';
+T.c = c';
+T.d = u.Pa*rand(50,1);
+
 %% line
 figure
 line(a,a*u.ft) 
 ylabel('length');
+assert(axishasunits(0,'ft'))
+
+%% line into ax
+figure
+ax = gca;
+line(ax,a,a*u.ft);
 assert(axishasunits(0,'ft'))
 
 %% line2
@@ -346,7 +358,7 @@ assert(axishasunits('lbf','mi'))
 subplot(3,1,3), barh(rand(2,3)*u.K,.75,'grouped')
 assert(axishasunits('K',0))
 
-%% barp3
+%% bar3
 figure
 subplot(1,2,1)
 bar3(peaks(5)*u.m)
@@ -361,6 +373,29 @@ subplot(1,2,1), bar3h(peaks(5)*u.m,.5)
 assert(axishasunits(0,'m',0))
 subplot(1,2,2), bar3h((1:5)*u.kg,rand(5)*u.m,'stacked')
 assert(axishasunits(0,'m','kg'))
+
+%% scatter
+figure
+ax = gca;
+scatter(ax,a*u.lb,c,a*u.kph)
+assert(axishasunits('lb','kg'))
+
+%% scatter on table
+figure
+scatter(T,"a","b")
+
+%% swarmchart3
+figure
+x=u.kg*randi(4,1000,1);
+y=u.rpm*randi(4,1000,1);
+z=u.J*randn(1000,1);
+swarmchart3(x,y,z)
+assert(axishasunits('kg','rpm','J'))
+
+%% bubblechart3
+figure
+bubblechart3(a,c.^2,b(1:50),sqrt(b(1:50)),a)
+assert(axishasunits(0,'kg²','rpm'))
 
 %% multiPlot with different per-variable display units
 figure

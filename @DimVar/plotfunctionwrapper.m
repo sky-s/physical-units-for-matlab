@@ -131,7 +131,15 @@ if ~structInput
                 [X,Y,Z] = deal(plottableArgs{1:3});
                 
             end
-            
+        
+        case {'scatter','bubblechart','swarmchart'}
+            % f(x,y); f(x,y,sz); f(x,y,sz,c)
+            [X,Y] = deal(plottableArgs{1:2});
+
+        case {'scatter3','bubblechart3','swarmchart3'}
+            % f(x,y,z); f(x,y,z,sz); f(x,y,z,sz,c)
+            [X,Y,Z] = deal(plottableArgs{1:3});
+
         case {'patch'}
             if nPlottableArgs <= 3
                 % patch(x,y,c)
