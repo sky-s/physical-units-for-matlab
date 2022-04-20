@@ -121,7 +121,8 @@ if ~structInput
                 [X,Y] = deal(plottableArgs{1:2});
             end
             
-        case {'surf','surface','contour3'}
+        case {'surf','surfc','surfl','surface','contour3',...
+                'mesh','meshc','meshz'}
             if nPlottableArgs <= 2
                 % surf(z,c,...); surf(z)
                 Z = plottableArgs{1};
@@ -175,6 +176,13 @@ if ~structInput
             
             [X,Y,Z] = deal(plottableArgs{1:3});
             
+        case {'ribbon'}
+            if nPlottableArgs == 1
+                Y = plottableArgs{1};
+            else
+                [X,Y] = deal(plottableArgs{1:2});
+            end
+
         case {'xline','xlim'}
             X = plottableArgs{1};
             

@@ -397,6 +397,19 @@ figure
 bubblechart3(a,c.^2,b(1:50),sqrt(b(1:50)),a)
 assert(axishasunits(0,'kg²','rpm'))
 
+%% mesh
+figure
+ax = gca;
+[x,y]=meshgrid(2:5,12:14);
+z = x.^2./y.^2;
+meshz(ax,z*u.nmi)
+assert(axishasunits(0,0,'nmi'))
+
+figure
+meshc(x*u.rpm,y,z*u.nmi,sqrt(z))
+assert(axishasunits('rpm',0,'nmi'))
+
+
 %% multiPlot with different per-variable display units
 figure
 h1= plot(d,double(d)*u.mm);
