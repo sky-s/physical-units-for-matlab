@@ -39,7 +39,7 @@ ylabel('length')
 assert(axishasunits('acre','ft'))
 
 %% histogram
-r = u.R*randp([1,19,22],[1e4,1]);
+r = u.R*(25 + 5*randn([1e4,1]));
 figure
 histogram(r);
 xlabel temp
@@ -236,16 +236,24 @@ f2 = [1 2 3;
 patch('Faces',f2,'Vertices',v2,'FaceColor','green')
 xlabel power
 ylabel power
-zlabel power
 assert(axishasunits('hp','hp'))
 
-%% expected to fail: patch (6) (struct doesn't call overloaded method)
+%% patch (6) TODO
 figure
+v2 = [2 4; 2 8; 8 4; 5 0; 5 2; 8 0]*u.hp;
+f2 = [1 2 3; 
+    4 5 6];
 s = struct('Faces',f2,'Vertices',v2,'FaceColor','c');
-patch(s)
-xlabel power
-ylabel power
-zlabel power
+
+% TODO: ideally this would succeed, but with the struct input, the overloaded
+% method isn't called.
+% Ideal test:
+% patch(s);
+% assert(axishasunits('hp','hp'))
+
+% Current test:
+shoulderror("patch(s)");
+title('Failed patch');
 
 %% surf
 [x,y]=meshgrid(2:5,12:14);
