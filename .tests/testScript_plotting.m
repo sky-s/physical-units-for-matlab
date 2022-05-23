@@ -173,7 +173,7 @@ shoulderror('DimVar:incompatibleUnits','plot3',a*u.m,a.^2,sqrt(a),'-k',...
 % make sure plot doesn't look at wrong scd and instead gets from displayunits
 plot3(scd(c,'hp'),scd(a*u.m,'K'),scd(c.*a,'lb_m'),'LineStyle',':') 
 xlabel mass; ylabel length; zlabel mass
-assert(axishasunits('kg','m','lb_m'))
+assert(axishasunits('lb','ft','lb_m'))
 
 %% fill (1)
 figure
