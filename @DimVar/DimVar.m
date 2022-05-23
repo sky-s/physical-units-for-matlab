@@ -261,6 +261,13 @@ methods
     function varargout = bar3h(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('bar3h',varargin{:});
     end
+    function varargout = bubblechart(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('bubblechart',varargin{:});
+    end
+    function varargout = bubblechart3(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('bubblechart3',...
+            varargin{:});
+    end
     function varargout = contour(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('contour',varargin{:});
     end
@@ -297,7 +304,15 @@ methods
     function varargout = line(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('line',varargin{:});
     end
-    % TODO: add mesh, meshc, meshz.
+    function varargout = mesh(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('mesh',varargin{:});
+    end
+    function varargout = meshc(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('meshc',varargin{:});
+    end
+    function varargout = meshz(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('meshz',varargin{:});
+    end
     function varargout = patch(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('patch',varargin{:});
     end
@@ -309,13 +324,33 @@ methods
     end
     % TODO: add polarplot, polarhistogram, polarscatter (polar is not
     % recommended)
-    % TODO: add ribbon, slice.
+    function varargout = ribbon(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('ribbon',varargin{:});
+    end
+    function varargout = scatter(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('scatter',varargin{:});
+    end
+    function varargout = scatter3(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('scatter3',varargin{:});
+    end
+    % TODO: add slice.
     function varargout = surf(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('surf',varargin{:});
     end
-    % TODO: add surfc, surfl.
+    function varargout = surfc(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('surfc',varargin{:});
+    end
+    function varargout = surfl(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('surfl',varargin{:});
+    end
     function varargout = surface(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('surface',varargin{:});
+    end
+    function varargout = swarmchart(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('swarmchart',varargin{:});
+    end
+    function varargout = swarmchart3(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('swarmchart3',varargin{:});
     end
     function varargout = text(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('text',varargin{:});
