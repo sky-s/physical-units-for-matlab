@@ -2,3 +2,6 @@
 	path = .tests/alertChecking
 	url = https://github.com/sky-s/alert-checking
 	branch = master
+[submodule ".tests/randx"]
+	path = .tests/randx
+	url = https://github.com/sky-s/randx
