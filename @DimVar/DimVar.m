@@ -301,6 +301,9 @@ methods
     function varargout = histogram2(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('histogram2',varargin{:});
     end
+    function varargout = isosurface(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('isosurface',varargin{:});
+    end
     function varargout = line(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('line',varargin{:});
     end
@@ -333,7 +336,9 @@ methods
     function varargout = scatter3(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('scatter3',varargin{:});
     end
-    % TODO: add slice.
+    function varargout = slice(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('slice',varargin{:});
+    end
     function varargout = surf(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('surf',varargin{:});
     end

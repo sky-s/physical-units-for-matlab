@@ -38,6 +38,11 @@ xlabel('area')
 ylabel('length')
 assert(axishasunits('acre','ft'))
 
+%% line w/ param= syntax
+figure
+line(a,a*u.ft,Marker='o',LineWidth=5);
+assert(axishasunits(0,'ft'))
+
 %% histogram
 r = u.R*(25 + 5*randn([1e4,1]));
 figure

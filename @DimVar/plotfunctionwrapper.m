@@ -141,6 +141,31 @@ if ~structInput
             % f(x,y,z); f(x,y,z,sz); f(x,y,z,sz,c)
             [X,Y,Z] = deal(plottableArgs{1:3});
 
+        case {'slice'}
+            % f(x,y,z,V,Sx,Sy,Sz); f(V,Sx,Sy,Sz)
+            if nPlottableArgs == 7
+                [X,Y,Z] = deal(plottableArgs{1:3});
+                for i = 1:3
+                    plottableArgs([i,i+4]) = harmonize(plottableArgs([i,i+4]));
+                end
+            elseif nPlottableArgs == 4
+                [X,Y,Z] = deal(plottableArgs{2:4});
+            else
+                error('Case not covered for DimVar inputs.')
+            end
+
+        case {'isosurface'}
+            if nPlottableArgs > 3
+                % f(x,y,z,v,isoval); f(x,y,z,v); f(...,colors)
+                [X,Y,Z] = deal(plottableArgs{1:3});
+                plottableArgs(1:3) = harmonize(plottableArgs(1:3));
+            % else
+                % f(v,isoval); f(v); f(...,colors)
+            end
+            if nargout
+                nonPlottingFunc = true;
+            end
+
         case {'patch'}
             if nPlottableArgs <= 3
                 % patch(x,y,c)
@@ -262,6 +287,14 @@ end
 %% Throw warnings, add labels
 % if plotting onto the axis inconsistently (only if the plotFunction uses this
 % axis, allowing for e.g. 2D text on existing 3D axes.)
+
+% TODO: if ever revamping this, strongly consider the use of setappdata and
+% getappdata to enforce consistency on axes. This is much more elegant than
+% reading TickLabelFormat (though may want to couple both together). Regardless,
+% it should somehow be documented, as there must have been a good reason the
+% scheme of using TickLabelFormat was used instead of adding properties to the
+% axes or using UserData.
+
 labelUnits = regexp({rulers.TickLabelFormat},'%g (?<unit>.+)','names');
 
 if all(cellfun('isempty',labelUnits))
@@ -351,7 +384,8 @@ function [args,props] = parseplotparams(args)
 % also parseparams.
 props = {};
 for i = numel(args):-1:3
-    if ischar(args{i}) && isnumeric(args{i-1}) && isnumeric(args{i-2})
+    if (ischar(args{i}) || isstring(args{i}))...
+            && isnumeric(args{i-1}) && isnumeric(args{i-2})
         props = args(i:end);
         args = args(1:i-1);
         break
