@@ -142,6 +142,7 @@ methods
     function result = isnan(v);     result = isnan(v.value);        end
     function result = isnumeric(v); result = isnumeric(v.value);    end
     function result = isreal(v);    result = isreal(v.value);       end
+    function result = ismissing(v); result = ismissing(v.value);    end
     
     %% Logical operators (>, <, ==, ~, etc.).
     function result = eq(v1,v2)
