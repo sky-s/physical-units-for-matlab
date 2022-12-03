@@ -216,6 +216,9 @@ methods
     function v = tril(v,varargin);  v.value = tril(v.value,varargin{:});    end
     function v = triu(v,varargin);  v.value = triu(v.value,varargin{:});    end
     function v = uminus(v);         v.value = -v.value;                     end
+    function [v,IA,IC] = unique(v,varargin)
+        [v.value, IA, IC] = unique(v.value,varargin{:});
+    end
     function v = uplus(v);                                                  end
     
     %% Functions that require compatibility check.
