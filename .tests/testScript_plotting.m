@@ -180,6 +180,24 @@ plot3(scd(c,'hp'),scd(a*u.m,'K'),scd(c.*a,'lb_m'),'LineStyle',':')
 xlabel mass; ylabel length; zlabel mass
 assert(axishasunits('lb','ft','lb_m'))
 
+%% Area
+fig area
+area(magic(5)*u.nmi)
+assert(axishasunits(0,'nmi')); clf
+area(magic(5)*u.nmi,-6*u.nmi)
+assert(axishasunits(0,'nmi')); clf
+area(6:10,magic(5)*u.nmi,-6*u.nmi)
+assert(axishasunits(0,'nmi')); clf
+area((6:10)*u.K,magic(5)*u.nmi,-6*u.nmi)
+assert(axishasunits('K','nmi'))
+area((6:10)*u.K,magic(5)*u.nmi)
+assert(axishasunits('K','nmi'))
+area((6:10),magic(5)*u.nmi)
+assert(axishasunits(0,'nmi'))
+area((6:10)*u.K,magic(5))
+assert(axishasunits('K'))
+
+
 %% fill (1)
 figure
 t = (1/16:1/8:1)'*2*pi;

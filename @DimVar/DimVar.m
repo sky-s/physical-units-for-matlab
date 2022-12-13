@@ -258,6 +258,9 @@ methods
     end
     
     %% Plot-like functions.
+    function varargout = area(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('area',varargin{:});
+    end
     function varargout = bar(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('bar',varargin{:});
     end

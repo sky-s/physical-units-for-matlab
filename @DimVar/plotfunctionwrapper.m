@@ -76,6 +76,24 @@ nPlottableArgs = nnz(plottableArgInd);
 nonPlottingFunc = false;
 if ~structInput
     switch char(plotFunction)
+        case {'area'}
+            if nPlottableArgs > 1 && isscalar(plottableArgs{end}) && ...
+                    ~((nPlottableArgs == 2) && ~isscalar(plottableArgs{1}) ...
+                    && ~isscalar(plottableArgs{2}))
+                % f(X,Y,base); f(Y,base)
+                plottableArgs(end-1:end) = harmonize(plottableArgs(end-1:end));
+                Y = plottableArgs{end-1};
+                if nPlottableArgs > 2
+                    X = plottableArgs{1};
+                end
+            elseif nPlottableArgs == 1
+                % f(Y)
+                Y = plottableArgs{1};
+            else
+                % f(X,Y)
+                [X,Y] = deal(plottableArgs{1:2});
+            end
+
         case {'bar','barh','bar3','bar3h'}
             if isscalar(plottableArgs{end})
                 % Last argument is width, so ignore it.
@@ -158,6 +176,8 @@ if ~structInput
             if nPlottableArgs > 3
                 % f(x,y,z,v,isoval); f(x,y,z,v); f(...,colors)
                 [X,Y,Z] = deal(plottableArgs{1:3});
+                % Because isosurface uses a single double array to define output
+                % vertices, all cardinal coordinates must be harmonized.
                 plottableArgs(1:3) = harmonize(plottableArgs(1:3));
             % else
                 % f(v,isoval); f(v); f(...,colors)
@@ -236,6 +256,8 @@ end
 [varargout{1:nargout}] = feval(plotFunction,newArgList{:});
 
 if nonPlottingFunc
+    % TODO: consider adding a step here to add units to the output vertices of
+    % isosurface and perhaps other applicable functions.
     return
 end
 
