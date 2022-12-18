@@ -80,6 +80,15 @@ methods
         end
     end
     
+    function varargout = harmonizedisplay(varargin)
+        % [a,b,c,...] = harmonizedisplay(a,b,c,...) sets the custom display
+        % units of all arguments to match that of the first argument (with a
+        % compatibility check).
+        compatible(varargin{:});
+        domUnit = varargin{1}.customDisplay;
+        varargout = cellfun(@(x) scd(x,domUnit),varargin,'UniformOutput',0);
+    end
+    
     %% Concatenation.
     function v = cat(dim,v,varargin)
         if ~isa(v,'DimVar')
