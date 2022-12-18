@@ -20,7 +20,7 @@ methods
         %   cleared. Custom display units are also cleared by most operations
         %   that change the units.
         %   
-        %   See also str2u, displayUnits.
+        %   See also str2u, displayUnits, harmonizedisplay.
         if nargin == 1
             v.customDisplay = '';
         else
@@ -84,6 +84,8 @@ methods
         % [a,b,c,...] = harmonizedisplay(a,b,c,...) sets the custom display
         % units of all arguments to match that of the first argument (with a
         % compatibility check).
+        %
+        % See also DimVar.scd.
         compatible(varargin{:});
         domUnit = varargin{1}.customDisplay;
         varargout = cellfun(@(x) scd(x,domUnit),varargin,'UniformOutput',0);
@@ -310,11 +312,12 @@ methods
     function varargout = hist(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('hist',varargin{:});
     end
-    function varargout = histcounts(varargin)
-        [varargout{1:nargout}] = plotfunctionwrapper('histcounts',varargin{:});
-    end
-     function varargout = histcounts2(varargin)
-        [varargout{1:nargout}] = plotfunctionwrapper('histcounts2',varargin{:});
+    function n = histcounts2(varargin)
+        % Same as histcounts2 but does NOT support DimVar outputs for edges, so
+        % returns only one output, n.
+        %
+        %   See also histcounts2.
+        n = plotfunctionwrapper('histcounts2',varargin{:});
     end
     function varargout = histogram(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('histogram',varargin{:});

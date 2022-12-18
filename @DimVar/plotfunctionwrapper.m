@@ -1,7 +1,7 @@
 function varargout = plotfunctionwrapper(plotFunction,varargin)
 % plotfunctionwrapper(plotFunction,varargin)  Converts all inputs in varargin
 % using plottingvalue and passes to plotFunction using feval. If plotFunction is
-% a plotting function (i.e., not something like histcounts or contourc),
+% a plotting function (i.e., not something like or contourc),
 % plotfunctionwrapper will also add appropriate unit labels to the axes returned
 % by gca.
 % 
