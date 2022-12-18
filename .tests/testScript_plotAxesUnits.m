@@ -8,7 +8,7 @@ a = 1:5;
 b = a.^2;
 
 %% overriding with new plots
-figure('Name','hold off');hold off;clf('reset')
+fig('hold off','-reset')
 plot(a,b)
 
 % Replace normal with units
@@ -30,7 +30,7 @@ plot(a*u.K,b)
 % polarplot(t, sin(2*t).*cos(2*t)*u.smoot, '--r');
 
 %% Multiplots
-figure('Name','multiplotOneCall');clf('reset')
+fig multiplotOneCall -reset
 
 % Incompatible units.
 ME = shoulderror('DimVar:incompatibleUnits','plot',a*u.lb,b,a*u.kgf,sqrt(b));
@@ -43,7 +43,7 @@ assert(isequal(h(2).XData,a*u.kg/u.lb)) % should be converted to lb
 assert(~isequal(xd{:})) % Should have different scales.
 
 %% Plotting into existing held axes
-figure('Name','holding');clf('reset')
+fig holding -reset
 
 clf
 plot(a,b)
@@ -62,7 +62,7 @@ shouldalert('plot',a*u.hp,b*u.kW)
 shouldalert('plot',a*u.K,b)
 
 %% yyaxis
-figure('Name','yyaxis');clf('reset')
+fig yyaxis -reset
 yyaxis right
 plot(a*u.lb,b*u.K);
 yyaxis left
