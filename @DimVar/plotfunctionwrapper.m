@@ -125,10 +125,14 @@ if ~structInput
             end
             
         case {'hist','histogram'}
-            dimVarArgsInd = cellfun('isclass',args,'DimVar');
-            dimVarArgs = varargin(dimVarArgsInd);
-            % All DimVar inputs should be compatible for hist.
-            args(dimVarArgsInd) = harmonize(dimVarArgs);
+            if numel(args) > 1 && isscalar(args(2)) && isnumeric(args(2)) ...
+                    && ~isa(args(2),'DimVar')
+                % Argument is nbins, which is the only numeric that is allowed
+                % to be non-compatible.
+                plottableArgs([1,3:end]) = harmonize(plottableArgs([1,3:end]));
+            else
+                plottableArgs = harmonize(plottableArgs);
+            end
             X = plottableArgs{1};
             
         case {'histogram2'}

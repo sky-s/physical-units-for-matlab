@@ -46,7 +46,7 @@ assert(axishasunits(0,'ft'))
 %% histogram
 r = u.R*(25 + 5*randn([1e4,1]));
 figure
-histogram(r);
+histogram(gca,r);
 xlabel temp
 assert(axishasunits('R'))
 
