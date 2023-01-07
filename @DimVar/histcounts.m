@@ -4,15 +4,21 @@ function [n,v,bin] = histcounts(v,varargin)
 %   See also histcounts.
 
 % [N,edges] = histcounts(X)
-% [N,edges] = histcounts(X,nbins)
 % [N,edges] = histcounts(X,edges)
 % histcounts(...,'BinWidth',BW)
 % histcounts(...,'BinLimits',[BMIN,BMAX]))
-% All numeric inputs must be compatible EXCEPT if 2nd argument is a scalar.
 
 numArgInd = cellfun(@isnumeric,varargin);
-compatible(v,varargin{numArgInd});
+
+% All numeric inputs must be compatible EXCEPT if 2nd argument is a scalar.
+if nargin > 1 && isnumeric(varargin{1}) && isscalar(varargin{1})
+    % [N,edges] = histcounts(X,nbins)
+    compatible(v,varargin{numArgInd(2:end)});
+else
+    compatible(v,varargin{numArgInd});
+end
+
 varargin(numArgInd) = cellfun(@double,varargin(numArgInd),...
-    'UniformOutput',false);
+    'UniformOutput',false); % double returns v.value for DimVars.
 [n,v.value,bin] = histcounts(v.value,varargin{:});
 end
