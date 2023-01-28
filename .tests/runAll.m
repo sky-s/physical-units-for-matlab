@@ -1,5 +1,6 @@
 % Run all Physical Units test scripts.
 addpath('./.tests/alertChecking/');
+addpath('./.tests/fig/');
 
 R{1} = runtests('testScript_subsasgn');
 R{2} = runtests('testScript_offsetUnits');
@@ -9,6 +10,7 @@ R{5} = runtests('testScript_plotting'); close all
 R{6} = runtests('testScript_noBaseUnits');
 
 rmpath('./.tests/alertChecking/');
+rmpath('./.tests/fig/');
 
 %% Examine failed tests.
 r = [R{:}];
