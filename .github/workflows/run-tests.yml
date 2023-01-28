@@ -17,15 +17,15 @@ jobs:
     steps:
       # Checkout
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@main
         with:
           submodules: recursive
       # Set-up matlab on runner. Newest release by default
       - name: Set up MATLAB
-        uses: matlab-actions/setup-matlab@v1
+        uses: matlab-actions/setup-matlab@v1.2.4
       # Run Tests
       - name: Run tests and generate artifacts
-        uses: matlab-actions/run-tests@v1
+        uses: matlab-actions/run-tests@v1.4.1
         with:
           source-folder: .
           select-by-folder: .tests
