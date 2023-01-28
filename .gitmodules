@@ -5,7 +5,7 @@
 [submodule ".tests/fig"]
 	path = .tests/fig
 	url = https://github.com/sky-s/fig
-[submodule ".tests/fig"]
+[submodule ".tests/randx"]
 	path = .tests/randx
 	url = https://github.com/sky-s/fig
 
