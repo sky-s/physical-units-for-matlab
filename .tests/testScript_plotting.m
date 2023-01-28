@@ -13,10 +13,22 @@ b = u.rpm*(5:5:600);
 c = u.kg*(1:50);
 d = u.Pa*(5:3:20);
 
+T = table;
+T.a = a(:);
+T.b = b(1:50)';
+T.c = c';
+T.d = u.Pa*rand(50,1);
+
 %% line
 figure
 line(a,a*u.ft) 
 ylabel('length');
+assert(axishasunits(0,'ft'))
+
+%% line into ax
+figure
+ax = gca;
+line(ax,a,a*u.ft);
 assert(axishasunits(0,'ft'))
 
 %% line2
@@ -26,10 +38,15 @@ xlabel('area')
 ylabel('length')
 assert(axishasunits('acre','ft'))
 
-%% histogram
-r = u.R*randp([1,19,22],[1e4,1]);
+%% line w/ param= syntax
 figure
-histogram(r);
+line(a,a*u.ft,Marker='o',LineWidth=5);
+assert(axishasunits(0,'ft'))
+
+%% histogram
+r = u.R*(25 + 5*randn([1e4,1]));
+figure
+histogram(gca,r);
 xlabel temp
 assert(axishasunits('R'))
 
@@ -163,6 +180,24 @@ plot3(scd(c,'hp'),scd(a*u.m,'K'),scd(c.*a,'lb_m'),'LineStyle',':')
 xlabel mass; ylabel length; zlabel mass
 assert(axishasunits('lb','ft','lb_m'))
 
+%% Area
+fig area
+area(magic(5)*u.nmi)
+assert(axishasunits(0,'nmi')); clf
+area(magic(5)*u.nmi,-6*u.nmi)
+assert(axishasunits(0,'nmi')); clf
+area(6:10,magic(5)*u.nmi,-6*u.nmi)
+assert(axishasunits(0,'nmi')); clf
+area((6:10)*u.K,magic(5)*u.nmi,-6*u.nmi)
+assert(axishasunits('K','nmi'))
+area((6:10)*u.K,magic(5)*u.nmi)
+assert(axishasunits('K','nmi'))
+area((6:10),magic(5)*u.nmi)
+assert(axishasunits(0,'nmi'))
+area((6:10)*u.K,magic(5))
+assert(axishasunits('K'))
+
+
 %% fill (1)
 figure
 t = (1/16:1/8:1)'*2*pi;
@@ -224,16 +259,24 @@ f2 = [1 2 3;
 patch('Faces',f2,'Vertices',v2,'FaceColor','green')
 xlabel power
 ylabel power
-zlabel power
 assert(axishasunits('hp','hp'))
 
-%% expected to fail: patch (6) (struct doesn't call overloaded method)
+%% patch (6) TODO
 figure
+v2 = [2 4; 2 8; 8 4; 5 0; 5 2; 8 0]*u.hp;
+f2 = [1 2 3; 
+    4 5 6];
 s = struct('Faces',f2,'Vertices',v2,'FaceColor','c');
-patch(s)
-xlabel power
-ylabel power
-zlabel power
+
+% TODO: ideally this would succeed, but with the struct input, the overloaded
+% method isn't called.
+% Ideal test:
+% patch(s);
+% assert(axishasunits('hp','hp'))
+
+% Current test:
+shoulderror("patch(s)");
+title('Failed patch');
 
 %% surf
 [x,y]=meshgrid(2:5,12:14);
@@ -346,7 +389,7 @@ assert(axishasunits('lbf','mi'))
 subplot(3,1,3), barh(rand(2,3)*u.K,.75,'grouped')
 assert(axishasunits('K',0))
 
-%% barp3
+%% bar3
 figure
 subplot(1,2,1)
 bar3(peaks(5)*u.m)
@@ -361,6 +404,42 @@ subplot(1,2,1), bar3h(peaks(5)*u.m,.5)
 assert(axishasunits(0,'m',0))
 subplot(1,2,2), bar3h((1:5)*u.kg,rand(5)*u.m,'stacked')
 assert(axishasunits(0,'m','kg'))
+
+%% scatter
+figure
+ax = gca;
+scatter(ax,a*u.lb,c,a*u.kph)
+assert(axishasunits('lb','kg'))
+
+%% scatter on table
+figure
+scatter(T,"a","b")
+
+%% swarmchart3
+figure
+x=u.kg*randi(4,1000,1);
+y=u.rpm*randi(4,1000,1);
+z=u.J*randn(1000,1);
+swarmchart3(x,y,z)
+assert(axishasunits('kg','rpm','J'))
+
+%% bubblechart3
+figure
+bubblechart3(a,c.^2,b(1:50),sqrt(b(1:50)),a)
+assert(axishasunits(0,'kg²','rpm'))
+
+%% mesh
+figure
+ax = gca;
+[x,y]=meshgrid(2:5,12:14);
+z = x.^2./y.^2;
+meshz(ax,z*u.nmi)
+assert(axishasunits(0,0,'nmi'))
+
+figure
+meshc(x*u.rpm,y,z*u.nmi,sqrt(z))
+assert(axishasunits('rpm',0,'nmi'))
+
 
 %% multiPlot with different per-variable display units
 figure

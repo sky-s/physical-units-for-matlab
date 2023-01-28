@@ -1,7 +1,7 @@
 function varargout = plotfunctionwrapper(plotFunction,varargin)
 % plotfunctionwrapper(plotFunction,varargin)  Converts all inputs in varargin
 % using plottingvalue and passes to plotFunction using feval. If plotFunction is
-% a plotting function (i.e., not something like histcounts or contourc),
+% a plotting function (i.e., not something like or contourc),
 % plotfunctionwrapper will also add appropriate unit labels to the axes returned
 % by gca.
 % 
@@ -76,6 +76,24 @@ nPlottableArgs = nnz(plottableArgInd);
 nonPlottingFunc = false;
 if ~structInput
     switch char(plotFunction)
+        case {'area'}
+            if nPlottableArgs > 1 && isscalar(plottableArgs{end}) && ...
+                    ~((nPlottableArgs == 2) && ~isscalar(plottableArgs{1}) ...
+                    && ~isscalar(plottableArgs{2}))
+                % f(X,Y,base); f(Y,base)
+                plottableArgs(end-1:end) = harmonize(plottableArgs(end-1:end));
+                Y = plottableArgs{end-1};
+                if nPlottableArgs > 2
+                    X = plottableArgs{1};
+                end
+            elseif nPlottableArgs == 1
+                % f(Y)
+                Y = plottableArgs{1};
+            else
+                % f(X,Y)
+                [X,Y] = deal(plottableArgs{1:2});
+            end
+
         case {'bar','barh','bar3','bar3h'}
             if isscalar(plottableArgs{end})
                 % Last argument is width, so ignore it.
@@ -107,10 +125,14 @@ if ~structInput
             end
             
         case {'hist','histogram'}
-            dimVarArgsInd = cellfun('isclass',args,'DimVar');
-            dimVarArgs = varargin(dimVarArgsInd);
-            % All DimVar inputs should be compatible for hist.
-            args(dimVarArgsInd) = harmonize(dimVarArgs);
+            if numel(args) > 1 && isscalar(args(2)) && isnumeric(args(2)) ...
+                    && ~isa(args(2),'DimVar')
+                % Argument is nbins, which is the only numeric that is allowed
+                % to be non-compatible.
+                plottableArgs([1,3:end]) = harmonize(plottableArgs([1,3:end]));
+            else
+                plottableArgs = harmonize(plottableArgs);
+            end
             X = plottableArgs{1};
             
         case {'histogram2'}
@@ -121,7 +143,8 @@ if ~structInput
                 [X,Y] = deal(plottableArgs{1:2});
             end
             
-        case {'surf','surface','contour3'}
+        case {'surf','surfc','surfl','surface','contour3',...
+                'mesh','meshc','meshz'}
             if nPlottableArgs <= 2
                 % surf(z,c,...); surf(z)
                 Z = plottableArgs{1};
@@ -131,7 +154,42 @@ if ~structInput
                 [X,Y,Z] = deal(plottableArgs{1:3});
                 
             end
-            
+        
+        case {'scatter','bubblechart','swarmchart'}
+            % f(x,y); f(x,y,sz); f(x,y,sz,c)
+            [X,Y] = deal(plottableArgs{1:2});
+
+        case {'scatter3','bubblechart3','swarmchart3'}
+            % f(x,y,z); f(x,y,z,sz); f(x,y,z,sz,c)
+            [X,Y,Z] = deal(plottableArgs{1:3});
+
+        case {'slice'}
+            % f(x,y,z,V,Sx,Sy,Sz); f(V,Sx,Sy,Sz)
+            if nPlottableArgs == 7
+                [X,Y,Z] = deal(plottableArgs{1:3});
+                for i = 1:3
+                    plottableArgs([i,i+4]) = harmonize(plottableArgs([i,i+4]));
+                end
+            elseif nPlottableArgs == 4
+                [X,Y,Z] = deal(plottableArgs{2:4});
+            else
+                error('Case not covered for DimVar inputs.')
+            end
+
+        case {'isosurface'}
+            if nPlottableArgs > 3
+                % f(x,y,z,v,isoval); f(x,y,z,v); f(...,colors)
+                [X,Y,Z] = deal(plottableArgs{1:3});
+                % Because isosurface uses a single double array to define output
+                % vertices, all cardinal coordinates must be harmonized.
+                plottableArgs(1:3) = harmonize(plottableArgs(1:3));
+            % else
+                % f(v,isoval); f(v); f(...,colors)
+            end
+            if nargout
+                nonPlottingFunc = true;
+            end
+
         case {'patch'}
             if nPlottableArgs <= 3
                 % patch(x,y,c)
@@ -167,6 +225,13 @@ if ~structInput
             
             [X,Y,Z] = deal(plottableArgs{1:3});
             
+        case {'ribbon'}
+            if nPlottableArgs == 1
+                Y = plottableArgs{1};
+            else
+                [X,Y] = deal(plottableArgs{1:2});
+            end
+
         case {'xline','xlim'}
             X = plottableArgs{1};
             
@@ -195,6 +260,8 @@ end
 [varargout{1:nargout}] = feval(plotFunction,newArgList{:});
 
 if nonPlottingFunc
+    % TODO: consider adding a step here to add units to the output vertices of
+    % isosurface and perhaps other applicable functions.
     return
 end
 
@@ -246,6 +313,14 @@ end
 %% Throw warnings, add labels
 % if plotting onto the axis inconsistently (only if the plotFunction uses this
 % axis, allowing for e.g. 2D text on existing 3D axes.)
+
+% TODO: if ever revamping this, strongly consider the use of setappdata and
+% getappdata to enforce consistency on axes. This is much more elegant than
+% reading TickLabelFormat (though may want to couple both together). Regardless,
+% it should somehow be documented, as there must have been a good reason the
+% scheme of using TickLabelFormat was used instead of adding properties to the
+% axes or using UserData.
+
 labelUnits = regexp({rulers.TickLabelFormat},'%g (?<unit>.+)','names');
 
 if all(cellfun('isempty',labelUnits))
@@ -335,7 +410,8 @@ function [args,props] = parseplotparams(args)
 % also parseparams.
 props = {};
 for i = numel(args):-1:3
-    if ischar(args{i}) && isnumeric(args{i-1}) && isnumeric(args{i-2})
+    if (ischar(args{i}) || isstring(args{i}))...
+            && isnumeric(args{i-1}) && isnumeric(args{i-2})
         props = args(i:end);
         args = args(1:i-1);
         break
