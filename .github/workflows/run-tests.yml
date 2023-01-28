@@ -17,7 +17,7 @@ jobs:
     steps:
       # Checkout
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@main
         with:
           submodules: recursive
       # Set-up matlab on runner. Newest release by default
