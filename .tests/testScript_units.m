@@ -248,6 +248,17 @@ assert(isequal(str2u('5 percent'),0.05))
 assert(str2u('53 lb/hp-hr-K-mol')==53*u.lb/(u.hp*u.hr*u.K*u.mol))
 assert(str2u(' per lb-mi')==1/(u.lb*u.mi))
 
+%% histcounts
+R = randn([100,1])*u.nmi;
+[n,edge,bin] = histcounts(double(R));
+[n2,edge2,bin2] = histcounts(R);
+assert(isequal(n,n2))
+assert(isequal(bin,bin2))
+compatible(R,edge2)
+assert(isequal(double(edge2),edge))
+
+%% histcounts2
+
 %% interp1q
 assert(isequal(5,interp1q(u.slug*(1:5)',(2:2:10)',2.5*u.slug)))
 assert(5*u.m==interp1q(u.slug*(1:5)',u.m*(2:2:10)',2.5*u.slug))

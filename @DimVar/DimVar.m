@@ -20,7 +20,7 @@ methods
         %   cleared. Custom display units are also cleared by most operations
         %   that change the units.
         %   
-        %   See also str2u, displayUnits.
+        %   See also str2u, displayUnits, harmonizedisplay.
         if nargin == 1
             v.customDisplay = '';
         else
@@ -78,6 +78,17 @@ methods
                 
             end
         end
+    end
+    
+    function varargout = harmonizedisplay(varargin)
+        % [a,b,c,...] = harmonizedisplay(a,b,c,...) sets the custom display
+        % units of all arguments to match that of the first argument (with a
+        % compatibility check).
+        %
+        % See also DimVar.scd.
+        compatible(varargin{:});
+        domUnit = varargin{1}.customDisplay;
+        varargout = cellfun(@(x) scd(x,domUnit),varargin,'UniformOutput',0);
     end
     
     %% Concatenation.
@@ -142,6 +153,7 @@ methods
     function result = isnan(v);     result = isnan(v.value);        end
     function result = isnumeric(v); result = isnumeric(v.value);    end
     function result = isreal(v);    result = isreal(v.value);       end
+    function result = ismissing(v); result = ismissing(v.value);    end
     
     %% Logical operators (>, <, ==, ~, etc.).
     function result = eq(v1,v2)
@@ -198,10 +210,15 @@ methods
     function v = diff(v,varargin);  v.value = diff(v.value,varargin{:});    end
     function v = full(v);           v.value = full(v.value);                end
     function v = imag(v);           v.value = imag(v.value);                end
+    function v = iqr(v,varargin);   v.value = iqr(v,varargin{:});           end 
     function v = mean(v,varargin);  v.value = mean(v.value,varargin{:});    end
     function v = median(v,varargin);v.value = median(v.value,varargin{:});  end
     function v = norm(v,varargin);  v.value = norm(v.value,varargin{:});    end
     function v = permute(v,varargin);v.value = permute(v.value,varargin{:});end
+    function v = prctile(v,varargin);v.value = prctile(v.value,varargin{:});end
+    function v = quantile(v,varargin)
+        v.value = quantile(v.value,varargin{:});
+    end
     function v = real(v);           v.value = real(v.value);                end
     function v = reshape(v,varargin);v.value = reshape(v.value,varargin{:});end
     function [v,I] = sort(v,varargin)
@@ -215,6 +232,9 @@ methods
     function v = tril(v,varargin);  v.value = tril(v.value,varargin{:});    end
     function v = triu(v,varargin);  v.value = triu(v.value,varargin{:});    end
     function v = uminus(v);         v.value = -v.value;                     end
+    function [v,IA,IC] = unique(v,varargin)
+        [v.value, IA, IC] = unique(v.value,varargin{:});
+    end
     function v = uplus(v);                                                  end
     
     %% Functions that require compatibility check.
@@ -249,6 +269,9 @@ methods
     end
     
     %% Plot-like functions.
+    function varargout = area(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('area',varargin{:});
+    end
     function varargout = bar(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('bar',varargin{:});
     end
@@ -289,17 +312,21 @@ methods
     function varargout = hist(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('hist',varargin{:});
     end
-    function varargout = histcounts(varargin)
-        [varargout{1:nargout}] = plotfunctionwrapper('histcounts',varargin{:});
-    end
-     function varargout = histcounts2(varargin)
-        [varargout{1:nargout}] = plotfunctionwrapper('histcounts2',varargin{:});
+    function n = histcounts2(varargin)
+        % Same as histcounts2 but does NOT support DimVar outputs for edges, so
+        % returns only one output, n.
+        %
+        %   See also histcounts2.
+        n = plotfunctionwrapper('histcounts2',varargin{:});
     end
     function varargout = histogram(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('histogram',varargin{:});
     end
     function varargout = histogram2(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('histogram2',varargin{:});
+    end
+    function varargout = isosurface(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('isosurface',varargin{:});
     end
     function varargout = line(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('line',varargin{:});
@@ -333,7 +360,9 @@ methods
     function varargout = scatter3(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('scatter3',varargin{:});
     end
-    % TODO: add slice.
+    function varargout = slice(varargin)
+        [varargout{1:nargout}] = plotfunctionwrapper('slice',varargin{:});
+    end
     function varargout = surf(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('surf',varargin{:});
     end

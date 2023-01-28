@@ -38,10 +38,15 @@ xlabel('area')
 ylabel('length')
 assert(axishasunits('acre','ft'))
 
+%% line w/ param= syntax
+figure
+line(a,a*u.ft,Marker='o',LineWidth=5);
+assert(axishasunits(0,'ft'))
+
 %% histogram
 r = u.R*(25 + 5*randn([1e4,1]));
 figure
-histogram(r);
+histogram(gca,r);
 xlabel temp
 assert(axishasunits('R'))
 
@@ -174,6 +179,24 @@ shoulderror('DimVar:incompatibleUnits','plot3',a*u.m,a.^2,sqrt(a),'-k',...
 plot3(scd(c,'hp'),scd(a*u.m,'K'),scd(c.*a,'lb_m'),'LineStyle',':') 
 xlabel mass; ylabel length; zlabel mass
 assert(axishasunits('lb','ft','lb_m'))
+
+%% Area
+fig area
+area(magic(5)*u.nmi)
+assert(axishasunits(0,'nmi')); clf
+area(magic(5)*u.nmi,-6*u.nmi)
+assert(axishasunits(0,'nmi')); clf
+area(6:10,magic(5)*u.nmi,-6*u.nmi)
+assert(axishasunits(0,'nmi')); clf
+area((6:10)*u.K,magic(5)*u.nmi,-6*u.nmi)
+assert(axishasunits('K','nmi'))
+area((6:10)*u.K,magic(5)*u.nmi)
+assert(axishasunits('K','nmi'))
+area((6:10),magic(5)*u.nmi)
+assert(axishasunits(0,'nmi'))
+area((6:10)*u.K,magic(5))
+assert(axishasunits('K'))
+
 
 %% fill (1)
 figure
