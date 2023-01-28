@@ -22,10 +22,10 @@ jobs:
           submodules: recursive
       # Set-up matlab on runner. Newest release by default
       - name: Set up MATLAB
-        uses: matlab-actions/setup-matlab@v1
+        uses: matlab-actions/setup-matlab@latest
       # Run Tests
       - name: Run tests and generate artifacts
-        uses: matlab-actions/run-tests@v1
+        uses: matlab-actions/run-tests@latest
         with:
           source-folder: .
           select-by-folder: .tests
