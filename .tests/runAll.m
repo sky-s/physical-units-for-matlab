@@ -2,7 +2,7 @@
 addpath('./.tests/alertChecking/');
 addpath('./.tests/fig/');
 
-feature('DefaultCharacterSet', 'ISO-8859-1');
+feature('DefaultCharacterSet', 'UTF-8');
 
 R{1} = runtests('testScript_subsasgn');
 R{2} = runtests('testScript_offsetUnits');
