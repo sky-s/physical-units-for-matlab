@@ -2,9 +2,7 @@
 addpath('./.tests/alertChecking/');
 addpath('./.tests/fig/');
 
-
-chrSet = feature('DefaultCharacterSet');    % keep default character seting
-feature('DefaultCharacterSet','UTF-8');             % force UTF8 for linux matlab
+feature('DefaultCharacterSet', 'ISO-8859-1');
 
 R{1} = runtests('testScript_subsasgn');
 R{2} = runtests('testScript_offsetUnits');
@@ -15,8 +13,6 @@ R{6} = runtests('testScript_noBaseUnits');
 
 rmpath('./.tests/alertChecking/');
 rmpath('./.tests/fig/');
-
-feature('DefaultCharacterSet',chrSet);             % restore
 
 
 %% Examine failed tests.
