@@ -81,9 +81,9 @@ for nd = 1:numel(names)
                 case 1
                     numString = sprintf('%s[%s]',numString,names{nd});
                 case 2
-                    numString = sprintf('%s[%s²]',numString,names{nd});
+                    numString = sprintf('%s[%sÂ²]',numString,names{nd});
                 case 3
-                    numString = sprintf('%s[%s³]',numString,names{nd});
+                    numString = sprintf('%s[%sÂ³]',numString,names{nd});
                 otherwise
                     numString = sprintf('%s[%s^%g]',...
                         numString,names{nd},currentExp);
@@ -98,9 +98,9 @@ for nd = 1:numel(names)
                 case -1
                     denString = sprintf('%s[%s]',denString,names{nd});
                 case -2
-                    denString = sprintf('%s[%s²]',denString,names{nd});
+                    denString = sprintf('%s[%sÂ²]',denString,names{nd});
                 case -3
-                    denString = sprintf('%s[%s³]',denString,names{nd});
+                    denString = sprintf('%s[%sÂ³]',denString,names{nd});
                 otherwise
                     denString = sprintf('%s[%s^%g]',...
                         denString,names{nd},-currentExp);

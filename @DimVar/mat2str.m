@@ -14,7 +14,7 @@ function str = mat2str(dv,varargin)
 % Interpret everything prior to the first alphabetic character (incl. case of
 % leading - or .) as the value.
 
-exp = {'^[-+.0-9]+' ')('  ']['  '([A-Za-z]+\w*)' '-(?=[A-Za-z]+)'  '²'  '³' };
+exp = {'^[-+.0-9]+' ')('  ']['  '([A-Za-z]+\w*)' '-(?=[A-Za-z]+)'  'Â²'  'Â³' };
 rep = {'$0*'        ')*(' ']*[' 'u.$0'           '*'               '^2' '^3'};
 
 str = [mat2str(dispVal,varargin{:}) ' * ' regexprep(strtrim(unitStr),exp,rep)];

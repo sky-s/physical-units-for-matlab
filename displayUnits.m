@@ -35,7 +35,7 @@ dispUnits = {'N' 'Pa' 'J' 'W' 'C' 'V' 'F' 'Ohm' 'S' 'Wb' 'T' 'H'};
 %     'Wb'        u.Wb
 %     'T'         u.T
 %     'H'         u.H
-%     '¤'         u.currency
+%     'Â¤'         u.currency
 %     }; 
 
 %% FPS.

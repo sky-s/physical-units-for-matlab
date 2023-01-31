@@ -2,8 +2,6 @@
 addpath('./.tests/alertChecking/');
 addpath('./.tests/fig/');
 
-feature('DefaultCharacterSet', 'windows-1252');
-
 R{1} = runtests('testScript_subsasgn');
 R{2} = runtests('testScript_offsetUnits');
 R{3} = runtests('testScript_plotAxesUnits'); close all
@@ -13,7 +11,6 @@ R{6} = runtests('testScript_noBaseUnits');
 
 rmpath('./.tests/alertChecking/');
 rmpath('./.tests/fig/');
-
 
 %% Examine failed tests.
 r = [R{:}];

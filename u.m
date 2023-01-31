@@ -83,7 +83,7 @@ properties (Constant = true)
     kg          = scd(u.coreUnits.kg,'kg') % kilogram
     s           = scd(u.coreUnits.s,'s') % second
     A           = scd(u.coreUnits.A,'A') % ampere
-    K           = scd(u.coreUnits.K,'K') % kelvin (°C = °K-273.15)
+    K           = scd(u.coreUnits.K,'K') % kelvin (Â°C = Â°K-273.15)
     mol         = scd(u.coreUnits.mol,'mol') % mole
     cd          = scd(u.coreUnits.cd,'cd') % candela
     bit         = scd(u.coreUnits.bit,'bit') % bit
@@ -125,7 +125,7 @@ properties (Constant = true)
     deci = 1e-1; % SI prefix deci, d
     centi = 1e-2; % SI prefix centi, c
     milli = 1e-3; % SI prefix milli, m
-    micro = 1e-6; % SI prefix micro, µ
+    micro = 1e-6; % SI prefix micro, Âµ
     nano = 1e-9; % SI prefix nano, n
     pico = 1e-12; % SI prefix pico, p
     femto = 1e-15; % SI prefix femto, f
@@ -171,8 +171,8 @@ properties (Constant = true)
     fm = scd(1e-15*u.m,'fm') % femtometer
     femtometer = scd(u.fm,'femtometer') 
     fermi = scd(u.fm,'fermi') % fermi
-    Ao = scd(1e-10*u.m,'Ao') % ångström
-    ang = scd(u.Ao,'ang') % ångström
+    Ao = scd(1e-10*u.m,'Ao') % Ã¥ngstrÃ¶m
+    ang = scd(u.Ao,'ang') % Ã¥ngstrÃ¶m
     angstrom = scd(u.ang,'angstrom') 
     angstroem = scd(u.ang,'angstroem') 
     a0 = scd(u.h_bar/(u.m_e*u.c*u.alpha),'a0') % Bohr radius
@@ -239,7 +239,7 @@ properties (Constant = true)
 
     %---- area ----
 
-    ft2 = scd(u.ft^2,'ft²') % square foot
+    ft2 = scd(u.ft^2,'ftÂ²') % square foot
     sqft = scd(u.ft2,'sqft') % square foot
     square = scd(100*u.sqft,'square') % square
     ha = scd(10000*u.m^2,'ha') % hectare
@@ -266,7 +266,7 @@ properties (Constant = true)
     squareMile = scd(u.sqmi,'squareMile')
     sqnmi = scd(u.nmi^2,'sqnmi') % square nautical mile
     squareNauticalMile = scd(u.sqnmi,'squareNauticalMile')
-    m2 = scd(u.m^2,'m²') % square meter
+    m2 = scd(u.m^2,'mÂ²') % square meter
     sqm = scd(u.m^2,'sqm') % square meter
     squareMeter = scd(u.sqm,'squareMeter')
     sqkm = scd(u.km^2,'sqkm') % square kilometer
@@ -280,7 +280,7 @@ properties (Constant = true)
 
     %---- volume ----
 
-    m3 = scd(u.m^3,'m³') % cubic meter
+    m3 = scd(u.m^3,'mÂ³') % cubic meter
     cc = scd(u.cm^3,'cc') % cubic centimeter
     cubicCentimeter = scd(u.cc,'cubicCentimeter') 
     L = scd(1000*u.cc,'L') % liter
@@ -303,7 +303,7 @@ properties (Constant = true)
     kiloliter = scd(u.kl,'kiloliter') 
     cuin = scd(16.387064*u.mL,'cuin') % cubic inch
     cubicInch = scd(u.cuin,'cubicInch')
-    ft3 = scd(u.ft^3,'ft³') % cubic foot
+    ft3 = scd(u.ft^3,'ftÂ³') % cubic foot
     FBM = scd(u.sqft*u.in,'FBM') % board foot
     boardFoot = scd(u.FBM,'boardFoot') 
     CCF = scd(100*u.ft3,'CCF') % centum cubic feet
@@ -381,7 +381,7 @@ properties (Constant = true)
     kilopond = scd(u.kp,'kilopond') 
     p = scd(u.kp/1000,'p') % pond
     pond = scd(u.p,'pond') 
-    sn = scd(u.kN,'sn') % sthène
+    sn = scd(u.kN,'sn') % sthÃ¨ne
     sthene = scd(u.sn,'sthene') 
 
     %---- mass ----
@@ -557,9 +557,9 @@ properties (Constant = true)
     cal = scd(4.1868*u.J,'cal') % calorie (International Table)
     calorie = scd(u.cal,'calorie') 
     cal_IT = scd(u.cal,'cal_IT') % calorie (International Table)
-    cal_4 = scd(4.204*u.J,'cal_4') % calorie (4°C)
-    cal_15 = scd(4.1855*u.J,'cal_15') % calorie (15°C)
-    cal_20 = scd(4.182*u.J,'cal_20') % calorie (20°C)
+    cal_4 = scd(4.204*u.J,'cal_4') % calorie (4Â°C)
+    cal_15 = scd(4.1855*u.J,'cal_15') % calorie (15Â°C)
+    cal_20 = scd(4.182*u.J,'cal_20') % calorie (20Â°C)
     cal_mean = scd(4.190*u.J,'cal_mean') % calorie (mean)
     cal_th = scd(4.184*u.J,'cal_th') % calorie (thermochemical)
     tonTnt = scd(u.cal_th*1e9,'tonTnt') % ton of TNT
@@ -569,9 +569,9 @@ properties (Constant = true)
     Cal = scd(u.kcal,'Cal') % large calorie / food calorie
     foodCalorie = scd(u.Cal,'foodCalorie') 
     largeCalorie = scd(u.Cal,'largeCalorie') 
-    kcal_4 = scd(1e3*u.cal_4,'kcal_4') % kilocalorie (4°C)
-    kcal_15 = scd(1e3*u.cal_15,'kcal_15') % kilocalorie (15°C)
-    kcal_20 = scd(1e3*u.cal_20,'kcal_20') % kilocalorie (20°C)
+    kcal_4 = scd(1e3*u.cal_4,'kcal_4') % kilocalorie (4Â°C)
+    kcal_15 = scd(1e3*u.cal_15,'kcal_15') % kilocalorie (15Â°C)
+    kcal_20 = scd(1e3*u.cal_20,'kcal_20') % kilocalorie (20Â°C)
     kcal_mean = scd(1e3*u.cal_mean,'kcal_mean') % kilocalorie (mean)
     kcal_th = scd(1e3*u.cal_th,'kcal_th') % kilocalorie (thermochemical)
     erg = scd(1e-7*u.J,'erg') % en.wikipedia.org/wiki/Erg
@@ -583,24 +583,24 @@ properties (Constant = true)
     quad = scd(1e15*u.BTU,'quad') % quad
 
     %---- temperature ----
-    % For reference: °C = °K-273.15; °F = °R-459.67.
+    % For reference: Â°C = Â°K-273.15; Â°F = Â°R-459.67.
 
     kelvin = scd(u.K,'kelvin') 
-    degK = scd(u.K,'°K') % degrees kelvin
-    R = scd(u.K*5/9,'R') % rankine (°F = °R-459.67)
+    degK = scd(u.K,'Â°K') % degrees kelvin
+    R = scd(u.K*5/9,'R') % rankine (Â°F = Â°R-459.67)
     rankine = scd(u.R,'rankine') 
-    degR = scd(u.R,'°R') % degrees rankine
-    degC = scd(OffsetDimVar(u.K,273.15*u.K),'°C') % Celcius
+    degR = scd(u.R,'Â°R') % degrees rankine
+    degC = scd(OffsetDimVar(u.K,273.15*u.K),'Â°C') % Celcius
     Celcius = scd(u.degC,'Celcius');
     centigrade = scd(u.degC,'centigrade');
-    degF = scd(OffsetDimVar(u.R,459.67*u.R),'°F') % Fahrenheit
+    degF = scd(OffsetDimVar(u.R,459.67*u.R),'Â°F') % Fahrenheit
     Fahrenheit = scd(u.degF,'Fahrenheit');
-    % Réaumur
-    % Rømer
+    % RÃ©aumur
+    % RÃ¸mer
     DeltaK = scd(u.K,'DeltaK') % kelvin (relative temperature)
-    DeltadegC = scd(u.K,'Delta°C') % celsius (relative, °C = °K-273.15)
-    DeltadegR = scd(u.R,'Delta°R') % rankine (relative temperature)
-    DeltadegF = scd(u.R,'Delta°F') % fahrenheit (relative, °F = °R-459.67)
+    DeltadegC = scd(u.K,'DeltaÂ°C') % celsius (relative, Â°C = Â°K-273.15)
+    DeltadegR = scd(u.R,'DeltaÂ°R') % rankine (relative temperature)
+    DeltadegF = scd(u.R,'DeltaÂ°F') % fahrenheit (relative, Â°F = Â°R-459.67)
     mK = scd(1e-3*u.K,'mK') % millikelvin
     millikelvin = scd(u.mK,'millikelvin') 
     uK = scd(1e-6*u.K,'uK') % microkelvin
@@ -650,7 +650,7 @@ properties (Constant = true)
     kipPerSquareFoot = scd(u.ksf,'kipPerSquareFoot') 
     Ba = scd(0.1*u.Pa,'Ba') % barye
     barye = scd(u.Ba,'barye') 
-    pz = scd(u.kPa,'pz') % pièze
+    pz = scd(u.kPa,'pz') % piÃ¨ze
     pieze = scd(u.pz,'pieze') 
     mmHg = scd(133.322387415*u.Pa,'mmHg') % millimeter of mercury
     millimeterMercury = scd(u.mmHg,'millimeterMercury') 
@@ -880,9 +880,9 @@ properties (Constant = true)
 
     percent = 0.01 % %
     pct = u.percent % %
-    permil = 0.001 % ‰
-    permill = u.permil % ‰
-    permille = u.permil % ‰
+    permil = 0.001 % â€°
+    permill = u.permil % â€°
+    permille = u.permil % â€°
     permyriad = 1e-4 % permyriad
     bp = u.permyriad % basis point
     basisPoint = u.bp
