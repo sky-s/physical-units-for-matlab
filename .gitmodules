@@ -5,7 +5,3 @@
 [submodule ".tests/fig"]
 	path = .tests/fig
 	url = https://github.com/sky-s/fig
-#FIXME: there is an issue on checkout-action on github, which ignores submodule removal and requires path for removed one: https://github.com/actions/checkout/issues/354. Thus we need to keep .tests/randx forlder occupied with something
-[submodule ".tests/randx"]
-	path = .tests/randx
-	url = https://github.com/sky-s/fig
