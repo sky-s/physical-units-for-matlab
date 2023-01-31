@@ -1,4 +1,18 @@
-% Run all Physical Units test scripts.
+%% test
+feature('locale')
+feature('DefaultCharacterSet')
+exp = {
+    '°'                 % 0 Degrees
+    '²'                 % 1 Squared character.
+    '³'                 % 2 Cubed character.
+    '(^per |^per-|^/)'  % 3 Leading 'per' special case.
+    '( per |-per-)'     % 4 Replace per with /
+    ')('                % 6 Multiply back-2-back parens.
+    ']['                % 7 Multiply back-2-back brackets.
+    '-u\.'              % 9 - leading unit is *.
+    }
+
+%% Run all Physical Units test scripts.
 addpath('./.tests/alertChecking/');
 addpath('./.tests/fig/');
 
