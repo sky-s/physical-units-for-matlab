@@ -11,7 +11,8 @@ a = 1:50;
 b = u.rpm*(5:5:600);
 c = u.kg*(1:50);
 d = u.Pa*(5:3:20);
-
+%% REMOVEME:
+feature('locale')
 %% u.m example 1
 rotationSpeed = 2500 * u.rpm;
 torque = 95 * str2u('ft-lbf');  % Use alternate string-based definition.
