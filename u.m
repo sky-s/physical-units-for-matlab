@@ -345,6 +345,9 @@ properties (Constant = true)
     gill = scd(4*u.floz,'gill') % US customary fluid gill
     gill_UK = scd(u.gal_UK/32,'gill_UK') % British imperial gill
 
+    %---- density ----
+    pcf = scd(u.lb/u.ft3,'pcf') % pound mass per cubic foot
+
     %---- acceleration ----
 
     g0 = scd(9.80665*u.m/u.s^2,'g0') % standard gravity
@@ -581,6 +584,8 @@ properties (Constant = true)
     thm = scd(1e5*u.BTU,'thm') % therm
     therm = scd(u.thm,'therm') 
     quad = scd(1e15*u.BTU,'quad') % quad
+    GGE = scd(114100*u.BTU,'GGE') % gasoline gallon equivalent (afdc.energy.gov)
+    DGE = scd(128488*u.BTU,'DGE') % diesel gallon equivalent (afdc.energy.gov)
 
     %---- temperature ----
     % For reference: °C = °K-273.15; °F = °R-459.67.
