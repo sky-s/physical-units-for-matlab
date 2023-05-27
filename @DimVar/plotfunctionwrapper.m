@@ -12,6 +12,9 @@ function varargout = plotfunctionwrapper(plotFunction,varargin)
 %     AddSecondAxis - http://www.mathworks.com/matlabcentral/fileexchange/38852,
 %     addaxis_unit  - http://www.mathworks.com/matlabcentral/fileexchange/26928.
 
+% TODO: check on all functions using harmonize to make sure it's not
+% over-capturing other numeric inputs such as LineWidth or color. Write test
+% cases.
 
 %% Determine if first input is axes.
 args = varargin;
@@ -77,9 +80,8 @@ nonPlottingFunc = false;
 if ~structInput
     switch char(plotFunction)
         case {'area'}
-            if nPlottableArgs > 1 && isscalar(plottableArgs{end}) && ...
-                    ~((nPlottableArgs == 2) && ~isscalar(plottableArgs{1}) ...
-                    && ~isscalar(plottableArgs{2}))
+            if nPlottableArgs > 1 && isscalar(plottableArgs{end}) && ~((nPlottableArgs == 2) ...
+                    && ~isscalar(plottableArgs{1}) && ~isscalar(plottableArgs{2}))
                 % f(X,Y,base); f(Y,base)
                 plottableArgs(end-1:end) = harmonize(plottableArgs(end-1:end));
                 Y = plottableArgs{end-1};
@@ -125,8 +127,9 @@ if ~structInput
             end
             
         case {'hist','histogram'}
-            if numel(args) > 1 && isscalar(args(2)) && isnumeric(args(2)) ...
-                    && ~isa(args(2),'DimVar')
+            % Arguments that will break this: Color or Alpha of edges/faces,
+            % LineWidth.
+            if numel(args) > 1 && isscalar(args(2)) && isnumeric(args(2)) && ~isa(args(2),'DimVar')
                 % Argument is nbins, which is the only numeric that is allowed
                 % to be non-compatible.
                 plottableArgs([1,3:end]) = harmonize(plottableArgs([1,3:end]));
@@ -143,8 +146,7 @@ if ~structInput
                 [X,Y] = deal(plottableArgs{1:2});
             end
             
-        case {'surf','surfc','surfl','surface','contour3',...
-                'mesh','meshc','meshz'}
+        case {'surf','surfc','surfl','surface','contour3','mesh','meshc','meshz'}
             if nPlottableArgs <= 2
                 % surf(z,c,...); surf(z)
                 Z = plottableArgs{1};
@@ -249,8 +251,7 @@ if ~structInput
     
 end
 %% Rebuild (consistent) arguments and run plotFunction.
-args(plottableArgInd) = cellfun(@plottingvalue,plottableArgs,...
-    'UniformOutput',false);
+args(plottableArgInd) = cellfun(@plottingvalue,plottableArgs,'UniformOutput',false);
 
 if providedAxes
     newArgList = [{providedAxesHandle}, args, nvArgs];
@@ -346,7 +347,8 @@ for i = 1:numel(rulers)
         %% Throw warnings for incompatibility
         if enforcing
             axisHasUnits = ~isempty(labelUnits{i});
-            wStr = 'Plotting a %s variable onto an established axis with %s.';
+            xyz = 'XYZ';
+            wStr = 'Plotting a %s variable onto an established %s axis with %s.';
             if axisHasUnits && dataHasUnits
                 % Check for matching plotting units.
                 if strcmp(labelUnits{i}.unit, s)
@@ -356,15 +358,14 @@ for i = 1:numel(rulers)
                     u2 = str2u(s);
                     if ~iscompatible(u1,u2)
                         % Check OffsetDimVar special case.
-                        if ~(isa(u1,'OffsetDimVar') ...
-                                && isa(u2,'OffsetDimVar') ...
+                        if ~(isa(u1,'OffsetDimVar') && isa(u2,'OffsetDimVar') ...
                                 && u1.offset == u2.offset)
                             warning('DimVar:incompatiblePlottingUnits',wStr,...
-                                'dimensioned','incompatible units');
+                                'dimensioned',xyz(i),'incompatible units');
                         end
                     elseif u1 ~= u2
                         warning('DimVar:incompatiblePlottingUnits',wStr,...
-                            'dimensioned','non-matching display units')
+                            'dimensioned',xyz(i),'non-matching display units')
                         
                     %else
                         % u1 == u2% Also good, e.g. Mg and tonne.
@@ -375,12 +376,10 @@ for i = 1:numel(rulers)
                 if i == 2 && numel(ax.YAxis) == 2
                     % Assume new yyaxis, so don't warn.
                 else
-                    warning('DimVar:incompatiblePlottingUnits',wStr,...
-                        'dimensioned','no units')
+                    warning('DimVar:incompatiblePlottingUnits',wStr,'dimensioned',xyz(i),'no units')
                 end
             elseif axisHasUnits && ~dataHasUnits
-                warning('DimVar:incompatiblePlottingUnits',wStr,...
-                    'non-dimensioned','units')
+                warning('DimVar:incompatiblePlottingUnits',wStr,'non-dimensioned',xyz(i),'units')
             else %if ~axisHasUnits && ~dataHasUnits
                 % All good, no units.
             end
@@ -398,6 +397,8 @@ end
 end
 
 function args = harmonize(args)
+% Consider only enforcing this on DimVars, potentially allowing more errors through but enables more
+% name/value arguments to functions.
 compatible(args{:});
 if isa(args{1},'DimVar')
     dominantUnit = args{1}.customDisplay;
@@ -410,8 +411,7 @@ function [args,props] = parseplotparams(args)
 % also parseparams.
 props = {};
 for i = numel(args):-1:3
-    if (ischar(args{i}) || isstring(args{i}))...
-            && isnumeric(args{i-1}) && isnumeric(args{i-2})
+    if (ischar(args{i}) || isstring(args{i})) && isnumeric(args{i-1}) && isnumeric(args{i-2})
         props = args(i:end);
         args = args(1:i-1);
         break
@@ -420,6 +420,5 @@ end
 end
 
 function out = isplottable(x)
-out = isnumeric(x) || isa(x,'datetime') || ...
-    isa(x,'duration') || isa(x,'categorical');
+out = isnumeric(x) || isa(x,'datetime') || isa(x,'duration') || isa(x,'categorical');
 end
