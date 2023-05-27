@@ -72,3 +72,16 @@ shouldalert('plot',a*u.kg,b*u.N/exp(1)) % Changing x units
 yyaxis right
 hold on
 shouldalert('plot',a*u.kg,b*u.W) % Changing y units
+
+%% holdDiffCompatible
+fig holdNewUnit -reset
+[X,Y,Z] = peaks;
+[X,Y,Z] = deal(X*u.m,Y,Z*u.m);
+hPeaks = surface(X,Y,Z);
+hold on;
+
+[X,Y,Z] = sphere(20);
+[X,Y,Z] = deal(X*u.in,Y*u.m,Z);
+view(3)
+shouldwarn('surface',X,Y,Z);
+

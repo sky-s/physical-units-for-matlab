@@ -35,7 +35,7 @@ baseUnitSystem = {
     'mol'      1
     'cd'       1
     'bit'      1
-    'Â¤'        1 
+    '¤'        1 
     'unit'     1  % Custom user unit.
     };
 
@@ -148,12 +148,12 @@ baseUnitSystem(1:size(unitSystem,1),:) = unitSystem;
 %% No units.
 % baseUnitSystem = 'none';
 
-%% GCS with cents for currency, ÂµA for current, ms for time.
+%% GCS with cents for currency, µA for current, ms for time.
 % baseUnitSystem = {
 %     'cm'    100     % 100   cm  / m
 %     'g'     1000    % 1000  g   / kg
 %     'ms'    1000
-%     'ÂµA'    1e6
+%     'µA'    1e6
 %     'K'     1
 %     'mol'   1
 %     'cd'    1

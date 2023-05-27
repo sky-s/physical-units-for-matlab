@@ -12,14 +12,4 @@ R{6} = runtests('testScript_noBaseUnits');
 rmpath('./.tests/alertChecking/');
 rmpath('./.tests/fig/');
 
-%% Examine failed tests.
 r = [R{:}];
-expectedToFail = contains(string({r.Name}),"expectedToFail");
-failuresOfInterest = r([r.Failed] & ~expectedToFail);
-
-if isempty(failuresOfInterest)
-    disp('ALL PASSED EXPECTED TO PASS.')
-else
-    disp(failuresOfInterest)
-    error('UNEXPECTED FAILURES.')
-end

@@ -101,5 +101,5 @@ v1n(3) = u.m;
 % assert(isequal(v1n,u.m*[NaN NaN 1 NaN]))
 
 % test that passes in current state of toolbox: 
-shoulderror("assert(isequal(v1n,u.m*[NaN NaN 1 NaN]))")
+shoulderror("assert(isequal(v1n,u.m*[NaN NaN 1 NaN]))");
 

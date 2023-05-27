@@ -62,6 +62,21 @@ histogram(r/u.m,u.R/u.m*(10:20))
 xlabel temp/length
 assert(axishasunits(1))
 
+%% histogram (4)**
+r = u.R*(25 + 5*randn([1e4,1]));
+
+% test for ideal / aspirational toolbox behavior (reason doesn't work: incorrect parsing of
+% non-DimVar numeric inputs):
+% figure
+% histogram(r,LineWidth=5,FaceAlpha=0.1)
+% xlabel temp
+% assert(axishasunits(1))
+
+% test that passes in current state of toolbox:
+figure
+shoulderror('DimVar:incompatibleUnits','histogram(r,LineWidth=5,FaceAlpha=0.1)');
+
+
 %% histogram2
 x = randn(1000,1)*u.kg;
 y = randn(1000,1)*u.m;
@@ -190,9 +205,9 @@ area(6:10,magic(5)*u.nmi,-6*u.nmi)
 assert(axishasunits(0,'nmi')); clf
 area((6:10)*u.K,magic(5)*u.nmi,-6*u.nmi)
 assert(axishasunits('K','nmi'))
-area((6:10)*u.K,magic(5)*u.nmi)
+area((6:10)*u.K,magic(5)*u.nmi,FaceColor=[.3 .4 .5])
 assert(axishasunits('K','nmi'))
-area((6:10),magic(5)*u.nmi)
+area((6:10),magic(5)*u.nmi,LineWidth=9)
 assert(axishasunits(0,'nmi'))
 area((6:10)*u.K,magic(5))
 assert(axishasunits('K'))
