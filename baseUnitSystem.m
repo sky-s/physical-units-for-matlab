@@ -116,15 +116,15 @@ switch upper(unitSystem)
             'candela'   1
             'bit'       1
             'dollar'    1};
-    case 'MTS' % Meter–tonne–second
+    case 'MTS' % Meter-tonne-second
         unitSystem = {
             'm'     1
             't'     1/1000};
-    case 'CGS' % Centimeter–gram–second
+    case 'CGS' % Centimeter-gram-second
         unitSystem = {
             'cm'   100
             'g'    1000};
-    case 'MMGS' % Milimeter–gram–second
+    case 'MMGS' % Milimeter-gram-second
         unitSystem = {
             'mm'   1000
             'g'    1000};

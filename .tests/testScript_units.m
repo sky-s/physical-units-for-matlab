@@ -32,7 +32,7 @@ timeNeeded = fieldSize/rate
 timeNeeded = scd(timeNeeded,'month')
 
 %% str2u examples
-str2u('kg-m²/s^3')
+str2u('kg-mÂ²/s^3')
 str2u('-5km/s')
 str2u('-5 km / s')
 
@@ -133,7 +133,7 @@ assert(isa(C,'DimVar'));
 assert(~isa(A,'DimVar'));
 
 %% unitConversionFactor1
-assert(isequal(unitconversionfactor('m²',u.cm^2),10000));
+assert(isequal(unitconversionfactor('mÂ²',u.cm^2),10000));
 %% unitConversionFactor2
 assert(isequal(unitconversionfactor(u.ft,u.in),12));
 %% unitConversionFactor3
@@ -167,15 +167,15 @@ str2u('kg-m^2')
 %% str2u1.3
 str2u('s/kg-m')
 %% str2u1.1
-assert(u.W==str2u('kg-m²/s^3'));
+assert(u.W==str2u('kg-mÂ²/s^3'));
 %% str2u1.1
-assert(u.W==str2u('m²-kg/s^3'));
+assert(u.W==str2u('mÂ²-kg/s^3'));
 %% str2u1.2
-assert(str2u('s^3/m²-kg')==1/u.W);
+assert(str2u('s^3/mÂ²-kg')==1/u.W);
 %% str2u1.3
-assert(str2u('m²-s^-3-kg')==u.W);
+assert(str2u('mÂ²-s^-3-kg')==u.W);
 %% str2u1.4
-assert(str2u('per m²-s^-3-kg')==1/u.W);
+assert(str2u('per mÂ²-s^-3-kg')==1/u.W);
 %% str2u2
 assert(u.W==str2u('m^2.0*kg*s^-3'));
 %% str2u3
@@ -184,13 +184,13 @@ assert(isequal(u.rpm,str2u('rpm')));
 %% str2u4
 assert(str2u('kg*K^(-2/3)-mol')==u.kg*u.K^-(2/3)*u.mol)
 %% str2u4.1
-assert(str2u('kg-m²/s^-4*K^(1/2)-mol')==u.kg*u.m^2*u.s^4*u.K^.5*u.mol)
+assert(str2u('kg-mÂ²/s^-4*K^(1/2)-mol')==u.kg*u.m^2*u.s^4*u.K^.5*u.mol)
 %% str2u4.2
-assert(str2u('kg-m²/s^-4*K^-(1/2)-mol')==u.kg*u.m^2*u.s^4*u.K^-.5*u.mol)
+assert(str2u('kg-mÂ²/s^-4*K^-(1/2)-mol')==u.kg*u.m^2*u.s^4*u.K^-.5*u.mol)
 %% str2u4.4
-assert(str2u('kg-m²/s^-4*K^(-1/2)-mol')==u.kg*u.m^2*u.s^4*u.K^-.5*u.mol)
+assert(str2u('kg-mÂ²/s^-4*K^(-1/2)-mol')==u.kg*u.m^2*u.s^4*u.K^-.5*u.mol)
 %% str2u4.3
-assert(str2u('kg-m²/s^-4*K^.5-mol')==u.kg*u.m^2*u.s^4*u.K^.5*u.mol)
+assert(str2u('kg-mÂ²/s^-4*K^.5-mol')==u.kg*u.m^2*u.s^4*u.K^.5*u.mol)
 %% str2u4.5
 % assert(str2u('km/h-(K/g0)')==u.km/(u.h*(u.K/u.g0))) % not supported
 %% str2u5
