@@ -6,7 +6,7 @@ function out = str2u(inStr)
 %   DimVars of the same size.
 % 
 %   Compound units are allowed with operators * and - for multiplication and /
-%   for division. The characters ² and ³ are also interpreted as ^2 and ^3,
+%   for division. The characters Â² and Â³ are also interpreted as ^2 and ^3,
 %   respectively. Other operators will be passed to the eval function.
 % 
 %   Grouping with parentheses for clarity is advisable. Note that
@@ -17,7 +17,7 @@ function out = str2u(inStr)
 %   custom display unit.
 % 
 %   Examples: 
-%     str2u('kg-m²/s^3') returns a DimVar with units of watts (u.W).
+%     str2u('kg-mÂ²/s^3') returns a DimVar with units of watts (u.W).
 % 
 %     str2u('-5km/s') or str2u('-5 km / s') is the same as calling -5*u.km/u.s.
 % 
@@ -78,9 +78,9 @@ hyphenated = sprintf('%s(-%s)+',unitWithExponent,unitWithExponent);
 
 %% Regexp and eval.
 exp = {
-    '°'                 % 0 Degrees
-    '²'                 % 1 Squared character.
-    '³'                 % 2 Cubed character.
+    'Â°'                 % 0 Degrees
+    'Â²'                 % 1 Squared character.
+    'Â³'                 % 2 Cubed character.
     '(^per |^per-|^/)'  % 3 Leading 'per' special case.
     '( per |-per-)'     % 4 Replace per with /
     hyphenated          % 5 Group hyphen units with parens.

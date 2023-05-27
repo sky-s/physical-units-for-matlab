@@ -9,7 +9,6 @@ b = a.^2;
 
 %% overriding with new plots
 fig('hold off','-reset')
-clf
 plot(a,b)
 
 % Replace normal with units

@@ -69,8 +69,8 @@ properties (Hidden, Constant = true)
     % Establishes base unit system and preferences based on baseUnitSystem and
     % displayUnits.
     
-    baseUnitSystem =    evalin('base','baseUnitSystem')
-    dispUnits =         evalin('base','displayUnits')
+    baseUnitSystem =    evalin('caller','baseUnitSystem')
+    dispUnits =         evalin('caller','displayUnits')
 
     coreUnits = buildCoreUnits(u.baseUnitSystem);
 end

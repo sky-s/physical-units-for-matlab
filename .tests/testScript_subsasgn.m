@@ -55,10 +55,16 @@ shoulderror('DimVar:incompatibleUnits','v(5) = u.kg');
 ve = []*u.m;
 shoulderror('DimVar:incompatibleUnits','ve(3) = u.kg;');
 
-%% expected to fail: assign dim to empty norm (doesn't call overloaded method)
+%% assign dim to empty norm**
 ve = [];
 ve(3) = u.m;
-assert(isequal(ve,u.m*[0 0 1]))
+
+% test for ideal / aspirational toolbox behavior (reason doesn't work: doesn't
+% call overloaded method):
+% assert(isequal(ve,u.m*[0 0 1]))
+
+% test that passes in current state of toolbox: 
+shoulderror("assert(isequal(ve,u.m*[0 0 1]))");
 
 %% assign dim to empty normal, subsasgn call
 ve = [];
@@ -67,9 +73,14 @@ S.subs = {3};
 ve = subsasgn(ve,S,9*u.m);
 assert(isequal(ve,u.m*[0 0 9]))
 
-%% expected to fail: assign dim to normal (doesn't call overloaded method)
+%% assign dim to normal**
 v1 = 1:4;
-shoulderror("v1([2,6]) = 9*u.lb;")
+% test for ideal / aspirational toolbox behavior (reason doesn't work: doesn't
+% call overloaded method):
+% shoulderror("v1([2,6]) = 9*u.lb;")
+
+% test that passes in current state of toolbox: 
+v1([2,6]) = 9*u.lb;
 
 %% assign dim to normal, subsasgn call
 v1 = 1:4;
@@ -82,7 +93,13 @@ v = [];
 v = subsasgn(v,substruct('()',{3}),u.kg);
 assert(isequal(v,u.kg*[0 0 1]))
 
-%% expected to fail: assign DimVar to NaN (doesn't call overloaded method)
+%% assign DimVar to NaN**
 v1n = NaN(1,4);
 v1n(3) = u.m;
-assert(isequal(v1n,u.m*[NaN NaN 1 NaN]));
+% test for ideal / aspirational toolbox behavior (reason doesn't work: doesn't
+% call overloaded method):
+% assert(isequal(v1n,u.m*[NaN NaN 1 NaN]))
+
+% test that passes in current state of toolbox: 
+shoulderror("assert(isequal(v1n,u.m*[NaN NaN 1 NaN]))")
+

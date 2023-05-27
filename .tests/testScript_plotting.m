@@ -485,7 +485,8 @@ assert(axishasunits(0,'kW','kgf'))
 
 %% _lim functions
 figure
-linem(u.smoot*rand(3,10))
+R = u.smoot*rand(3,10);
+line(R(1,:),R(2,:),R(3,:));
 view(3)
 shouldalert('xlim',gca,u.ft*[-6 6]);
 ylim(u.smoot*[0 2]);

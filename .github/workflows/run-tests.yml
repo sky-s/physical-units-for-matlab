@@ -19,7 +19,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@main
         with:
-          submodules: recursive
+          submodules: 'true'
       # Set-up matlab on runner. Newest release by default
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v1.2.4

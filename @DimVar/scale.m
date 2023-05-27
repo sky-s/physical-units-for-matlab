@@ -12,7 +12,7 @@ a(1:7) = [
     1   % Length
     3   % Mass
     1/2 % Time
-    9/4 % Current (driven by Ohm scaling with length/area, K/K²)
+    9/4 % Current (driven by Ohm scaling with length/area, K/KÂ²)
     0   % Temp
     3   % Amount
     7/2 % cd (driven by matching scaling of watts/steridian)
