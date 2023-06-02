@@ -358,3 +358,52 @@ u.AvogadroConstant*u.kg/u.kg
 u.kg
 u.N
 u.N*u.m/u.m
+
+%% cumtrapz
+Y = [0 1 2; 3 4 5]*u.m;
+cumtrapz(Y,1);
+cumtrapz(Y,2);
+cumtrapz(Y(:),Y(:))
+cumtrapz(double(Y(:)),Y(:))
+cumtrapz(Y(:),double(Y(:)))
+cumtrapz(1:3,Y,2);
+cumtrapz(Y);
+
+%% fillmissing
+a = [NaN 1 2 NaN 4 NaN]*u.km;
+assert(isequal(fillmissing(a,'linear'),(0:5)*u.km));
+
+%% round
+assert((round(1.1*u.nmi)-u.nmi)<u.um)
+
+%% coverage
+disp(scd(u.W));
+unique([u.yd 3*u.ft u.mi]);
+assert(issorted(sort([u.W; u.hp; u.MJ/u.hr])));
+assert(u.m>u.ft)
+assert(12*u.in==1*u.ft)
+assert(u.W<(u.hp - u.mW))
+assert(u.s<=u.hr)
+assert(u.kg>=u.lbm)
+assert(u.fps~=u.kt)
+assert(~(0*u.ft))
+assert(logical(u.MB))
+[a,b,c,d,e] = harmonizedisplay(u.ft, u.m, u.mi, u.nmi, u.km);
+shoulderror('DimVar:incompatibleUnits','[u.m u.R]');
+shoulderror('DimVar:incompatibleUnits','[4 u.yd]');
+shoulderror('DimVar:incompatibleUnits','[u.hp 66]');
+a = magic(5)*u.R;
+assert(a(end-1,3)==19*u.R);
+max(a)'>min(a,[],2);
+max(a,10*u.R);
+b = scd(a*u.sqm,'R-m^2');
+assert(all(eval(mat2str(b(:)))==b(:)));
+1./a;
+a.\1;
+a.^2;
+a*b;
+a.*b;
+a/b;
+a\b;
+assert(scale(u.hr,2)==sqrt(2)*u.hr)
+u2num(a,u.K);
