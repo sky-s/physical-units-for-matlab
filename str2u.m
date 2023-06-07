@@ -78,28 +78,30 @@ hyphenated = sprintf('%s(-%s)+',unitWithExponent,unitWithExponent);
 
 %% Regexp and eval.
 exp = {
-    '°'                 % 0 Degrees
-    '²'                 % 1 Squared character.
-    '³'                 % 2 Cubed character.
-    '(^per |^per-|^/)'  % 3 Leading 'per' special case.
-    '( per |-per-)'     % 4 Replace per with /
-    hyphenated          % 5 Group hyphen units with parens.
-    ')('                % 6 Multiply back-2-back parens.
-    ']['                % 7 Multiply back-2-back brackets.
-    validUnitStr        % 8 Precede alphanumeric unit w/ u.
-    '-u\.'              % 9 - leading unit is *.
+    'Δ'                 % A Delta.
+    '°'                 % B Degrees
+    '²'                 % C Squared character.
+    '³'                 % D Cubed character.
+    '(^per |^per-|^/)'  % E Leading 'per' special case.
+    '( per |-per-)'     % F Replace per with /
+    hyphenated          % G Group hyphen units with parens.
+    ')('                % H Multiply back-2-back parens.
+    ']['                % I Multiply back-2-back brackets.
+    validUnitStr        % J Precede alphanumeric unit w/ u.
+    '-u\.'              % K - leading unit is *.
     };
 rep = {
-    'deg'               % 0
-    '^2'                % 1
-    '^3'                % 2
-    '1/'                % 3
-    '/'                 % 4
-    '($0)'              % 5
-    ')*('               % 6
-    ']*['               % 7
-    'u.$0'              % 8
-    '*u.'               % 9
+    'Delta'             % A
+    'deg'               % B
+    '^2'                % C
+    '^3'                % D
+    '1/'                % E
+    '/'                 % F
+    '($0)'              % G
+    ')*('               % H
+    ']*['               % I
+    'u.$0'              % J
+    '*u.'               % K
     };                
 
 eve = eval(regexprep(unitStr,exp,rep));

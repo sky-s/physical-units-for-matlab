@@ -602,10 +602,10 @@ properties (Constant = true)
     Fahrenheit = scd(u.degF,'Fahrenheit');
     % Réaumur
     % Rømer
-    DeltaK = scd(u.K,'DeltaK') % kelvin (relative temperature)
-    DeltadegC = scd(u.K,'Delta°C') % celsius (relative, °C = °K-273.15)
-    DeltadegR = scd(u.R,'Delta°R') % rankine (relative temperature)
-    DeltadegF = scd(u.R,'Delta°F') % fahrenheit (relative, °F = °R-459.67)
+    DeltaK = scd(u.K,'ΔK') % kelvin (relative temperature)
+    DeltadegC = scd(u.K,'Δ°C') % celsius (relative, °C = °K-273.15)
+    DeltadegR = scd(u.R,'Δ°R') % rankine (relative temperature)
+    DeltadegF = scd(u.R,'Δ°F') % fahrenheit (relative, °F = °R-459.67)
     mK = scd(1e-3*u.K,'mK') % millikelvin
     millikelvin = scd(u.mK,'millikelvin') 
     uK = scd(1e-6*u.K,'uK') % microkelvin

@@ -2,7 +2,7 @@ classdef (InferiorClasses = {?DimVar}) OffsetDimVar
 % OffsetDimVar  A special case of DimVar for physical units that have an offset
 % zero reference (i.e., Fahrenheit and Celcius temperatures).
 %
-%   OffsetDimVars should be used only for setting and converting units though
+%   OffsetDimVars should be used only for setting and converting units through
 %   multiplication and division. 
 % 
 %     Use cases:
@@ -27,7 +27,7 @@ classdef (InferiorClasses = {?DimVar}) OffsetDimVar
 %       anything else with unitconversionfactor (since it won't be a "factor"),
 %       e.g. unitconversionfactor('degC','K'), even though this doesn't throw an
 %       error.
-%       20*u.degC + 20*u.degF also doesn't error but should be avoided. Used
+%       20*u.degC + 20*u.degF also doesn't error but should be avoided. Use
 %       u.deltaDegF instead, for example.
 % 
 %   See also DimVar, u, str2u, unitconversionfactor, u.deltaDegC, u.deltaDegF.
