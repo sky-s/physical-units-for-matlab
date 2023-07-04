@@ -48,7 +48,7 @@ if p.Results.Force || (isfloat(from) && isfloat(to))
     % are invalid inputs for the compatible function below).
 else
     % Throw error if incompatible.
-    compatible(from,to); % Not defined for normal inputs.
+    compatible(from,to);
 end
 
 

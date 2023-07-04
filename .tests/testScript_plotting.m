@@ -13,11 +13,8 @@ b = u.rpm*(5:5:600);
 c = u.kg*(1:50);
 d = u.Pa*(5:3:20);
 
-T = table;
-T.a = a(:);
-T.b = b(1:50)';
-T.c = c';
-T.d = u.Pa*rand(50,1);
+dur = years(a);
+dt = linspace(datetime,datetime+500,50);
 
 %% line
 figure
@@ -42,6 +39,21 @@ assert(axishasunits('acre','ft'))
 figure
 line(a,a*u.ft,Marker='o',LineWidth=5);
 assert(axishasunits(0,'ft'))
+
+%% duration
+figure
+plot(dur,a*u.smoot)
+assert(axishasunits([],'smoot'))
+
+%% datetime
+figure
+line(dt,randperm(50)*u.K)
+assert(axishasunits([],'K'))
+
+%% dur and datetime
+figure
+plot3(randperm(50)*u.mph,dur,dt)
+assert(axishasunits('mph',[],[]))
 
 %% histogram
 r = u.R*(25 + 5*randn([1e4,1]));
@@ -427,8 +439,17 @@ scatter(ax,a*u.lb,c,a*u.kph)
 assert(axishasunits('lb','kg'))
 
 %% scatter on table
+T = table;
+T.a = (1:50)';
+T.p = u.Pa*rand(50,1);
+
 figure
-scatter(T,"a","b")
+scatter(T,"a","p")
+% Test for ideal / aspirational toolbox behavior:
+% assert(axishasunits(0,'Pa'))
+
+% test that passes in current state of toolbox: 
+assert(axishasunits(0,[]))
 
 %% swarmchart3
 figure

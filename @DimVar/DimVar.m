@@ -1,4 +1,4 @@
-classdef (InferiorClasses = {?matlab.graphics.axis.Axes}) DimVar
+classdef (InferiorClasses = {?matlab.graphics.axis.Axes,?duration,?datetime}) DimVar
 % See also u.
 
 % Copyright (c) 2012-2017, Sky Sartorius.

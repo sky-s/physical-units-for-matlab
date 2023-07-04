@@ -84,5 +84,11 @@ classdef (InferiorClasses = {?DimVar}) OffsetDimVar
         function v = mrdivide(v1,v2)
             v = rdivide(v1,v2);
         end
+        function compatible(varargin)
+            ME = MException('DimVar:incompatibleUnits',...
+                ['Incompatible units. Cannot perform operation on '...
+                'variables with different or offset units.']);
+            throwAsCaller(ME);
+        end
     end
 end

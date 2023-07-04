@@ -6,7 +6,7 @@ function compatible(varargin)
 %   See also u, iscompatible.
 
 for i = 1:nargin
-    if ~isnumeric(varargin{i})
+    if ~(isnumeric(varargin{i}) || isdatetime(varargin{i}) || isduration(varargin{i}))
         ME = MException('DimVar:incompatibleUnits',...
             ['Incompatible units. Cannot perform operation on '...
             'variables with different units.']);

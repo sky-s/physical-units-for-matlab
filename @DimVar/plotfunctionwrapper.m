@@ -322,7 +322,7 @@ end
 % scheme of using TickLabelFormat was used instead of adding properties to the
 % axes or using UserData.
 
-labelUnits = regexp({rulers.TickLabelFormat},'%g (?<unit>.+)','names');
+labelUnits = regexp(get(rulers,'TickLabelFormat')','%g (?<unit>.+)','names');
 
 if all(cellfun('isempty',labelUnits))
     % No prior axes with units, so don't check against them.
@@ -335,8 +335,9 @@ end
 
 data = {X,Y,Z};
 for i = 1:numel(rulers)
-    if iscell(data{i}) && isempty(data{i})
-        % Axis unused by plottingFunction, so skip.
+    if (iscell(data{i}) && isempty(data{i})) ...
+            || ~isa(rulers(i),'matlab.graphics.axis.decorator.NumericRuler')
+        % Axis unused by plottingFunction or is not numeric/DimVar, so skip.
     else
         thisData = data{i};
         dataHasUnits = isa(thisData,'DimVar');
