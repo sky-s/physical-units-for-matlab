@@ -226,7 +226,7 @@ assert(str2u('-5 1/kt')==-5/u.kt)
 
 %% str2u denominator stuff
 assert(str2u('1/kt')==1/u.kt)
-
+assert(str2u('per knot')==1/u.kt)
 
 %% str2u strings
 assert(isequal(str2u(["5 ft" "horsepower"]),{5*u.ft u.horsepower}));
@@ -234,6 +234,11 @@ assert(isequal(str2u(["5 ft" "horsepower"]),{5*u.ft u.horsepower}));
 %% str2uWithDashDenominator
 assert(str2u('lbf/a_0-hr-K')==str2u('lbf/(a_0-hr-K)'));
 % assert(str2u('km/h-(K/s)')==str2u('km/(h-(K/s)'));
+
+%% str2u currency
+assert(str2u('mi/$')==u.mi/u.USD)
+assert(str2u('€/kg')==u.EUR/u.kg)
+assert(str2u('$/W-h')==u.USD/(u.W*u.h))
 
 %% more str2u
 assert(str2u(' / hour')==1/u.hr) 

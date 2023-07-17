@@ -77,34 +77,26 @@ unitWithExponent = sprintf('(%s(%s|%s)?)',validUnitStr,normalExpo,parenExpo);
 hyphenated = sprintf('%s(-%s)+',unitWithExponent,unitWithExponent);
 
 %% Regexp and eval.
-exp = {
-    'Δ'                 % A Delta.
-    '°'                 % B Degrees
-    '²'                 % C Squared character.
-    '³'                 % D Cubed character.
-    '(^per |^per-|^/)'  % E Leading 'per' special case.
-    '( per |-per-)'     % F Replace per with /
-    hyphenated          % G Group hyphen units with parens.
-    ')('                % H Multiply back-2-back parens.
-    ']['                % I Multiply back-2-back brackets.
-    validUnitStr        % J Precede alphanumeric unit w/ u.
-    '-u\.'              % K - leading unit is *.
+% The order here matters. The preceding u. should go last.
+exprep = {
+    'Δ'                 'Delta'
+    '°'                 'deg'
+    '\$'                'USD'
+    '€'                 'EUR'
+    '£'                 'GBP'
+    '¥'                 'JPY'
+    '²'                 '^2'
+    '³'                 '^3'
+    '(^per |^per-|^/)'  '1/'    % Leading 'per' special case.
+    '( per |-per-)'     '/'     % Replace per with /
+    hyphenated          '($0)'  % Group hyphen units with parens.
+    ')('                ')*('   % Multiply back-2-back parens.
+    ']['                ']*['   % Multiply back-2-back brackets.
+    validUnitStr        'u.$0'  % Precede alphanumeric unit w/ u.
+    '-u\.'              '*u.'   % - leading unit is *.
     };
-rep = {
-    'Delta'             % A
-    'deg'               % B
-    '^2'                % C
-    '^3'                % D
-    '1/'                % E
-    '/'                 % F
-    '($0)'              % G
-    ')*('               % H
-    ']*['               % I
-    'u.$0'              % J
-    '*u.'               % K
-    };                
 
-eve = eval(regexprep(unitStr,exp,rep));
+eve = eval(regexprep(unitStr,exprep(:,1),exprep(:,2)));
 if isstring(number)
     % Avoid converting OffsetDimVar as a special case for use by displayparser
     % when custom display units are set to an offset type.
