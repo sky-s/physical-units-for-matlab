@@ -584,6 +584,14 @@ properties (Constant = true)
     thm = scd(1e5*u.BTU,'thm') % therm
     therm = scd(u.thm,'therm') 
     quad = scd(1e15*u.BTU,'quad') % quad
+    toe = scd(41.868*u.GJ,'toe') % tonne of oil equivalent
+    Mtoe = scd(1e6*u.toe,'Mtoe') % megatoe
+    Gtoe = scd(1e9*u.toe,'Gtoe') % gigatoe
+    BOE = scd(5.8e6*u.BTU,'BOE') % barrel of oil equivalent
+    kBOE = scd(1e3*u.BOE,'kBOE') % kilo barrel of oil equivalent
+    BBOE = scd(1e9*u.BOE,'BBOE') % billion barrel of oil equivalent
+    MMboed = scd(1e6*u.BOE/u.day,'MMboed') % million barrels of oil equivalent per day
+    tce = scd(0.7*u.toe,'tce') % tonne of coal equivalent
     GGE = scd(114100*u.BTU,'GGE') % gasoline gallon equivalent (afdc.energy.gov)
     DGE = scd(128488*u.BTU,'DGE') % diesel gallon equivalent (afdc.energy.gov)
 
