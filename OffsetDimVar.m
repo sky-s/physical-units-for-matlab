@@ -1,6 +1,6 @@
 classdef (InferiorClasses = {?DimVar}) OffsetDimVar
 % OffsetDimVar  A special case of DimVar for physical units that have an offset
-% zero reference (i.e., Fahrenheit and Celcius temperatures).
+% zero reference (i.e., Fahrenheit and Celsius temperatures).
 %
 %   OffsetDimVars should be used only for setting and converting units through
 %   multiplication and division. 

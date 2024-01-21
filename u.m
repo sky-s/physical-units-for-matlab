@@ -607,8 +607,8 @@ properties (Constant = true)
     R = scd(u.K*5/9,'R') % rankine (°F = °R-459.67)
     rankine = scd(u.R,'rankine') 
     degR = scd(u.R,'°R') % degrees rankine
-    degC = scd(OffsetDimVar(u.K,273.15*u.K),'°C') % Celcius
-    Celcius = scd(u.degC,'Celcius');
+    degC = scd(OffsetDimVar(u.K,273.15*u.K),'°C') % Celsius
+    Celsius = scd(u.degC,'Celsius');
     centigrade = scd(u.degC,'centigrade');
     degF = scd(OffsetDimVar(u.R,459.67*u.R),'°F') % Fahrenheit
     Fahrenheit = scd(u.degF,'Fahrenheit');
