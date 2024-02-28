@@ -12,7 +12,9 @@ function [names,S,T,C] = fieldnameswithunits(S,exceptionNames,...
 % 
 %   [names,S,T] = fieldnameswithunits(S) returns struct2table(S).
 % 
-%   [names,S,T,C] = fieldnameswithunits(S) returns [names';table2cell(T)]
+%   [names,S,T,C] = fieldnameswithunits(S) returns [names';table2cell(T)].
+% 
+%   If S is a table, it is first converted to a struct with table2struct.
 % 
 %   ... = fieldnameswithunits(S,exceptionNames,exceptionUnitStr) will override
 %   the currently set display units for the fields matching any in the cell
@@ -25,7 +27,7 @@ function [names,S,T,C] = fieldnameswithunits(S,exceptionNames,...
 %   [names,S,T,C] = fieldnameswithunits(S,exceptionNames,...
 %       exceptionUnitStr,exceptionUnits)
 % 
-%   See also u, displayparser str2u. 
+%   See also u, displayparser, str2u. 
 
 
 % Copyright 2018 Sky Sartorius
@@ -47,6 +49,9 @@ if ~(iscellstr(exceptionNames) || isstring(exceptionNames))
     error('exceptionNames must be cellstr or string array.')
 end
 
+if istable(S)
+    S = table2struct(S);
+end
 names = fieldnames(S);
 T = struct2table(S);
 
