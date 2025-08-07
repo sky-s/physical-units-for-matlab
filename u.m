@@ -112,6 +112,10 @@ properties (Constant = true)
     DiracConstant = scd(u.h_bar,'DiracConstant')
     
     %% SI prefixes
+    % en.wikipedia.org/wiki/Metric_prefix
+
+    quetta = 1e30; % SI prefix quetta, Q
+    ronna = 1e27; % SI prefix ronna, R 
     yotta = 1e24; % SI prefix yotta, Y 
     zetta = 1e21; % SI prefix zetta, Z
     exa = 1e18; % SI prefix exa, E
@@ -132,6 +136,8 @@ properties (Constant = true)
     atto = 1e-18; % SI prefix atto, a
     zepto = 1e-21; % SI prefix zepto, z
     yocto = 1e-24; % SI prefix yocto, y
+    ronto = 1e-27; % SI prefix ronto, r
+    quecto = 1e-30; % SI prefix quecto, q
     
     %% Important constants with uncertainty
     alpha = 7.2973525693e-3 % fine-structure constant
