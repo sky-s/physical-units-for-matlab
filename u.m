@@ -350,6 +350,10 @@ properties (Constant = true)
     minim_UK = scd(u.fldr_UK/60,'minim_UK') % British imperial minim
     gill = scd(4*u.floz,'gill') % US customary fluid gill
     gill_UK = scd(u.gal_UK/32,'gill_UK') % British imperial gill
+    gt = scd(u.ml/20,'gt') % drop
+    gtt = scd(u.gt,'gtt') % drop
+    drop = scd(u.gt,'drop')
+    drop_US = scd(u.fldr/72,'drop_US') % US customary drop
 
     %---- density ----
     pcf = scd(u.lb/u.ft3,'pcf') % pound mass per cubic foot
@@ -575,7 +579,9 @@ properties (Constant = true)
     cal_20 = scd(4.182*u.J,'cal_20') % calorie (20°C)
     cal_mean = scd(4.190*u.J,'cal_mean') % calorie (mean)
     cal_th = scd(4.184*u.J,'cal_th') % calorie (thermochemical)
-    tonTnt = scd(u.cal_th*1e9,'tonTnt') % ton of TNT
+    tonTnt = scd(u.cal_th*1e9,'tonTnt') % ton of TNT equivalent - wikipedia.org/wiki/TNT_equivalent
+    kilotonTnt = scd(1e3*u.tonTnt,'kilotonTnt') % kiloton TNT equivalent
+    megatonTnt = scd(1e6*u.tonTnt,'megatonTnt') % megaton TNT equivalent
     kcal = scd(1e3*u.cal,'kcal') % kilocalorie
     kilocalorie = scd(u.kcal,'kilocalorie') 
     kcal_IT = scd(1e3*u.cal_IT,'kcal_IT') % kilocalorie (International Table)
@@ -597,7 +603,7 @@ properties (Constant = true)
     toe = scd(41.868*u.GJ,'toe') % tonne of oil equivalent
     Mtoe = scd(1e6*u.toe,'Mtoe') % megatoe
     Gtoe = scd(1e9*u.toe,'Gtoe') % gigatoe
-    BOE = scd(5.8e6*u.BTU,'BOE') % barrel of oil equivalent
+    BOE = scd(5.8e6*u.BTU,'BOE') % barrel of oil equivalent (HHV)
     kBOE = scd(1e3*u.BOE,'kBOE') % kilo barrel of oil equivalent
     BBOE = scd(1e9*u.BOE,'BBOE') % billion barrel of oil equivalent
     MMboed = scd(1e6*u.BOE/u.day,'MMboed') % million barrels of oil equivalent per day
@@ -923,8 +929,10 @@ properties (Constant = true)
 
     rad = 1 % radian
     radian = u.rad
-    sr = 1 % steradian
+    sr = u.rad^2 % steradian
     steradian = u.sr
+    sp = 4*pi*u.sr % spat
+    spat = u.sp
     turn = 2*pi*u.rad % turn
     rev = u.turn % revolution = 2*pi radians
     revolution = u.rev
