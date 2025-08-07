@@ -355,8 +355,10 @@ properties (Constant = true)
     drop = scd(u.gt,'drop')
     drop_US = scd(u.fldr/72,'drop_US') % US customary drop
 
-    %---- density ----
+    %---- density and mass per area ----
     pcf = scd(u.lb/u.ft3,'pcf') % pound mass per cubic foot
+    gsm = scd(u.g/u.m^2,'gsm') % grams per square meter
+    grammage = scd(u.gsm,'grammage') % grams per square meter
 
     %---- acceleration ----
 
@@ -1146,6 +1148,15 @@ properties (Constant = true)
     gigabitPerSecond = scd(u.Gbps,'gigabitPerSecond') 
     Tbps = scd(1e12*u.bps,'Tbps') % terabit per second
     terabitPerSecond = scd(u.Tbps,'terabitPerSecond') 
+    flops = scd(1/u.s,'flops') % floating point operations per second
+    kflops = scd(1e3*u.flops,'kflops') % kiloflops
+    Mflops = scd(1e6*u.flops,'Mflops') % megaflops
+    Gflops = scd(1e9*u.flops,'Gflops') % gigaflops
+    Tflops = scd(1e12*u.flops,'Tflops') % teraflops
+    dpi = scd(1/u.in,'dpi') % dots per inch
+    dotsPerInch = scd(u.dpi,'dotsPerInch')
+    ppi = scd(u.dpi,'ppi') % pixels per inch
+    pixelsPerInch = scd(u.ppi,'pixelsPerInch') % pixels per inch
 
     %---- currency ----
     % For display purposes - not for exchange rates.
