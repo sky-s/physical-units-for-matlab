@@ -8,6 +8,7 @@ R{3} = runtests('testScript_plotAxesUnits'); close all
 R{4} = runtests('testScript_units');
 R{5} = runtests('testScript_plotting'); close all
 R{6} = runtests('testScript_noBaseUnits');
+R{7} = runtests('testScript_SIprefixes');
 
 rmpath('./.tests/alertChecking/');
 rmpath('./.tests/fig/');
