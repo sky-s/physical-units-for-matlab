@@ -10,6 +10,14 @@ classdef u < handle
 %
 %   Calling u by itself will display all available units in u.
 %
+%   SI PREFIXES: You can use any SI prefix with any unit, even if not explicitly
+%   defined. For example: u.kilojoule, u.megawatt, u.milliampere, u.gigahertz,
+%   u.nanometer, u.picofarad, etc. All SI prefixes are supported: quetta, ronna,
+%   yotta, zetta, exa, peta, tera, giga, mega, kilo, hecto, deka, deci, centi,
+%   milli, micro, nano, pico, femto, atto, zepto, yocto, ronto, quecto.
+%   Common abbreviations are also supported where they don't conflict with
+%   existing units: k (kilo), G (giga), m (milli), u (micro), n (nano), p (pico).
+%
 %   Variables with physical units attached are of the class DimVar
 %   ("dimenensioned variable"). Math operations performed on dimensioned
 %   variables will automatically perform dimensional analysis and can create new
@@ -55,6 +63,13 @@ classdef u < handle
 %       rate = scd(rate,'sqm/hr')
 %       timeNeeded = fieldSize/rate
 %       timeNeeded = scd(timeNeeded,'month')
+% 
+%   Example 4: SI prefixes.
+%       voltage = 12 * u.kilovolt;      % Automatically available
+%       current = 5 * u.milliampere;    % No need to predefine
+%       power = voltage * current;      % Returns 60 watts
+%       energy = power * 2 * u.hour;    % Use prefixes with any unit
+%       freq = 2.4 * u.gigahertz;       % Works for any base unit
 % 
 %   See also displayUnits, baseUnitSystem, scd, clear, displayingvalue,
 %   DimVar.double, u2num, str2u, symunit,
@@ -1340,9 +1355,7 @@ function [prefix, baseUnit, prefixValue] = parseSIPrefix(fieldName)
     % These should be checked after full names to avoid conflicts
     abbreviations = {
         'k',      1e3;    % kilo (common abbreviation)
-        'M',      1e6;    % mega (when not at start to avoid confusion with Molar)
-        'G',      1e9;    % giga
-        'T',      1e12;   % tera
+        'G',      1e9;    % giga (no conflict as no existing G unit)
         'm',      1e-3;   % milli (when not standalone meter)
         'u',      1e-6;   % micro (common shorthand)
         'n',      1e-9;   % nano

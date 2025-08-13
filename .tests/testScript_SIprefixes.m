@@ -131,24 +131,17 @@ function testChainedOperations(testCase)
 end
 
 function testAbbreviatedPrefixes(testCase)
-    % Test that common prefix abbreviations work
+    % Test that common prefix abbreviations work (avoiding conflicts)
     
     % Test kV (kilovolt)
     voltage1 = 12 * u.kV;
     voltage2 = 12 * u.kilovolt;
     verifyEqual(testCase, double(voltage1), double(voltage2), 'RelTol', 1e-10);
     
-    % Test MW (megawatt) - but be careful as M might conflict with other units
-    % Skip this test if it conflicts
-    try
-        power1 = 5 * u.MW;
-        power2 = 5 * u.megawatt;
-        if isa(power1, 'DimVar') && isa(power2, 'DimVar')
-            verifyEqual(testCase, double(power1), double(power2), 'RelTol', 1e-10);
-        end
-    catch
-        % Skip if MW conflicts with existing unit
-    end
+    % Test GHz (gigahertz)
+    freq1 = 2.4 * u.GHz;
+    freq2 = 2.4 * u.gigahertz;
+    verifyEqual(testCase, double(freq1), double(freq2), 'RelTol', 1e-10);
     
     % Test mA (milliampere)
     current1 = 100 * u.mA;
@@ -164,6 +157,34 @@ function testAbbreviatedPrefixes(testCase)
     cap3 = 100 * u.pF;
     cap4 = 100 * u.picofarad;
     verifyEqual(testCase, double(cap3), double(cap4), 'RelTol', 1e-10);
+    
+    % Test uF (microfarad)
+    cap5 = 10 * u.uF;
+    cap6 = 10 * u.microfarad;
+    verifyEqual(testCase, double(cap5), double(cap6), 'RelTol', 1e-10);
+end
+
+function testConflictAvoidance(testCase)
+    % Test that existing units take precedence over prefix combinations
+    
+    % Test that u.M returns the existing Molar unit, not mega + something
+    molar = u.M;
+    verifyTrue(testCase, isa(molar, 'DimVar'));
+    % M should be molar concentration (mol/L)
+    expected = u.mol / u.L;
+    verifyEqual(testCase, double(molar), double(expected), 'RelTol', 1e-10);
+    
+    % Test that u.T returns tesla, not tera + something
+    tesla = u.T;
+    verifyTrue(testCase, isa(tesla, 'DimVar'));
+    % T should be tesla (N/(A*m))
+    expected = u.N / (u.A * u.m);
+    verifyEqual(testCase, double(tesla), double(expected), 'RelTol', 1e-10);
+    
+    % Test that existing km still works (manually defined)
+    km_existing = u.km;
+    km_dynamic = u.kilometer;
+    verifyEqual(testCase, double(km_existing), double(km_dynamic), 'RelTol', 1e-10);
 end
 
 function testAllSIPrefixes(testCase)
