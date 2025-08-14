@@ -2,30 +2,43 @@
 
 ## New Feature: Automatic SI Prefix Support
 
-The Physical Units for MATLAB toolbox now supports using any SI prefix with any unit automatically, without requiring explicit definitions for each combination.
+The Physical Units for MATLAB toolbox now supports using any SI prefix with **ANY unit** automatically, without requiring explicit definitions for each combination. This works with SI units, imperial units, digital units, and any other unit in the toolbox.
 
 ### Usage
 
 Simply combine any SI prefix name with any base unit:
 
 ```matlab
-% Length units
+% SI units (length, electrical, power)
 distance = 5 * u.kilometer;     % 5 km
-wavelength = 500 * u.nanometer; % 500 nm
-thickness = 0.1 * u.millimeter; % 0.1 mm
-
-% Electrical units
-voltage = 12 * u.kilovolt;      % 12 kV
-current = 50 * u.milliampere;   % 50 mA
-capacitance = 22 * u.picofarad; % 22 pF
-
-% Power and energy
+voltage = 12 * u.kilovolt;      % 12 kV  
 power = 2 * u.megawatt;         % 2 MW
-energy = 10 * u.kilojoule;      % 10 kJ
+wavelength = 500 * u.nanometer; % 500 nm
 
-% Frequency
-freq = 2.4 * u.gigahertz;       % 2.4 GHz
+% Imperial/US Customary units
+area = 2.5 * u.kiloacre;        % 2.5 thousand acres
+thickness = 250 * u.nanoinch;   % 250 billionths of an inch
+mass = 1.2 * u.megapound;       % 1.2 million pounds
+precision = 5 * u.microinch;    % 5 millionths of an inch
+
+% Volume measurements
+tank = 50 * u.kilogallon;       % 50 thousand gallons
+droplet = 0.5 * u.milligallon;  % half a thousandth of a gallon
+
+% Digital units
+storage = 2 * u.terabyte;       % 2 TB
+cache = 512 * u.kilobyte;       % 512 KB
 ```
+
+### Key Capability: Works with ANY Unit
+
+The power of this feature is that SI prefixes work with **every unit** in the toolbox:
+
+- **SI units**: meter, gram, second, ampere, kelvin, etc.
+- **Imperial units**: inch, foot, yard, mile, acre, pound, gallon, etc.
+- **Digital units**: byte, bit
+- **Time units**: hour, day, year
+- **Specialized units**: hertz, pascal, joule, watt, ohm, etc.
 
 ### Supported SI Prefixes
 
@@ -43,9 +56,38 @@ voltage = 5 * u.kV;    % kilovolt (k = kilo)
 freq = 1 * u.GHz;      % gigahertz (G = giga)
 current = 10 * u.mA;   % milliampere (m = milli)
 cap = 100 * u.uF;      % microfarad (u = micro)
+area = 2 * u.kacre;    % kiloacre (k + acre)
 ```
 
 Note: `M` (mega) and `T` (tera) abbreviations are not supported as they conflict with existing units (Molar and Tesla).
+
+### Real-World Examples
+
+#### Imperial Unit Conversions
+```matlab
+% Farm area management
+farm = 5 * u.kiloacre;                    % 5000 acres
+farm_hectares = farm / u.hectare;         % Convert to hectares
+
+% Precision manufacturing  
+tolerance = 32 * u.microinch;             % 32 millionths of an inch
+tolerance_nm = tolerance / u.nanometer;   % Convert to nanometers
+```
+
+#### Mixed Unit Calculations
+```matlab
+% Fuel efficiency calculation
+distance = 500 * u.mile;
+fuel = 25 * u.kilogallon;                 % 25,000 gallons
+efficiency = distance / fuel;             % miles per gallon equivalent
+```
+
+#### Digital Storage
+```matlab
+drive = 4 * u.terabyte;                   % 4 TB drive
+file = 250 * u.megabyte;                  % 250 MB file
+files_per_drive = drive / file;           % How many files fit
+```
 
 ### Backward Compatibility
 
@@ -70,12 +112,20 @@ dist3 = 1000 * u.meter;
 
 #### All prefixes work with any unit
 ```matlab
+% With SI base units
 mass = 5 * u.kilogram;          % Works (already existed)
 mass = 5 * u.megagram;          % Works (new)
 mass = 5 * u.gigagram;          % Works (new)
-mass = 5 * u.milligram;         % Works (already existed)
-mass = 5 * u.microgram;         % Works (already existed)
-mass = 5 * u.nanogram;          % Works (new)
+
+% With imperial units  
+area = 10 * u.acre;             % Works (already existed)
+area = 10 * u.kiloacre;         % Works (new)
+area = 10 * u.milliacre;        % Works (new)
+
+% With digital units
+data = 1 * u.byte;              % Works (already existed)
+data = 1 * u.kilobyte;          % Works (already existed)
+data = 1 * u.terabyte;          % Works (new)
 ```
 
-This feature greatly expands the available units without cluttering the codebase with explicit definitions for every possible combination.
+This feature greatly expands the available units (from hundreds to potentially thousands) without cluttering the codebase with explicit definitions for every possible combination.

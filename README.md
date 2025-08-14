@@ -3,9 +3,24 @@
 
 Enables operations using hundreds of supported physical units of measurement and physical constants.
 
+## Key Features
+
+- **Automatic SI Prefix Support**: Use any SI prefix with any unit (e.g., `u.kiloacre`, `u.nanoinch`, `u.megapound`, `u.terabyte`)
+- **No Setup Required**: Simply multiply/divide by `u.(unitName)` - no initialization needed
+- **Comprehensive Units**: Hundreds of units including SI, imperial, digital, and specialized units
+- **Automatic Dimensional Analysis**: Math operations handle unit conversion and validation
+- **Customizable Display**: Choose your preferred base unit system and display units
+
 If the Physical Units Toolbox is on your MATLAB path, there is nothing to initialize, import, add to your workspace, or pass to functions - simply multiply/divide by `u.(unitName)` to attach physical units to a variable. 
 For example, to define a speed using a supported unit: `carSpeed = 100 * u.kph`. 
 Or, define a speed with an unsupported unit as a combination of supported units: `snailSpeed = 20 * u.m/u.week`.
+
+**NEW**: Any SI prefix works with any unit automatically:
+```matlab
+area = 2.5 * u.kiloacre;        % SI prefix + imperial unit
+precision = 250 * u.nanoinch;   % Nano prefix + inch  
+data = 4 * u.terabyte;          % Tera prefix + digital unit
+```
 
 Variables with physical units attached are of the class DimVar ("dimenensioned variable"). Math operations performed on dimensioned variables will automatically perform dimensional analysis and can create new units or cancel units and return a normal variable.
 

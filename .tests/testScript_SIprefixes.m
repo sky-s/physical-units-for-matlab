@@ -208,3 +208,68 @@ function testAllSIPrefixes(testCase)
         end
     end
 end
+
+function testNonSIUnitsWithPrefixes(testCase)
+    % Test that SI prefixes work with non-SI units (imperial, other units)
+    % This demonstrates the key capability: prefix + ANY unit, not just SI
+    
+    % Test kiloacre - combining SI prefix with imperial area unit
+    area = 2.5 * u.kiloacre;
+    expected = 2.5 * u.kilo * u.acre;
+    verifyEqual(testCase, double(area), double(expected), 'RelTol', 1e-10);
+    
+    % Test nanoinch - combining SI prefix with imperial length unit
+    length = 500 * u.nanoinch;
+    expected = 500 * u.nano * u.inch;
+    verifyEqual(testCase, double(length), double(expected), 'RelTol', 1e-10);
+    
+    % Test megapound - combining SI prefix with imperial mass unit
+    mass = 1.2 * u.megapound;
+    expected = 1.2 * u.mega * u.pound;
+    verifyEqual(testCase, double(mass), double(expected), 'RelTol', 1e-10);
+    
+    % Test microinch - very small imperial unit
+    precision = 25 * u.microinch;
+    expected = 25 * u.micro * u.inch;
+    verifyEqual(testCase, double(precision), double(expected), 'RelTol', 1e-10);
+    
+    % Test kilogallon - liquid volume
+    volume = 5 * u.kilogallon;
+    expected = 5 * u.kilo * u.gallon;
+    verifyEqual(testCase, double(volume), double(expected), 'RelTol', 1e-10);
+    
+    % Test megabyte (should work for digital units too)
+    data = 100 * u.megabyte;
+    expected = 100 * u.mega * u.byte;
+    verifyEqual(testCase, double(data), double(expected), 'RelTol', 1e-10);
+    
+    % Test milligallon (small liquid volume)
+    droplet = 2.5 * u.milligallon;
+    expected = 2.5 * u.milli * u.gallon;
+    verifyEqual(testCase, double(droplet), double(expected), 'RelTol', 1e-10);
+    
+    % Test display names are set correctly for non-SI units
+    verifyEqual(testCase, area.customDisplay, 'kiloacre');
+    verifyEqual(testCase, length.customDisplay, 'nanoinch');
+    verifyEqual(testCase, mass.customDisplay, 'megapound');
+end
+
+function testPrefixWithImperialCalculations(testCase)
+    % Test that prefixed non-SI units work in real calculations
+    
+    % Area calculation: convert kiloacre to square miles
+    area_kiloacre = 1 * u.kiloacre;
+    area_sqmi = area_kiloacre / u.sqmi;
+    
+    % 1 kiloacre = 1000 acres, 1 acre = 43560 sqft, 1 sqmi = 5280^2 sqft
+    expected = 1000 * 43560 / (5280^2);
+    verifyEqual(testCase, double(area_sqmi), expected, 'RelTol', 1e-10);
+    
+    % Precision calculation: nanoinch to millimeter
+    precision_nanoinch = 1000 * u.nanoinch;
+    precision_mm = precision_nanoinch / u.mm;
+    
+    % 1 inch = 25.4 mm, so 1000 nanoinch = 1000 * 1e-9 * 25.4 mm
+    expected = 1000 * 1e-9 * 25.4;
+    verifyEqual(testCase, double(precision_mm), expected, 'RelTol', 1e-10);
+end
