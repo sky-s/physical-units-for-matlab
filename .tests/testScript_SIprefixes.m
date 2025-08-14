@@ -40,8 +40,8 @@ function testGigaHertz(testCase)
 end
 
 function testMicroSecond(testCase)
-    % Test that u.microsecond works
-    time = 10 * u.microsecond;
+    % Test that u.microsecond works using static method
+    time = 10 * u.get('microsecond');
     expected = 10 * u.micro * u.second;
     verifyEqual(testCase, double(time), double(expected), 'RelTol', 1e-10);
 end
