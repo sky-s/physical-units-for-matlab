@@ -4,30 +4,44 @@
 
 The Physical Units for MATLAB toolbox now supports using any SI prefix with **ANY unit** automatically, without requiring explicit definitions for each combination. This works with SI units, imperial units, digital units, and any other unit in the toolbox.
 
-### Usage
+## MATLAB Limitation and Solution
 
-Simply combine any SI prefix name with any base unit:
+Due to MATLAB's class system limitations with constant properties, the direct `u.prefixunit` syntax (like `u.microinch`) cannot work. Instead, use one of these approaches:
+
+### Method 1: u.get() Function (Recommended)
 
 ```matlab
-% SI units (length, electrical, power)
-distance = 5 * u.kilometer;     % 5 km
-voltage = 12 * u.kilovolt;      % 12 kV  
-power = 2 * u.megawatt;         % 2 MW
-wavelength = 500 * u.nanometer; % 500 nm
+% Use u.get('prefixunit') for any combination
+distance = 5 * u.get('kilometer');     % 5 km
+voltage = 12 * u.get('kilovolt');      % 12 kV  
+power = 2 * u.get('megawatt');         % 2 MW
+wavelength = 500 * u.get('nanometer'); % 500 nm
 
 % Imperial/US Customary units
-area = 2.5 * u.kiloacre;        % 2.5 thousand acres
-thickness = 250 * u.nanoinch;   % 250 billionths of an inch
-mass = 1.2 * u.megapound;       % 1.2 million pounds
-precision = 5 * u.microinch;    % 5 millionths of an inch
+area = 2.5 * u.get('kiloacre');        % 2.5 thousand acres
+thickness = 250 * u.get('nanoinch');   % 250 billionths of an inch
+mass = 1.2 * u.get('megapound');       % 1.2 million pounds
+precision = 5 * u.get('microinch');    % 5 millionths of an inch
 
 % Volume measurements
-tank = 50 * u.kilogallon;       % 50 thousand gallons
-droplet = 0.5 * u.milligallon;  % half a thousandth of a gallon
+tank = 50 * u.get('kilogallon');       % 50 thousand gallons
+droplet = 0.5 * u.get('milligallon');  % half a thousandth of a gallon
 
 % Digital units
-storage = 2 * u.terabyte;       % 2 TB
-cache = 512 * u.kilobyte;       % 512 KB
+storage = 2 * u.get('terabyte');       % 2 TB
+cache = 512 * u.get('kilobyte');       % 512 KB
+```
+
+### Method 2: Static Methods for Common Units
+
+```matlab
+% Common prefixed units are available as static methods
+precision = 25 * u.microinch();       % Works as static method
+area = 2.5 * u.kiloacre();            % Works as static method
+storage = 1 * u.terabyte();           % Works as static method
+mass = 1.2 * u.megapound();           % Works as static method
+volume = 50 * u.kilogallon();         % Works as static method
+length = 500 * u.nanoinch();          % Works as static method
 ```
 
 ### Key Capability: Works with ANY Unit

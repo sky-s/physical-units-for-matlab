@@ -1,5 +1,5 @@
 % Test script to verify SI prefix functionality
-% This script tests if the subsref method is being called
+% This script tests the working SI prefix implementation
 
 % Clear any cached class information
 clear classes
@@ -15,31 +15,40 @@ catch ME
     fprintf('  ERROR: %s\n', ME.message);
 end
 
-% Test 2: Try accessing a non-existent unit that should trigger subsref
-fprintf('Test 2: Accessing non-existent unit u.microinch\n');
+% Test 2: Try accessing a prefixed unit using u.get()
+fprintf('Test 2: Accessing u.get(''microinch'')\n');
 try
-    result2 = u.microinch;
-    fprintf('  SUCCESS: u.microinch = %s\n', string(result2));
+    result2 = u.get('microinch');
+    fprintf('  SUCCESS: u.get(''microinch'') = %s\n', string(result2));
 catch ME
     fprintf('  ERROR: %s\n', ME.message);
 end
 
 % Test 3: Try the static method approach
-fprintf('Test 3: Using static method u.get(''microinch'')\n');
+fprintf('Test 3: Using static method u.microinch()\n');
 try
-    result3 = u.get('microinch');
-    fprintf('  SUCCESS: u.get(''microinch'') = %s\n', string(result3));
+    result3 = u.microinch();
+    fprintf('  SUCCESS: u.microinch() = %s\n', string(result3));
 catch ME
     fprintf('  ERROR: %s\n', ME.message);
 end
 
 % Test 4: Try with a different prefix
-fprintf('Test 4: Accessing u.kilojoule\n');
+fprintf('Test 4: Accessing u.get(''kilojoule'')\n');
 try
-    result4 = u.kilojoule;
-    fprintf('  SUCCESS: u.kilojoule = %s\n', string(result4));
+    result4 = u.get('kilojoule');
+    fprintf('  SUCCESS: u.get(''kilojoule'') = %s\n', string(result4));
 catch ME
     fprintf('  ERROR: %s\n', ME.message);
+end
+
+% Test 5: Demonstrate the MATLAB limitation
+fprintf('Test 5: Attempting u.microinch (should fail due to MATLAB limitation)\n');
+try
+    result5 = u.microinch;  % This will fail
+    fprintf('  UNEXPECTED SUCCESS: u.microinch = %s\n', string(result5));
+catch ME
+    fprintf('  EXPECTED ERROR: %s\n', ME.message);
 end
 
 fprintf('Test completed.\n');

@@ -10,10 +10,11 @@ classdef u < handle
 %
 %   Calling u by itself will display all available units in u.
 %
-%   SI PREFIXES: You can use any SI prefix with ANY unit, even if not explicitly
-%   defined. This works with SI units (u.kilojoule, u.megawatt, u.nanometer),
-%   imperial units (u.kiloacre, u.nanoinch, u.megapound), and any other unit.
-%   Examples: u.kilogallon, u.microinch, u.terabyte, u.milliampere, u.gigahertz.
+%   SI PREFIXES: You can use any SI prefix with ANY unit using the u.get() method
+%   or specific static methods. Due to MATLAB limitations with constant properties,
+%   the direct u.prefixunit syntax requires using u.get('prefixunit') instead.
+%   Examples: u.get('kilojoule'), u.get('megawatt'), u.get('nanometer'),
+%   u.get('kiloacre'), u.get('nanoinch'), u.get('megapound'), u.microinch().
 %   All SI prefixes are supported: quetta, ronna, yotta, zetta, exa, peta, tera,
 %   giga, mega, kilo, hecto, deka, deci, centi, milli, micro, nano, pico, femto,
 %   atto, zepto, yocto, ronto, quecto. Common abbreviations are also supported
@@ -65,13 +66,13 @@ classdef u < handle
 %       timeNeeded = fieldSize/rate
 %       timeNeeded = scd(timeNeeded,'month')
 % 
-%   Example 4: SI prefixes with ANY unit.
-%       voltage = 12 * u.kilovolt;      % Automatically available
-%       current = 5 * u.milliampere;    % No need to predefine
-%       power = voltage * current;      % Returns 60 watts
-%       area = 2.5 * u.kiloacre;        % Works with imperial units
-%       thickness = 250 * u.nanoinch;   % Precision measurements
-%       data = 1 * u.terabyte;          % Digital units too
+%   Example 4: SI prefixes with ANY unit using u.get() method.
+%       voltage = 12 * u.get('kilovolt');      % Works with u.get()  
+%       current = 5 * u.get('milliampere');    % No need to predefine
+%       power = voltage * current;              % Returns 60 watts
+%       area = 2.5 * u.get('kiloacre');        % Works with imperial units
+%       thickness = 250 * u.get('nanoinch');   % Precision measurements
+%       data = 1 * u.terabyte();               % Static method also works
 % 
 %   See also displayUnits, baseUnitSystem, scd, clear, displayingvalue,
 %   DimVar.double, u2num, str2u, symunit,
