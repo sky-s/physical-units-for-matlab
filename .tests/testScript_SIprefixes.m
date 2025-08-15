@@ -273,3 +273,54 @@ function testPrefixWithImperialCalculations(testCase)
     expected = 1000 * 1e-9 * 25.4;
     verifyEqual(testCase, double(precision_mm), expected, 'RelTol', 1e-10);
 end
+
+function testDisplayParser(testCase)
+    % Test that displayparser works correctly with prefixed units
+    
+    % Create a prefixed unit
+    precision = 25 * u.get('microinch');
+    
+    % Test that displayparser can handle it
+    [dispVal, unitStr, numString, denString, labelStr] = displayparser(precision);
+    
+    % Should return the value and the custom display name
+    verifyEqual(testCase, dispVal, 25, 'RelTol', 1e-10);
+    verifyEqual(testCase, unitStr, 'microinch');
+    verifyEqual(testCase, numString, 'microinch');
+    verifyTrue(testCase, isempty(denString));
+    
+    % Test with another prefixed unit  
+    power = 2.5 * u.get('megawatt');
+    [dispVal2, unitStr2] = displayparser(power);
+    
+    verifyEqual(testCase, dispVal2, 2.5, 'RelTol', 1e-10);
+    verifyEqual(testCase, unitStr2, 'megawatt');
+    
+    % Test display methods don't throw errors
+    % Just verify they run without error
+    try
+        evalc('disp(precision)'); % capture output to avoid cluttering test results
+        evalc('display(power)');
+        success = true;
+    catch
+        success = false;
+    end
+    verifyTrue(testCase, success, 'Display methods should work with prefixed units');
+end
+
+function testDisplayParserWithStrTou(testCase)
+    % Test displayparser integration when str2u can't handle prefixed units
+    
+    % Create a unit and manually set a prefixed custom display
+    length_unit = 5 * u.inch;
+    length_unit = scd(length_unit, 'microinch'); % Set custom display to a prefixed unit
+    
+    % This should fallback to u.get() when str2u fails
+    [dispVal, unitStr] = displayparser(length_unit);
+    
+    % The displayparser should convert the value to microinch units
+    expected_val = 5 * 1e6; % 5 inches = 5 million microinches
+    verifyEqual(testCase, dispVal, expected_val, 'RelTol', 1e-10);
+    verifyEqual(testCase, unitStr, 'microinch');
+end
+end

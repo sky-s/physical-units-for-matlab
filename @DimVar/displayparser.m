@@ -16,8 +16,17 @@ if ~isempty(dispVar.customDisplay)
     if isprop(u,str) % avoid the overhead of str2u in most cases.
         test = dispVar/u.(str);
     else
-        test = dispVar/str2u(str);
-        
+        try
+            test = dispVar/str2u(str);
+        catch
+            % If str2u fails, try u.get() for SI prefixed units
+            try
+                test = dispVar/u.get(str);
+            catch
+                % If all methods fail, skip this customDisplay
+                test = dispVar; % This will remain a DimVar, so the check below will fail
+            end
+        end
     end
     if ~isa(test, 'DimVar')
         % Units match.
@@ -39,7 +48,17 @@ elseif iscellstr(u.dispUnits)
             test = dispVar/u.(str);
         else
             % avoid the overhead of str2u in most cases.
-            test = dispVar/str2u(str);
+            try
+                test = dispVar/str2u(str);
+            catch
+                % If str2u fails, try u.get() for SI prefixed units
+                try
+                    test = dispVar/u.get(str);
+                catch
+                    % If all methods fail, skip this unit
+                    continue;
+                end
+            end
         end
         if ~isa(test, 'DimVar')
             % Units match.
