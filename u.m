@@ -1263,86 +1263,9 @@ methods (Static)
         error('u:invalidUnit', 'Invalid unit "%s". Check that the base unit exists and is properly spelled.', unitName);
     end
     
-    %% Handle the microinch problem by providing a direct method
-    function result = microinch()
-        % microinch - Get microinch unit (micro * inch)
-        result = u.get('microinch');
-    end
-    
-    %% Handle common prefixed units as static methods
-    function result = kiloacre()
-        result = u.get('kiloacre');
-    end
-    
-    function result = nanoinch()
-        result = u.get('nanoinch');
-    end
-    
-    function result = megapound()
-        result = u.get('megapound');
-    end
-    
-    function result = kilogallon()
-        result = u.get('kilogallon');
-    end
-    
-    function result = terabyte()
-        result = u.get('terabyte');
-    end
 end
 
-methods
-    %% Subscripted reference to handle SI prefixes with any unit
-    function varargout = subsref(obj, s)
-        % subsref - Enable SI prefix with any unit
-        %   This allows accessing units like u.kilojoule, u.megawatt, etc.
-        %   even if they are not explicitly defined, by combining SI prefixes
-        %   with base units.
-        
-        % Handle dot notation access
-        if s(1).type == '.'
-            fieldName = s(1).subs;
-            
-            % Try to parse as SI prefix + base unit first
-            [prefix, baseUnit, prefixValue] = u.parseSIPrefix(fieldName);
-            
-            if ~isempty(prefix) && ~isempty(baseUnit)
-                % Check if the base unit exists
-                try
-                    baseUnitValue = u.(baseUnit);
-                    
-                    % Apply prefix scaling
-                    if isa(baseUnitValue, 'DimVar')
-                        scaledUnit = prefixValue * baseUnitValue;
-                        % Set custom display to show the prefixed unit name
-                        scaledUnit = scd(scaledUnit, fieldName);
-                        varargout{1} = scaledUnit;
-                    elseif isa(baseUnitValue, 'OffsetDimVar')
-                        % For offset units (like temperature), we need special handling
-                        % The prefix scales the slope but not the offset
-                        scaledUnit = OffsetDimVar(prefixValue * baseUnitValue.slope, baseUnitValue.offset);
-                        scaledUnit = scd(scaledUnit, fieldName);
-                        varargout{1} = scaledUnit;
-                    else
-                        % For non-DimVar values (like constants), just scale
-                        varargout{1} = prefixValue * baseUnitValue;
-                    end
-                    
-                    % Handle any remaining subscripting
-                    if length(s) > 1
-                        varargout{1} = subsref(varargout{1}, s(2:end));
-                    end
-                    return;
-                catch
-                    % Base unit doesn't exist, fall through to builtin
-                end
-            end
-        end
-        
-        % If we get here, use builtin subsref (this will handle existing properties or error appropriately)
-        varargout{1} = builtin('subsref', obj, s);
-    end
-    
+methods    
     %% Plotting and display:
     function disp(o)
         f = fieldnames(o);
@@ -1374,6 +1297,8 @@ methods
                 '">Direct download of dispdisp into current directory</a>']);
         end
     end
+end
+methods (Static)
     %% Parse SI prefix from field name
     function [prefix, baseUnit, prefixValue] = parseSIPrefix(fieldName)
         % parseSIPrefix - Parse an SI prefix from a unit field name
@@ -1486,6 +1411,7 @@ methods
             end
         end
     end
+end
 end
 
 %% Processing base units.
