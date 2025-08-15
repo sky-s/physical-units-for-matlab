@@ -19,11 +19,19 @@ if ~isempty(dispVar.customDisplay)
         try
             test = dispVar/str2u(str);
         catch
-            % If str2u fails, try u.get() for SI prefixed units
+            % If str2u fails, try to parse as SI prefix + base unit and use prefix methods
             try
-                test = dispVar/u.get(str);
+                [prefix, baseUnit] = u.parseForDisplayparser(str);
+                if ~isempty(prefix) && ~isempty(baseUnit)
+                    % Use the appropriate prefix method
+                    prefixedUnit = u.(prefix)(baseUnit);
+                    test = dispVar/prefixedUnit;
+                else
+                    % Not a valid prefix combination, skip this customDisplay
+                    test = dispVar; % This will remain a DimVar, so the check below will fail
+                end
             catch
-                % If all methods fail, skip this customDisplay
+                % If prefix parsing fails, skip this customDisplay
                 test = dispVar; % This will remain a DimVar, so the check below will fail
             end
         end
@@ -51,11 +59,19 @@ elseif iscellstr(u.dispUnits)
             try
                 test = dispVar/str2u(str);
             catch
-                % If str2u fails, try u.get() for SI prefixed units
+                % If str2u fails, try to parse as SI prefix + base unit and use prefix methods
                 try
-                    test = dispVar/u.get(str);
+                    [prefix, baseUnit] = u.parseForDisplayparser(str);
+                    if ~isempty(prefix) && ~isempty(baseUnit)
+                        % Use the appropriate prefix method
+                        prefixedUnit = u.(prefix)(baseUnit);
+                        test = dispVar/prefixedUnit;
+                    else
+                        % Not a valid prefix combination, skip this unit
+                        continue;
+                    end
                 catch
-                    % If all methods fail, skip this unit
+                    % If prefix parsing fails, skip this unit
                     continue;
                 end
             end
