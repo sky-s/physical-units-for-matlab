@@ -134,30 +134,30 @@ properties (Constant = true)
     %% SI prefixes
     % en.wikipedia.org/wiki/Metric_prefix
 
-    quetta = 1e30; % SI prefix quetta, Q
-    ronna = 1e27; % SI prefix ronna, R 
-    yotta = 1e24; % SI prefix yotta, Y 
-    zetta = 1e21; % SI prefix zetta, Z
-    exa = 1e18; % SI prefix exa, E
-    peta = 1e15; % SI prefix peta, P
-    tera = 1e12; % SI prefix tera, T
-    giga = 1e9; % SI prefix giga, G
-    mega = 1e6; % SI prefix mega, M
-    kilo = 1e3; % SI prefix kilo, k
-    hecto = 1e2; % SI prefix hecto, h
-    deka = 1e1; % SI prefix deka, da
-    deci = 1e-1; % SI prefix deci, d
-    centi = 1e-2; % SI prefix centi, c
-    milli = 1e-3; % SI prefix milli, m
-    micro = 1e-6; % SI prefix micro, µ
-    nano = 1e-9; % SI prefix nano, n
-    pico = 1e-12; % SI prefix pico, p
-    femto = 1e-15; % SI prefix femto, f
-    atto = 1e-18; % SI prefix atto, a
-    zepto = 1e-21; % SI prefix zepto, z
-    yocto = 1e-24; % SI prefix yocto, y
-    ronto = 1e-27; % SI prefix ronto, r
-    quecto = 1e-30; % SI prefix quecto, q
+    % quetta = 1e30; % SI prefix quetta, Q
+    % ronna = 1e27; % SI prefix ronna, R 
+    % yotta = 1e24; % SI prefix yotta, Y 
+    % zetta = 1e21; % SI prefix zetta, Z
+    % exa = 1e18; % SI prefix exa, E
+    % peta = 1e15; % SI prefix peta, P
+    % tera = 1e12; % SI prefix tera, T
+    % giga = 1e9; % SI prefix giga, G
+    % mega = 1e6; % SI prefix mega, M
+    % kilo = 1e3; % SI prefix kilo, k
+    % hecto = 1e2; % SI prefix hecto, h
+    % deka = 1e1; % SI prefix deka, da
+    % deci = 1e-1; % SI prefix deci, d
+    % centi = 1e-2; % SI prefix centi, c
+    % milli = 1e-3; % SI prefix milli, m
+    % micro = 1e-6; % SI prefix micro, µ
+    % nano = 1e-9; % SI prefix nano, n
+    % pico = 1e-12; % SI prefix pico, p
+    % femto = 1e-15; % SI prefix femto, f
+    % atto = 1e-18; % SI prefix atto, a
+    % zepto = 1e-21; % SI prefix zepto, z
+    % yocto = 1e-24; % SI prefix yocto, y
+    % ronto = 1e-27; % SI prefix ronto, r
+    % quecto = 1e-30; % SI prefix quecto, q
     
     %% Important constants with uncertainty
     alpha = 7.2973525693e-3 % fine-structure constant
@@ -1359,7 +1359,7 @@ methods (Static)
         %   result = makePrefixedUnit(fullName, shortName, prefixValue, baseUnit, useFullName)
         %   Creates a prefixed unit, using full name if useFullName is true
         
-        if nargin == 4
+        if nargin == 3
             % No arguments - return the prefix multiplier
             result = prefixValue;
             return;
@@ -1380,18 +1380,14 @@ methods (Static)
             catch
                 error('u:invalidUnit', 'Invalid base unit "%s". Check that the base unit exists and is properly spelled.', baseUnitName);
             end
-        elseif isa(baseUnit, 'DimVar') || isa(baseUnit, 'OffsetDimVar')
+        elseif isa(baseUnit, 'DimVar')
             baseUnitValue = baseUnit;
             % Try to get the display name for the base unit
-            if ismethod(baseUnit, 'dispstr')
-                baseUnitName = char(baseUnit.dispstr);
-            else
-                baseUnitName = 'unit';
-            end
+            [~,baseUnitName] = displayparser(baseUnit);
         else
             % For numeric values or other types
             baseUnitValue = baseUnit;
-            baseUnitName = 'unit';
+            baseUnitName = '';
         end
         
         % Apply prefix scaling
