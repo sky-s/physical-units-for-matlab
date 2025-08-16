@@ -21,11 +21,10 @@ if ~isempty(dispVar.customDisplay)
         catch
             % If str2u fails, try to parse as SI prefix + base unit and use prefix methods
             try
-                [prefix, baseUnit] = u.parseForDisplayparser(str);
-                if ~isempty(prefix) && ~isempty(baseUnit)
-                    % Use the appropriate prefix method
-                    prefixedUnit = u.(prefix)(baseUnit);
-                    test = dispVar/prefixedUnit;
+                [prefixValue, baseUnitValue] = u.parseForDisplayparserSafe(str);
+                if ~isempty(prefixValue) && ~isempty(baseUnitValue)
+                    % Calculate the test directly without creating new DimVars to avoid recursion
+                    test = dispVar/(prefixValue * baseUnitValue);
                 else
                     % Not a valid prefix combination, skip this customDisplay
                     test = dispVar; % This will remain a DimVar, so the check below will fail
@@ -61,11 +60,10 @@ elseif iscellstr(u.dispUnits)
             catch
                 % If str2u fails, try to parse as SI prefix + base unit and use prefix methods
                 try
-                    [prefix, baseUnit] = u.parseForDisplayparser(str);
-                    if ~isempty(prefix) && ~isempty(baseUnit)
-                        % Use the appropriate prefix method
-                        prefixedUnit = u.(prefix)(baseUnit);
-                        test = dispVar/prefixedUnit;
+                    [prefixValue, baseUnitValue] = u.parseForDisplayparserSafe(str);
+                    if ~isempty(prefixValue) && ~isempty(baseUnitValue)
+                        % Calculate the test directly without creating new DimVars to avoid recursion
+                        test = dispVar/(prefixValue * baseUnitValue);
                     else
                         % Not a valid prefix combination, skip this unit
                         continue;
