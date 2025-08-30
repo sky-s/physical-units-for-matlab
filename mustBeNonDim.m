@@ -6,8 +6,13 @@ function mustBeNonDim(x)
 %   This function is intended for use in input validation and assert-style
 %   checks inside functions that require plain numeric data.
 % 
-%   See also isnumeric, u.
+%   See also mustBeNumeric, isnumeric, u.
 
-if ~isnumeric(x) || isa(x,'DimVar')
-    error('Value must be a non-dimensional numeric type.');
+if ~isnumeric(x) && ~islogical(x)
+    throwAsCaller(matlab.internal.validation.util.createValidatorException('MATLAB:validators:mustBeNumericOrLogical'));
+end
+if isa(x,'DimVar')
+    ME = MException('MATLAB:validators:mustBeNonDim', ...
+        'Value must be a non-dimensional numeric type without units.');
+    ME.throwAsCaller();
 end
