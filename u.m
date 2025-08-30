@@ -176,7 +176,7 @@ properties (Constant = true)
     picometer = scd(u.pm,'picometer') 
     fm = scd(1e-15*u.m,'fm') % femtometer
     femtometer = scd(u.fm,'femtometer') 
-    fermi = scd(u.fm,'fermi') % fermi
+    fermi = scd(u.fm,'fermi') 
     Ao = scd(1e-10*u.m,'Ao') % ångström
     ang = scd(u.Ao,'ang') % ångström
     angstrom = scd(u.ang,'angstrom') 
@@ -194,13 +194,14 @@ properties (Constant = true)
     xUnit_molybdenum = scd(u.xu_Mo,'xUnit_molybdenum') 
     in = scd(2.54*u.cm,'in') % inch
     inch = scd(u.in,'inch') 
-    mil = scd(1e-3*u.in,'mil') % mil
-    line = scd(u.in/10,'line') % line
-    pica = scd(u.in/6,'pica') % pica
-    point = scd(u.pica/12,'point') % point
-    hand = scd(4*u.in,'hand') % hand
-    span = scd(9*u.in,'span') % span
-    smoot = scd(67*u.in,'smoot') % smoot
+    mil = scd(1e-3*u.in,'mil')
+    thou = scd(u.mil,'thou') 
+    line = scd(u.in/10,'line') 
+    pica = scd(u.in/6,'pica') 
+    point = scd(u.pica/12,'point')
+    hand = scd(4*u.in,'hand') 
+    span = scd(9*u.in,'span') 
+    smoot = scd(67*u.in,'smoot') 
     ft = scd(12*u.in,'ft') % foot
     foot = scd(u.ft,'foot') 
     ft_US = scd(1200/3937*u.m,'ft_US') % US survey foot
@@ -215,7 +216,7 @@ properties (Constant = true)
     fathom = scd(u.ftm,'fathom') 
     li = scd(0.66*u.ft,'li') % link
     link = scd(u.li,'link') 
-    rod = scd(5.5*u.yd,'rod') % rod
+    rod = scd(5.5*u.yd,'rod')
     ch = scd(66*u.ft,'ch') % chain
     chain = scd(u.ch,'chain') 
     fur = scd(220*u.yd,'fur') % furlong
@@ -355,7 +356,11 @@ properties (Constant = true)
     drop = scd(u.gt,'drop')
     drop_US = scd(u.fldr/72,'drop_US') % US customary drop
 
-    %---- density and mass per area ----
+    %---- industry-specific ----
+    Jy = scd(1e-26*u.W/u.m^2/u.Hz,'Jy') % jansky (spectral flux density)
+    jansky = scd(u.Jy,'jansky')
+    darcy = scd(9.869233e-13*u.m^2,'darcy') % darcy (permeability) 
+    mdarcy = scd(u.darcy/1000,'mdarcy') % millidarcy 
     pcf = scd(u.lb/u.ft3,'pcf') % pound mass per cubic foot
     gsm = scd(u.g/u.m^2,'gsm') % grams per square meter
     grammage = scd(u.gsm,'grammage') % grams per square meter
@@ -612,6 +617,7 @@ properties (Constant = true)
     tce = scd(0.7*u.toe,'tce') % tonne of coal equivalent
     GGE = scd(114100*u.BTU,'GGE') % gasoline gallon equivalent (afdc.energy.gov)
     DGE = scd(128488*u.BTU,'DGE') % diesel gallon equivalent (afdc.energy.gov)
+    JGE = scd(124486*u.BTU,'JGE') % jet gallon equivalent (18580 BTU/lb, 6.7 lb/gal Jet A)
 
     %---- temperature ----
     % For reference: °C = °K-273.15; °F = °R-459.67.
