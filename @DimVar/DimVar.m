@@ -199,39 +199,39 @@ methods
     end
     
     %% Simple functions that return DimVar.
-    function v = abs(v);            v.value = abs(v.value);                 end
-    function v = circshift(v,varargin)
-        v.value = circshift(v.value,varargin{:});
-    end
-    function v = conj(v);           v.value = conj(v.value);                end
-    function v = ctranspose(v);     v.value = v.value';                     end
-    function v = cumsum(v,varargin);v.value = cumsum(v.value,varargin{:});  end
-    function v = diag(v,varargin);  v.value = diag(v.value,varargin{:});    end
-    function v = diff(v,varargin);  v.value = diff(v.value,varargin{:});    end
-    function v = full(v);           v.value = full(v.value);                end
-    function v = imag(v);           v.value = imag(v.value);                end
-    function v = iqr(v,varargin);   v.value = iqr(v,varargin{:});           end 
-    function v = mean(v,varargin);  v.value = mean(v.value,varargin{:});    end
-    function v = median(v,varargin);v.value = median(v.value,varargin{:});  end
-    function v = norm(v,varargin);  v.value = norm(v.value,varargin{:});    end
-    function v = permute(v,varargin);v.value = permute(v.value,varargin{:});end
-    function v = prctile(v,varargin);v.value = prctile(v.value,varargin{:});end
-    function v = quantile(v,varargin)
-        v.value = quantile(v.value,varargin{:});
-    end
-    function v = real(v);           v.value = real(v.value);                end
-    function v = reshape(v,varargin);v.value = reshape(v.value,varargin{:});end
-    function [v,I] = sort(v,varargin)
-        [v.value, I] = sort(v.value,varargin{:});
-    end
-    function v = std(v,varargin);   v.value = std(v.value,varargin{:});     end
-    function v = subsref(v,varargin);v.value = subsref(v.value,varargin{:});end
-    function v = sum(v,varargin);   v.value = sum(v.value,varargin{:});     end
-    function v = trace(v);          v.value = trace(v.value);               end
-    function v = transpose(v);      v.value = v.value.';                    end
-    function v = tril(v,varargin);  v.value = tril(v.value,varargin{:});    end
-    function v = triu(v,varargin);  v.value = triu(v.value,varargin{:});    end
-    function v = uminus(v);         v.value = -v.value;                     end
+    function v = abs(v);                v.value = abs(v.value);                     end
+    function v = circshift(v,varargin); v.value = circshift(v.value,varargin{:});   end
+    function v = conj(v);               v.value = conj(v.value);                    end
+    function v = ctranspose(v);         v.value = v.value';                         end
+    function v = cumsum(v,varargin);    v.value = cumsum(v.value,varargin{:});      end
+    function v = diag(v,varargin);      v.value = diag(v.value,varargin{:});        end
+    function v = diff(v,varargin);      v.value = diff(v.value,varargin{:});        end
+    function v = full(v);               v.value = full(v.value);                    end
+    function v = imag(v);               v.value = imag(v.value);                    end
+    function v = iqr(v,varargin);       v.value = iqr(v.value,varargin{:});         end
+    function v = mean(v,varargin);      v.value = mean(v.value,varargin{:});        end
+    function v = median(v,varargin);    v.value = median(v.value,varargin{:});      end
+    function v = movmad(v,varargin);    v.value = movmad(v.value,varargin{:});      end
+    function v = movmean(v,varargin);   v.value = movmean(v.value,varargin{:});     end
+    function v = movmedian(v,varargin); v.value = movmedian(v.value,varargin{:});   end
+    function v = movstd(v,varargin);    v.value = movstd(v.value,varargin{:});      end
+    function v = movsum(v,varargin);    v.value = movsum(v.value,varargin{:});      end
+    function v = movvar(v,varargin);    v.value = movvar(v.value,varargin{:});      end
+    function v = norm(v,varargin);      v.value = norm(v.value,varargin{:});        end
+    function v = permute(v,varargin);   v.value = permute(v.value,varargin{:});     end
+    function v = prctile(v,varargin);   v.value = prctile(v.value,varargin{:});     end
+    function v = quantile(v,varargin);  v.value = quantile(v.value,varargin{:});    end
+    function v = real(v);               v.value = real(v.value);                    end
+    function v = reshape(v,varargin);   v.value = reshape(v.value,varargin{:});     end
+    function [v,I] = sort(v,varargin);  [v.value,I] = sort(v.value,varargin{:});    end
+    function v = std(v,varargin);       v.value = std(v.value,varargin{:});         end
+    function v = subsref(v,varargin);   v.value = subsref(v.value,varargin{:});     end
+    function v = sum(v,varargin);       v.value = sum(v.value,varargin{:});         end
+    function v = trace(v);              v.value = trace(v.value);                   end
+    function v = transpose(v);          v.value = v.value.';                        end
+    function v = tril(v,varargin);      v.value = tril(v.value,varargin{:});        end
+    function v = triu(v,varargin);      v.value = triu(v.value,varargin{:});        end
+    function v = uminus(v);             v.value = -v.value;                         end
     function [v,IA,IC] = unique(v,varargin)
         [v.value, IA, IC] = unique(v.value,varargin{:});
     end
@@ -264,9 +264,7 @@ methods
     function varargout = size(x,varargin)
         [varargout{1:nargout}] = size(x.value,varargin{:});
     end
-    function out = issorted(v,varargin)
-        out = issorted(v.value,varargin{:});
-    end
+    function out = issorted(v,varargin); out = issorted(v.value,varargin{:}); end
     
     %% Plot-like functions.
     function varargout = area(varargin)
