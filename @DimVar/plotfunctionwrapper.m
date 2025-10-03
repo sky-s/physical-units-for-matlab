@@ -129,7 +129,7 @@ if ~structInput
         case {'hist','histogram'}
             % Arguments that will break this: Color or Alpha of edges/faces,
             % LineWidth.
-            if numel(args) > 1 && isscalar(args(2)) && isnumeric(args(2)) && ~isa(args(2),'DimVar')
+            if numel(args) > 1 && isscalar(args{2}) && isnumeric(args{2}) && ~isa(args{2},'DimVar')
                 % Argument is nbins, which is the only numeric that is allowed
                 % to be non-compatible.
                 plottableArgs([1,3:end]) = harmonize(plottableArgs([1,3:end]));
@@ -141,20 +141,46 @@ if ~structInput
         case {'histogram2'}
             [X,Y] = deal(plottableArgs{1:2});
             
-        case {'contour','contourf'}
+        case {'contour','contourf','contourc'}
             if nPlottableArgs >= 3
+                % contour(x,y,z)
                 [X,Y] = deal(plottableArgs{1:2});
+            elseif nPlottableArgs == 2
+                % contour(z, levels)
+                plottableArgs(1:2) = harmonize(plottableArgs(1:2));
+            end
+            if nPlottableArgs > 3 && isnumeric(plottableArgs{4}) && ~isscalar(plottableArgs{4})
+                % 4th argument is level list
+                plottableArgs(3:4) = harmonize(plottableArgs(3:4));
+            end
+            % TODO: consider adding a LabelFormat spec to add units.
+
+            if plotFunction == "contourc"
+                nonPlottingFunc = true;
+            end
+
+        case {'contour3'}
+            if nPlottableArgs >= 3
+                % contourc(x,y,z)
+                [X,Y,Z] = deal(plottableArgs{1:3});
+            elseif nPlottableArgs == 2
+                % contour(z, levels)
+                plottableArgs(1:2) = harmonize(plottableArgs(1:2));
+                Z = plottableArgs{1};
+            end
+            if nPlottableArgs > 3 && isnumeric(plottableArgs{4}) && ~isscalar(plottableArgs{4})
+                % 4th argument is level list
+                plottableArgs(3:4) = harmonize(plottableArgs(3:4));
+                Z = plottableArgs{3};
             end
             
-        case {'surf','surfc','surfl','surface','contour3','mesh','meshc','meshz'}
+        case {'surf','surfc','surfl','surface','mesh','meshc','meshz'}
             if nPlottableArgs <= 2
                 % surf(z,c,...); surf(z)
-                Z = plottableArgs{1};
-                
+                Z = plottableArgs{1}; 
             else
                 % surf(x,y,z); surf(x,y,z,c)
                 [X,Y,Z] = deal(plottableArgs{1:3});
-                
             end
         
         case {'scatter','bubblechart','swarmchart'}

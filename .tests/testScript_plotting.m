@@ -64,7 +64,7 @@ assert(axishasunits('R'))
 
 % historgram (2)
 figure
-histogram(r,'BinWidth',u.R*.5,'BinLimits',u.R*[15 50])
+histogram(r,'BinWidth',u.R*.5,'BinLimits',scd(u.R*[15 50],'K'))
 xlabel temperature
 assert(axishasunits('R'));
 
@@ -372,8 +372,14 @@ y = linspace(0,4*pi);
 [X,Y] = meshgrid(x,y);
 Z = sin(X)+cos(Y);
 
-% contourc
+% contourc (1)
 C = contourc(x*u.ft,y*u.lb,Z*u.rpm);
+
+% contourc (2)
+C = contourc(x*u.ft,y*u.lb,Z*u.rpm,(0:.3:1)*u.rpm);
+
+% contourc (3)
+C = contourc(Z*u.rpm,(0:.3:1)*u.rpm);
 
 % contour (1)
 figure
@@ -391,12 +397,59 @@ zlabel rpm
 view(3)
 assert(axishasunits('ft','lb','rpm'))
 
+% contour (4)
+figure
+contour(X*u.ft,Y*u.lb,Z*u.rpm,5)
+xlabel length
+ylabel mass
+assert(axishasunits('ft','lb',0))
+
+% contour (5)
+figure
+c = contour(X*u.ft,Y*u.lb,Z*u.in,[.5 .25]*u.mi);
+xlabel length
+ylabel mass
+assert(isempty(c))
+assert(axishasunits('ft','lb',0))
+
+% contour (6)
+figure
+[c,h] = contourf(X*u.ft,Y*u.lb,Z*u.in,[.5 .25]*u.in);
+xlabel length
+ylabel mass
+assert(~isempty(c))
+assert(axishasunits('ft','lb',0))
+
+% contour (7)
+% figure
+% contourf(X*u.ft,Y*u.lb,Z*u.in,LevelList=[.5 .25]*u.in); % Fails since
+% levellist is always getting passed as DimVar, creating a recursion.
+% xlabel length
+% ylabel mass
+% assert(~isempty(c))
+% assert(axishasunits('ft','lb',0))
+
+
 % contourf
 figure
 contourf(X*u.ft,Y*u.lb,Z*u.rpm)
 xlabel length
 ylabel mass
 assert(axishasunits('ft','lb',0))
+
+% contourf (1)
+figure
+contourf(Z*u.rpm)
+xlabel length
+ylabel mass
+assert(axishasunits(0,0,0))
+
+figure
+contourf(Z*u.rpm,scd((0:.2:1)*u.rpm,'Hz'))
+xlabel length
+ylabel mass
+assert(axishasunits(0,0,0))
+
 
 %% bar
 figure

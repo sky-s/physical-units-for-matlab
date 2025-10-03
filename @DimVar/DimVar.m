@@ -68,8 +68,7 @@ methods
         
         for i = 1:numel(varargin)
             
-            if ~isa(varargin{i},'DimVar') ...
-                    || ~isequal(vExpos,varargin{i}.exponents)
+            if ~isa(varargin{i},'DimVar') || ~isequal(vExpos,varargin{i}.exponents)
                 
                 ME = MException('DimVar:incompatibleUnits',...
                     ['Incompatible units. Cannot perform operation on '...
@@ -232,10 +231,8 @@ methods
     function v = tril(v,varargin);      v.value = tril(v.value,varargin{:});        end
     function v = triu(v,varargin);      v.value = triu(v.value,varargin{:});        end
     function v = uminus(v);             v.value = -v.value;                         end
-    function [v,IA,IC] = unique(v,varargin)
-        [v.value, IA, IC] = unique(v.value,varargin{:});
-    end
-    function v = uplus(v);                                                  end
+    function [v,IA,IC] = unique(v,varargin); [v.value, IA, IC] = unique(v.value,varargin{:}); end
+    function v = uplus(v);                                                          end
     
     %% Functions that require compatibility check.
     function out = atan2(v1,v2)
@@ -261,9 +258,7 @@ methods
     function n = nnz(v);        n = nnz(v.value);       end
     function n = numel(v);      n = numel(v.value);     end
     function out = sign(v);     out = sign(v.value);    end
-    function varargout = size(x,varargin)
-        [varargout{1:nargout}] = size(x.value,varargin{:});
-    end
+    function varargout = size(x,varargin); [varargout{1:nargout}] = size(x.value,varargin{:}); end
     function out = issorted(v,varargin); out = issorted(v.value,varargin{:}); end
     
     %% Plot-like functions.
@@ -286,8 +281,7 @@ methods
         [varargout{1:nargout}] = plotfunctionwrapper('bubblechart',varargin{:});
     end
     function varargout = bubblechart3(varargin)
-        [varargout{1:nargout}] = plotfunctionwrapper('bubblechart3',...
-            varargin{:});
+        [varargout{1:nargout}] = plotfunctionwrapper('bubblechart3',varargin{:});
     end
     function varargout = contour(varargin)
         [varargout{1:nargout}] = plotfunctionwrapper('contour',varargin{:});
