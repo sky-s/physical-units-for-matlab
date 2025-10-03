@@ -1,5 +1,61 @@
 % A general test script for physical units.
-%   <a href="matlab:runtests('testScript_units')">run tests</a>
+%   <%% validateattributes
+validateattributes(u.m,{'numeric'},{'positive'})
+validateattributes(u.m,{'DimVar'},{'positive'})
+validateattributes(u.m,{'numeric','DimVar'},{'finite'})
+
+validateattributes(u.m,{'double','DimVar'},{'finite'})
+
+shoulderror("MATLAB:invalidType",...
+    @()validateattributes(u.m,{'double'},{'finite'}));
+
+%% mustBeNonDim - valid cases
+mustBeNonDim(3.14)
+mustBeNonDim(rand(3))
+mustBeNonDim([1 2 3; 4 5 6])
+mustBeNonDim(complex(1,2))
+mustBeNonDim(single(42))
+mustBeNonDim(int32(10))
+mustBeNonDim(logical([true false]))
+mustBeNonDim([])  % empty numeric array
+
+%% mustBeNonDim - error cases
+shoulderror('"Input" must be a non-dimensional numeric array.',@()mustBeNonDim(u.m));
+shoulderror('"Input" must be a non-dimensional numeric array.',@()mustBeNonDim(u.kg*5));
+shoulderror('"Input" must be a non-dimensional numeric array.',@()mustBeNonDim('string'));
+shoulderror('"Input" must be a non-dimensional numeric array.',@()mustBeNonDim({'cell'}));
+shoulderror('"Input" must be a non-dimensional numeric array.',@()mustBeNonDim(struct('a',1)));
+
+%% mustBeNonDim - with variable names
+x = u.ft;
+shoulderror('"x" must be a non-dimensional numeric array.',@()mustBeNonDim(x));
+velocity = 5*u.mph;
+shoulderror('"velocity" must be a non-dimensional numeric array.',@()mustBeNonDim(velocity));
+
+%% fieldnameswithunits tests
+S.mass = 5*u.kg;
+S.length = 10*u.m;
+S.time = 2*u.s;
+S.normal = 42;
+names = fieldnameswithunits(S);
+assert(isequal(sort(names),sort({'mass (kg)','length (m)','time (s)','normal'}')));
+
+%% Additional edge case tests  
+% Test empty arrays with different types
+assert(isempty([]*u.m));
+assert(all(size([]*u.kg) == [0 0]));
+
+% Test complex DimVars
+z = (3+4i)*u.V;
+assert(abs(z) == 5*u.V);
+assert(real(z) == 3*u.V);
+assert(imag(z) == 4*u.V);
+
+% Test logical operations
+assert(u.m > u.cm);
+assert(u.kg >= u.g);
+assert(u.s < u.min);
+assert(u.mm <= u.m);
 
 % Set up by clearing class
 close all
