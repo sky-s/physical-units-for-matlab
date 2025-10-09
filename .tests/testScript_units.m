@@ -1,5 +1,17 @@
 % A general test script for physical units.
-%   <%% validateattributes
+
+% Set up by clearing class
+close all
+clear all
+
+% baseUnitSystem = 'none'
+displayUnits = {'ft','lb','rpm'};
+a = 1:50;
+b = u.rpm*(5:5:600);
+c = u.kg*(1:50);
+d = u.Pa*(5:3:20);
+
+%% validateattributes
 validateattributes(u.m,{'numeric'},{'positive'})
 validateattributes(u.m,{'DimVar'},{'positive'})
 validateattributes(u.m,{'numeric','DimVar'},{'finite'})
@@ -56,17 +68,6 @@ assert(u.m > u.cm);
 assert(u.kg >= u.g);
 assert(u.s < u.min);
 assert(u.mm <= u.m);
-
-% Set up by clearing class
-close all
-clear all
-
-% baseUnitSystem = 'none'
-displayUnits = {'ft','lb','rpm'};
-a = 1:50;
-b = u.rpm*(5:5:600);
-c = u.kg*(1:50);
-d = u.Pa*(5:3:20);
 
 %% u.m example 1
 rotationSpeed = 2500 * u.rpm;
