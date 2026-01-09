@@ -37,7 +37,7 @@ end
 
 %% Easy scheme with all name-value input, indicated by char first arg
 
-if ischar(args{1}) || isstring(args{1}) || isstruct(args{1})
+if ischar(args{1}) || (isscalar(args{1}) && isstring(args{1})) || isstruct(args{1})
     structInput = true;
     % Also works with single input struct if this ever got called for that, but
     % it won't be.
@@ -348,7 +348,9 @@ end
 % scheme of using TickLabelFormat was used instead of adding properties to the
 % axes or using UserData.
 
-labelUnits = regexp(get(rulers,'TickLabelFormat')','%g (?<unit>.+)','names');
+labelUnits = cell(size(rulers));
+ind = isprop(rulers,'TickLabelFormat');
+labelUnits(ind) = regexp(get(rulers(ind),'TickLabelFormat')','%g (?<unit>.+)','names');
 
 if all(cellfun('isempty',labelUnits))
     % No prior axes with units, so don't check against them.

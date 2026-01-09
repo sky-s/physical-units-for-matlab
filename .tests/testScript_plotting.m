@@ -460,6 +460,9 @@ assert(axishasunits('mi','lbf',0))
 subplot(3,1,3), bar(rand(2,3)*u.K,.75,'grouped')
 assert(axishasunits(0,'K',0))
 
+figure
+bar(["A","B","C"],rand(3,4)*u.kg)
+
 %% barh
 figure
 subplot(3,1,1), barh(rand(10,5)*u.kWh,'stacked'), colormap(cool)
