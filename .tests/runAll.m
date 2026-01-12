@@ -11,6 +11,7 @@ R{6} = runtests('testScript_coverage');
 R{7} = runtests('testScript_utilities');
 R{8} = runtests('testScript_errors');
 R{6} = runtests('testScript_noBaseUnits');
+R{7} = runtests('testScript_SIprefixes');
 
 
 rmpath('./.tests/alertChecking/');

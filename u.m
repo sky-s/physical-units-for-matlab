@@ -10,6 +10,16 @@ classdef u < handle
 %
 %   Calling u by itself will display all available units in u.
 %
+%   SI PREFIXES: You can use any SI prefix with ANY unit using the u.get() method
+%   or specific static methods. Due to MATLAB limitations with constant properties,
+%   the direct u.prefixunit syntax requires using u.get('prefixunit') instead.
+%   Examples: u.get('kilojoule'), u.get('megawatt'), u.get('nanometer'),
+%   u.get('kiloacre'), u.get('nanoinch'), u.get('megapound'), u.microinch().
+%   All SI prefixes are supported: quetta, ronna, yotta, zetta, exa, peta, tera,
+%   giga, mega, kilo, hecto, deka, deci, centi, milli, micro, nano, pico, femto,
+%   atto, zepto, yocto, ronto, quecto. Common abbreviations are also supported
+%   where they don't conflict with existing units: k, G, m, u, n, p.
+%
 %   Variables with physical units attached are of the class DimVar
 %   ("dimenensioned variable"). Math operations performed on dimensioned
 %   variables will automatically perform dimensional analysis and can create new
@@ -55,6 +65,14 @@ classdef u < handle
 %       rate = scd(rate,'sqm/hr')
 %       timeNeeded = fieldSize/rate
 %       timeNeeded = scd(timeNeeded,'month')
+% 
+%   Example 4: SI prefixes with ANY unit using u.get() method.
+%       voltage = 12 * u.get('kilovolt');      % Works with u.get()  
+%       current = 5 * u.get('milliampere');    % No need to predefine
+%       power = voltage * current;              % Returns 60 watts
+%       area = 2.5 * u.get('kiloacre');        % Works with imperial units
+%       thickness = 250 * u.get('nanoinch');   % Precision measurements
+%       data = 1 * u.terabyte();               % Static method also works
 % 
 %   See also displayUnits, baseUnitSystem, scd, clear, displayingvalue,
 %   DimVar.double, u2num, str2u, symunit,
@@ -1194,7 +1212,66 @@ properties (Constant = true)
 end
 
 %% METHODS
-methods
+methods (Static)
+    %% Static method to handle SI prefixes with any unit
+    function result = get(unitName)
+        % get - Get a unit with SI prefix support
+        %   This allows accessing units like u.get('kilojoule'), u.get('megawatt'), etc.
+        %   even if they are not explicitly defined, by combining SI prefixes
+        %   with base units.
+        
+        % First check if the field exists directly
+        try
+            % Check if it's a constant property
+            mc = metaclass(u);
+            for i = 1:length(mc.PropertyList)
+                if strcmp(mc.PropertyList(i).Name, unitName) && ...
+                   mc.PropertyList(i).Constant
+                    result = u.(unitName);
+                    return;
+                end
+            end
+        catch
+            % Continue to prefix parsing
+        end
+        
+        % Try to parse as SI prefix + base unit
+        [prefix, baseUnit, prefixValue] = u.parseSIPrefix(unitName);
+        
+        if ~isempty(prefix) && ~isempty(baseUnit)
+            % Check if the base unit exists
+            try
+                baseUnitValue = u.(baseUnit);
+                
+                % Apply prefix scaling
+                if isa(baseUnitValue, 'DimVar')
+                    scaledUnit = prefixValue * baseUnitValue;
+                    % Set custom display to show the prefixed unit name
+                    scaledUnit = scd(scaledUnit, unitName);
+                    result = scaledUnit;
+                elseif isa(baseUnitValue, 'OffsetDimVar')
+                    % For offset units (like temperature), we need special handling
+                    % The prefix scales the slope but not the offset
+                    scaledUnit = OffsetDimVar(prefixValue * baseUnitValue.slope, baseUnitValue.offset);
+                    scaledUnit = scd(scaledUnit, unitName);
+                    result = scaledUnit;
+                else
+                    % For non-DimVar values (like constants), just scale
+                    result = prefixValue * baseUnitValue;
+                end
+                return;
+            catch
+                % Base unit doesn't exist, fall through to error
+            end
+        end
+        
+        % If we get here, the unit doesn't exist
+        error('u:invalidUnit', 'Invalid unit "%s". Check that the base unit exists and is properly spelled.', unitName);
+    end
+    
+end
+
+methods    
     %% Plotting and display:
     function disp(o)
         f = fieldnames(o);
@@ -1224,6 +1301,166 @@ methods
                 'is recommended for display of physical units.',...
                 ['<a href="' dlCmd ...
                 '">Direct download of dispdisp into current directory</a>']);
+        end
+    end
+end
+methods (Static)
+    %% Parse SI prefix from field name
+    function [prefix, baseUnit, prefixValue] = parseSIPrefix(fieldName)
+        % parseSIPrefix - Parse an SI prefix from a unit field name
+        %   [prefix, baseUnit, prefixValue] = parseSIPrefix(fieldName)
+        %   Returns the prefix string, base unit string, and numeric prefix value
+        
+        % Define SI prefixes in order of decreasing length to match longest first
+        % This prevents conflicts like 'mega' being matched as 'me' + 'ga'
+        % Include both full names and common abbreviations
+        prefixes = {
+            'quetta', 1e30;   % Q
+            'ronna',  1e27;   % R
+            'yotta',  1e24;   % Y
+            'zetta',  1e21;   % Z
+            'exa',    1e18;   % E
+            'peta',   1e15;   % P
+            'tera',   1e12;   % T
+            'giga',   1e9;    % G
+            'mega',   1e6;    % M
+            'kilo',   1e3;    % k
+            'hecto',  1e2;    % h
+            'deka',   1e1;    % da
+            'deci',   1e-1;   % d
+            'centi',  1e-2;   % c
+            'milli',  1e-3;   % m
+            'micro',  1e-6;   % µ
+            'nano',   1e-9;   % n
+            'pico',   1e-12;  % p
+            'femto',  1e-15;  % f
+            'atto',   1e-18;  % a
+            'zepto',  1e-21;  % z
+            'yocto',  1e-24;  % y
+            'ronto',  1e-27;  % r
+            'quecto', 1e-30;  % q
+        };
+        
+        % Add common abbreviations for some prefixes (only if they don't conflict)
+        % These should be checked after full names to avoid conflicts
+        abbreviations = {
+            'k',      1e3;    % kilo (common abbreviation)
+            'G',      1e9;    % giga (no conflict as no existing G unit)
+            'm',      1e-3;   % milli (when not standalone meter)
+            'u',      1e-6;   % micro (common shorthand)
+            'n',      1e-9;   % nano
+            'p',      1e-12;  % pico
+        };
+        
+        % Initialize outputs
+        prefix = '';
+        baseUnit = '';
+        prefixValue = [];
+        
+        % First try full prefix names
+        for i = 1:size(prefixes, 1)
+            prefixName = prefixes{i, 1};
+            prefixVal = prefixes{i, 2};
+            
+            % Check if fieldName starts with this prefix
+            if length(fieldName) > length(prefixName) && ...
+               strcmp(fieldName(1:length(prefixName)), prefixName)
+                
+                % Extract the potential base unit
+                potentialBaseUnit = fieldName(length(prefixName)+1:end);
+                
+                % Make sure the remaining part is not empty and is a valid identifier
+                if ~isempty(potentialBaseUnit) && isvarname(potentialBaseUnit)
+                    prefix = prefixName;
+                    baseUnit = potentialBaseUnit;
+                    prefixValue = prefixVal;
+                    return;
+                end
+            end
+        end
+        
+        % Then try abbreviations (but be careful about conflicts)
+        for i = 1:size(abbreviations, 1)
+            prefixName = abbreviations{i, 1};
+            prefixVal = abbreviations{i, 2};
+            
+            % Check if fieldName starts with this abbreviation
+            if length(fieldName) > length(prefixName) && ...
+               strcmp(fieldName(1:length(prefixName)), prefixName)
+                
+                % Extract the potential base unit
+                potentialBaseUnit = fieldName(length(prefixName)+1:end);
+                
+                % Special handling for single-letter abbreviations to avoid conflicts
+                if length(prefixName) == 1
+                    % For single letter prefixes, be more careful
+                    % Make sure the base unit is likely a unit (starts with uppercase or is known)
+                    if ~isempty(potentialBaseUnit) && isvarname(potentialBaseUnit) && ...
+                       (isstrprop(potentialBaseUnit(1), 'upper') || ...
+                        any(strcmp(potentialBaseUnit, {'m', 's', 'A', 'K', 'mol', 'cd', 'bit', ...
+                                                       'Hz', 'Pa', 'J', 'W', 'V', 'C', 'F', 'H', ...
+                                                       'Ohm', 'S', 'Wb', 'T', 'N', 'Gy', 'Sv', 'Bq'})))
+                        prefix = prefixName;
+                        baseUnit = potentialBaseUnit;
+                        prefixValue = prefixVal;
+                        return;
+                    end
+                else
+                    % For multi-letter abbreviations, use standard logic
+                    if ~isempty(potentialBaseUnit) && isvarname(potentialBaseUnit)
+                        prefix = prefixName;
+                        baseUnit = potentialBaseUnit;
+                        prefixValue = prefixVal;
+                        return;
+                    end
+                end
+            end
+        end
+    end
+    
+    function [prefixValue, baseUnitValue] = parseForDisplayparserSafe(unitString)
+        % parseForDisplayparserSafe - Parse a unit string for displayparser safely
+        %   [prefixValue, baseUnitValue] = parseForDisplayparserSafe(unitString)
+        %   Returns the prefix value and base unit value without creating DimVars
+        %   This avoids recursion issues in displayparser
+        
+        % Define SI prefixes and their values
+        prefixValues = containers.Map({
+            'quetta', 'ronna', 'yotta', 'zetta', 'exa', 'peta', 'tera', 'giga', 
+            'mega', 'kilo', 'hecto', 'deka', 'deci', 'centi', 'milli', 'micro', 
+            'nano', 'pico', 'femto', 'atto', 'zepto', 'yocto', 'ronto', 'quecto'
+        }, {
+            1e30, 1e27, 1e24, 1e21, 1e18, 1e15, 1e12, 1e9,
+            1e6, 1e3, 1e2, 1e1, 1e-1, 1e-2, 1e-3, 1e-6,
+            1e-9, 1e-12, 1e-15, 1e-18, 1e-21, 1e-24, 1e-27, 1e-30
+        });
+        
+        % Initialize outputs
+        prefixValue = [];
+        baseUnitValue = [];
+        
+        % Try each prefix to see if the string starts with it
+        prefixNames = keys(prefixValues);
+        for i = 1:length(prefixNames)
+            prefixName = prefixNames{i};
+            
+            % Check if unitString starts with this prefix
+            if length(unitString) > length(prefixName) && ...
+               strcmp(unitString(1:length(prefixName)), prefixName)
+                
+                % Extract the potential base unit
+                potentialBaseUnit = unitString(length(prefixName)+1:end);
+                
+                % Make sure the remaining part is not empty and is a valid identifier
+                if ~isempty(potentialBaseUnit) && isvarname(potentialBaseUnit)
+                    % Check if the base unit exists
+                    if isprop(u, potentialBaseUnit)
+                        prefixValue = prefixValues(prefixName);
+                        baseUnitValue = u.(potentialBaseUnit);
+                        return;
+                    end
+                end
+            end
         end
     end
 end
