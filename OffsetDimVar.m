@@ -2,8 +2,10 @@ classdef (InferiorClasses = {?DimVar}) OffsetDimVar
 % OffsetDimVar  A special case of DimVar for physical units that have an offset
 % zero reference (i.e., Fahrenheit and Celsius temperatures).
 %
-%   OffsetDimVars should be used only for setting and converting units through
-%   multiplication and division. 
+%   OffsetDimVars should be used only for setting (through multiplication),
+%   converting (through division), and displaying units, so DO NOT USE WITHOUT A
+%   MULTIPLICATION OR DIVISION OPERATOR. The math in the background is always
+%   operating on the underlying linear value.
 % 
 %     Use cases:
 %       Set a value with multiplication (before or after scalar): 
@@ -33,6 +35,8 @@ classdef (InferiorClasses = {?DimVar}) OffsetDimVar
 %   See also DimVar, u, str2u, unitconversionfactor, u.deltaDegC, u.deltaDegF.
 
     properties (Access = protected)
+        % Unlike with LogDimVar, this is necessary to define the slope of the affine
+        % unit.
         dv
         customDisplay = ''
     end

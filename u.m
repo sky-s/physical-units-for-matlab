@@ -766,6 +766,43 @@ properties (Constant = true)
     kilovolt_ampere = scd(u.kVA,'kilovolt_ampere')
     var = scd(u.VA,'var')
     volt_ampere_reactive = scd(u.var,'volt_ampere_reactive')
+    
+    % Power in decibels (logarithmic power ratios, 10*log10)
+    dBW = scd(LogDimVar(1*u.W,10),'dBW') % decibel-watt (power relative to 1 W)
+    dBm = scd(LogDimVar(1e-3*u.W,10),'dBm') % decibel-milliwatt (power relative to 1 mW)
+    dBmW = scd(u.dBm,'dBmW') % decibel-milliwatt
+    dBf = scd(LogDimVar(1e-15*u.W,10),'dBf') % dB femtowatt
+    dBk = scd(LogDimVar(1e3*u.W,10),'dBk') % dB kilowatt
+
+    %---- logarithmic units (decibels, etc.) ----
+    % Base logarithmic units
+    dB = scd(LogDimVar(1,10),'dB') % decibel (power ratio, 10*log10)
+    decibel = scd(u.dB,'decibel')
+    Np = scd(LogDimVar(exp(1),1),'Np') % neper (natural logarithm ratio)
+    neper = scd(u.Np,'neper')
+    bel = scd(LogDimVar(1,1),'bel') % bel (10 times a decibel)
+    
+    % Acoustic/sound pressure levels (20*log10)
+    dBSPL = scd(LogDimVar(20e-6*u.Pa,20),'dBSPL') % decibel sound pressure level (20 µPa reference)
+    dBSPL_air = scd(u.dBSPL,'dBSPL_air') % dB SPL in air
+    dBSPL_water = scd(LogDimVar(1e-6*u.Pa,20),'dBSPL_water') % dB SPL in water (1 µPa reference)
+    dBA = scd(u.dBSPL,'dBA') % dB(A) - A-weighted sound pressure level
+    dBB = scd(u.dBSPL,'dBB') % dB(B) - B-weighted sound pressure level
+    dBC = scd(u.dBSPL,'dBC') % dB(C) - C-weighted sound pressure level
+    
+    % Digital audio levels (20*log10)
+    dBFS = scd(LogDimVar(1,20),'dBFS') % dB full scale (digital audio)
+    dBTP = scd(LogDimVar(1,20),'dBTP') % dB true peak
+    
+    % Antenna gain (10*log10)
+    dBi = scd(u.dB,'dBi') % dB isotropic (antenna gain vs isotropic)
+    dBd = scd(LogDimVar(10^(-2.15/10),10),'dBd') % dB dipole (antenna gain vs half-wave dipole, 0 dBd = 2.15 dBi)
+    dBiC = scd(u.dB,'dBiC') % dB isotropic circular (circularly polarized)
+    
+    % Radio/RF and radar measurements (10*log10)
+    dBHz = scd(LogDimVar(1*u.Hz,10),'dBHz') % dB-Hz (bandwidth)
+    dBsm = scd(LogDimVar(1*u.sqm,10),'dBsm') % dB square meter (radar cross section)
+    dBK = scd(LogDimVar(1*u.K,10),'dBK') % dB Kelvin (noise temperature)
 
     %---- current ----
 
@@ -826,6 +863,12 @@ properties (Constant = true)
     millivolt = scd(u.mV,'millivolt') 
     uV = scd(1e-6*u.V,'uV') % microvolt
     microvolt = scd(u.uV,'microvolt') 
+    
+    % Voltage in decibels (logarithmic field quantities, 20*log10)
+    dBV = scd(LogDimVar(1*u.V,20),'dBV') % decibel-volt (voltage relative to 1 V)
+    dBmV = scd(LogDimVar(1e-3*u.V,20),'dBmV') % decibel-millivolt (voltage relative to 1 mV)
+    dBuV = scd(LogDimVar(1e-6*u.V,20),'dBuV') % decibel-microvolt (voltage relative to 1 µV)
+    dBu = scd(LogDimVar(sqrt(0.6)*u.V,20),'dBu') % decibel unloaded (0.775 V RMS)
 
     %---- resistance/conductance ----
 
@@ -1195,7 +1238,7 @@ end
 
 %% METHODS
 methods
-    %% Plotting and display:
+    %% Display:
     function disp(o)
         f = fieldnames(o);
         for iField = 1:length(f)
@@ -1204,6 +1247,22 @@ methods
                 thisField = scd(thisField);
             elseif isa(thisField,'OffsetDimVar')
                 thisField = "value + " + string(thisField.offset);
+            elseif isa(thisField,'LogDimVar')
+                if isa(thisField.divisor,'double') && thisField.divisor == 1
+                    expStr = "10^value";
+                else
+                    expStr = "10^(value/" + string(thisField.divisor) + ")";
+                end
+
+                refStr = string(thisField.reference);
+                if startsWith(refStr,"1 ")
+                    refStr = strrep(refStr,"1 ","");
+                    thisField = expStr + " " + refStr;
+                elseif isa(thisField.reference,'double') && thisField.reference == 1
+                    thisField = expStr;
+                else
+                    thisField = refStr + " × " + expStr;
+                end
             end
             uDisplayStruct.(f{iField}) = thisField;
         end

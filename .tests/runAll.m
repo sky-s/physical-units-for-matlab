@@ -3,7 +3,7 @@ addpath('./.tests/alertChecking/');
 addpath('./.tests/fig/');
 
 R{1} = runtests('testScript_subsasgn');
-R{2} = runtests('testScript_offsetUnits');
+R{2} = runtests('testScript_nonlinearUnits');
 R{3} = runtests('testScript_plotAxesUnits'); close all
 R{4} = runtests('testScript_units');
 R{5} = runtests('testScript_plotting'); close all
