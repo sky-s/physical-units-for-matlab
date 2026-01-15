@@ -750,6 +750,8 @@ properties (Constant = true)
     nanowatt = scd(u.nW,'nanowatt') 
     pW = scd(1e-12*u.W,'pW') % picowatt
     picowatt = scd(u.pW,'picowatt') 
+    fW = scd(1e-15*u.W,'fW') % femtowatt
+    femtowatt = scd(u.fW,'femtowatt') 
     hp = scd(550*u.ft*u.lbf/u.s,'hp') % mechanical horsepower (550 ft-lbf/s)
     horsepower = scd(u.hp,'horsepower') 
     HP_I = scd(u.hp,'HP_I') % mechanical horsepower (550 ft-lbf/s)
@@ -768,41 +770,34 @@ properties (Constant = true)
     volt_ampere_reactive = scd(u.var,'volt_ampere_reactive')
     
     % Power in decibels (logarithmic power ratios, 10*log10)
-    dBW = scd(LogDimVar(1*u.W,10),'dBW') % decibel-watt (power relative to 1 W)
-    dBm = scd(LogDimVar(1e-3*u.W,10),'dBm') % decibel-milliwatt (power relative to 1 mW)
+    dBW = scd(LogDimVar(u.W),'dBW') % decibel-watt (power relative to 1 W)
+    dBm = scd(LogDimVar(u.mW),'dBm') % decibel-milliwatt (power relative to 1 mW)
     dBmW = scd(u.dBm,'dBmW') % decibel-milliwatt
-    dBf = scd(LogDimVar(1e-15*u.W,10),'dBf') % dB femtowatt
-    dBk = scd(LogDimVar(1e3*u.W,10),'dBk') % dB kilowatt
+    dBf = scd(LogDimVar(u.fW),'dBf') % dB femtowatt
+    dBk = scd(LogDimVar(u.kW),'dBk') % dB kilowatt
 
-    %---- logarithmic units (decibels, etc.) ----
+    %---- logarithmic units (decibels, etc.) ---- 
+    % Ref: wikipedia.org/wiki/Decibel#List_of_suffixes
     % Base logarithmic units
-    dB = scd(LogDimVar(1,10),'dB') % decibel (power ratio, 10*log10)
+    dB = scd(LogDimVar(1),'dB') % decibel (power ratio, 10*log10)
     decibel = scd(u.dB,'decibel')
     Np = scd(LogDimVar(exp(1),1),'Np') % neper (natural logarithm ratio)
     neper = scd(u.Np,'neper')
     bel = scd(LogDimVar(1,1),'bel') % bel (10 times a decibel)
     
-    % Acoustic/sound pressure levels (20*log10)
-    dBSPL = scd(LogDimVar(20e-6*u.Pa,20),'dBSPL') % decibel sound pressure level (20 µPa reference)
+    % Acoustics
+    dBSPL = scd(LogDimVar(20*u.uPa,20),'dBSPL') % sound pressure level (20 µPa reference)
     dBSPL_air = scd(u.dBSPL,'dBSPL_air') % dB SPL in air
-    dBSPL_water = scd(LogDimVar(1e-6*u.Pa,20),'dBSPL_water') % dB SPL in water (1 µPa reference)
-    dBA = scd(u.dBSPL,'dBA') % dB(A) - A-weighted sound pressure level
-    dBB = scd(u.dBSPL,'dBB') % dB(B) - B-weighted sound pressure level
-    dBC = scd(u.dBSPL,'dBC') % dB(C) - C-weighted sound pressure level
-    
-    % Digital audio levels (20*log10)
-    dBFS = scd(LogDimVar(1,20),'dBFS') % dB full scale (digital audio)
-    dBTP = scd(LogDimVar(1,20),'dBTP') % dB true peak
-    
-    % Antenna gain (10*log10)
-    dBi = scd(u.dB,'dBi') % dB isotropic (antenna gain vs isotropic)
-    dBd = scd(LogDimVar(10^(-2.15/10),10),'dBd') % dB dipole (antenna gain vs half-wave dipole, 0 dBd = 2.15 dBi)
-    dBiC = scd(u.dB,'dBiC') % dB isotropic circular (circularly polarized)
+    dBSPL_water = scd(LogDimVar(u.uPa,20),'dBSPL_water') % dB SPL in water (1 µPa reference)
+
+    dBSWL = scd(LogDimVar(u.pW),'dBSWL') % sound power level (1 pW reference)
+    dBSIL = scd(LogDimVar(scd(u.pW/u.sqm,'pW/m²')),'dBSIL') % sound intensity level (1 pW/m² reference)
     
     % Radio/RF and radar measurements (10*log10)
-    dBHz = scd(LogDimVar(1*u.Hz,10),'dBHz') % dB-Hz (bandwidth)
-    dBsm = scd(LogDimVar(1*u.sqm,10),'dBsm') % dB square meter (radar cross section)
-    dBK = scd(LogDimVar(1*u.K,10),'dBK') % dB Kelvin (noise temperature)
+    dBHz = scd(LogDimVar(u.Hz),'dBHz') % dB-Hz (bandwidth)
+    dBsm = scd(LogDimVar(u.sqm),'dBsm') % dB square meter (radar cross section)
+    dBK = scd(LogDimVar(u.K),'dBK') % dB Kelvin (noise temperature)
+    dBZ = scd(LogDimVar(scd(u.mm^6/u.sqm,'mm^6/m^2')),'dBZ') % dB Z (radar reflectivity)
 
     %---- current ----
 
@@ -851,7 +846,7 @@ properties (Constant = true)
 
     %---- voltage ----
 
-    V = scd(1*u.J/u.C,'V') % volt
+    V = scd(u.J/u.C,'V') % volt
     volt = scd(u.V,'volt') 
     kV = scd(1e3*u.V,'kV') % kilovolt
     kilovolt = scd(u.kV,'kilovolt') 
@@ -865,10 +860,9 @@ properties (Constant = true)
     microvolt = scd(u.uV,'microvolt') 
     
     % Voltage in decibels (logarithmic field quantities, 20*log10)
-    dBV = scd(LogDimVar(1*u.V,20),'dBV') % decibel-volt (voltage relative to 1 V)
-    dBmV = scd(LogDimVar(1e-3*u.V,20),'dBmV') % decibel-millivolt (voltage relative to 1 mV)
-    dBuV = scd(LogDimVar(1e-6*u.V,20),'dBuV') % decibel-microvolt (voltage relative to 1 µV)
-    dBu = scd(LogDimVar(sqrt(0.6)*u.V,20),'dBu') % decibel unloaded (0.775 V RMS)
+    dBV = scd(LogDimVar(u.V,20),'dBV') % decibel-volt (voltage relative to 1 V)
+    dBmV = scd(LogDimVar(u.mV,20),'dBmV') % decibel-millivolt (voltage relative to 1 mV)
+    dBuV = scd(LogDimVar(u.uV,20),'dBuV') % decibel-microvolt (voltage relative to 1 µV)
 
     %---- resistance/conductance ----
 
@@ -937,7 +931,7 @@ properties (Constant = true)
 
     %---- EM ----
 
-    T = scd(1*u.N/(u.A*u.m),'T') % tesla
+    T = scd(u.N/(u.A*u.m),'T') % tesla
     tesla = scd(u.T,'tesla') 
     Gs = scd(1e-4*u.T,'Gs') % gauss
     gauss = scd(u.Gs,'gauss') 

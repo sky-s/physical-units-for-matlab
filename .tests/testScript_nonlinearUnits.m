@@ -89,6 +89,8 @@ backToDb = linear/u.dB;
 assert(abs(backToDb - dbValue) < 1e-10)
 
 %% Addition of dB values is addition of underlying linear quantities (same units)
+% Usually best to avoid adding dB values directly, especially for field 
+% quantities, but if you do:
 % 10 dBW + 10 dBW = 100 W + 100 W = 200 W
 % Note: This is not 20 dBW, which would be the case if adding ratios
 result = 10*u.dBW + 10*u.dBW;

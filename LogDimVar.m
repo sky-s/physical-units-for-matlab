@@ -7,7 +7,7 @@ classdef (InferiorClasses = {?DimVar}) LogDimVar
 %   scale. LogDimVars should be used only for setting (through multiplication),
 %   converting (through division), and displaying units, so DO NOT USE WITHOUT A
 %   MULTIPLICATION OR DIVISION OPERATOR. The math in the background is always
-%   operating on the underlying linear value.
+%   operating on the underlying linearized value after the unit is set.
 % 
 %     Use cases:
 %       Set a value with multiplication (before or after scalar): 
@@ -23,10 +23,33 @@ classdef (InferiorClasses = {?DimVar}) LogDimVar
 %           scd(5*u.dBW)
 % 
 %     Math operations of LogDimVars: These are all DimVars once they are set, so
-%     sath is done on the underlying linear units, but in many cases the custom
+%     math is done on the underlying linear units, but in many cases the custom
 %     log unit display will carry through the operation. This means that LOG
 %     MATH DOESN'T HAPPEN. So, 20*u.dB + 10*u.dB does NOT yield 30 dB, but
-%     rather yeld 100 + 10 = 110 (~20.414 dB).
+%     rather yields 100 + 10 = 110 (~20.414 dB).
+% 
+%     IMPORTANT - Adding field quantities (root-power/amplitude units): Field
+%     quantities like voltage, current, and pressure / SPL use a divisor of 20
+%     (e.g., dBV, dBuV, dBSPL). When adding these quantities in code, the result
+%     is LINEAR addition of the underlying physical quantities, NOT logarithmic
+%     addition of the dB values:
+%       - INCORRECT thinking: 20*u.dBV + 20*u.dBV = 40 dBV
+%       - ACTUAL result: 10V + 10V = 20V (displays as ~26.02 dBV)
+%     This behavior is correct for coherent (in-phase) signals. For addition of
+%     incoherent/uncorrelated signals, first convert to power quantity or use
+%     specialized functions like squaring the linear quantities. The same
+%     applies to power quantities (divisor=10, e.g., dBW, dBm): adding them
+%     performs linear addition of the underlying power, not the dB values.
+% 
+%     Examples: 
+%       % Power quantities (divisor=10):
+%       10*u.dBW + 10*u.dBW = 100 W + 100 W = 200 W (displays ~13 dBW)
+%       
+%       % Field quantities (divisor=20) - coherent (in-phase) addition:
+%       10*u.dBV + 10*u.dBV = 10 V + 10 V = 20 V (displays ~16 dBV)
+%       
+%       % Field quantities - incoherent/uncorrelated addition:
+%       sqrt((10*u.dBV)^2 + (10*u.dBV)^2) = ~14.14 V (displays ~13 dBV)
 % 
 %     Many other use cases should be avoided and mostly throw an error:
 %       u.kg*u.dB
@@ -39,16 +62,18 @@ classdef (InferiorClasses = {?DimVar}) LogDimVar
         customDisplay = ''
     end
     properties
-        reference = 1   % reference value with units (DimVar or scalar)
-        divisor = 10    % divisor for logarithm (10 for dB power, 20 for dB voltage)
+        reference = 1   % Reference value with units (DimVar or scalar).
+
+        % Divisor for logarithm (10 for dB power, 20 root-power / field quantities).
+        % See wikipedia.org/wiki/Power,_root-power,_and_field_quantities.
+        divisor = 10    
     end
     
 
     methods
         function v = LogDimVar(reference,divisor)
             % LogDimVar  Construct a logarithmic unit
-            %   v = LogDimVar(reference) creates a log unit with default divisor=10
-            %     reference should be a DimVar with both value and units.
+            %   v = LogDimVar(reference) creates a log unit with default divisor=10.
             %   v = LogDimVar(reference,divisor) sets both reference and divisor.
             if nargin >= 1
                 v.reference = reference;
